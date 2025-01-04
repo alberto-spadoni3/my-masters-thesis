@@ -21,6 +21,9 @@
 # *.eps
 # *.pdf
 
+# Excluding the generated PDF file, since it is created by the Github Workflow pipeline
+thesis-main.pdf
+
 ## Generated if empty string is given at "Please type another file name for output:"
 .pdf
 
