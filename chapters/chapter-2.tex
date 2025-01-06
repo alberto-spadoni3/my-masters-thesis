@@ -1,0 +1,20 @@
+\chapter{Stato dell'Arte}
+
+\section{Introduzione al DNS e al filtraggio}
+Prima di trattare l'argomento cardine del presente capitolo, si ritiene opportuno fare una breve panoramica sui concetti importanti ad esso collegati. Verrà in prima batttuta presentato il Domain Name System (DNS), che può essere definito come uno dei pilastri fondamentali di tutta l'architettura della rete Internet. Successivamente, ci si sposterà sull'ambito del filtraggio in Internet, che rappresenta il contesto più ampio di cui il filtraggio DNS fa parte.
+
+\subsection{Cos'è il DNS e il suo ruolo in Internet}
+Il Domain Name System è un database gerarchico e distribuito che contiene le associazioni tra nomi di dominio ed altre importanti informazioni, tra cui gli indirizzi IP.
+
+Questo fondamentale sistema consente agli utenti di localizzare le risorse sulla rete andando a convertire nomi di dominio familiari ed in formato leggibile dagli umani in indirizzi numerici ai quali un computer può connettersi. Un'analogia comune che si uutilizza per spiegare il ruolo dei sistema DNS è che esso serve da rubrica telefonica per Internet, andando a tradurre i nomi di computer comprensibili agli umani nei relativi indirizzi numerici interpretabili dalle macchine. Per fare un esempio, il nome di dominio \texttt{www.airbus.com} viene tradotto dal DNS nell'indirizzo IPv4 \texttt{107.154.76.155}.
+
+In poche parole, quindi, le funzioni principali del sistema DNS sono:
+\begin{enumerate}
+  \item localizzare le risorse, come ad esempio server Web o Mail, all'interno della rete
+  \item tradurre i nomi di dominio in indirizzi IP e vice versa.
+\end{enumerate}
+
+\subsubsection{Vulnerabilità del DNS e necessità di filtraggio}
+Il DNS rappresenta una porzione cruciale della rete Internet e per questo motivo la sua messa in sicurezza risulta molto importante. Infatti, se un individuo malintenzionato dovesse riuscire a comprometterlo, sarebbe in grado di bloccare o comunque danneggiare le normali attività che avvengono sulla rete. Ad esempio, esso potrebbe dirigere i computer verso un qualsiasi indirizzo IP o risorsa malevole lui voglia, rubare informazioni ed altre attività malevole CITE.
+
+\subsection{Il filtraggio Internet e il posizionamento del DNS filtering}
