@@ -8,7 +8,7 @@ Il Domain Name System è un database gerarchico e distribuito che contiene le as
 
 Questo fondamentale sistema consente agli utenti di localizzare le risorse sulla rete andando a convertire nomi di dominio familiari ed in formato leggibile dagli umani in indirizzi numerici ai quali un computer può connettersi. Un'analogia comune che si uutilizza per spiegare il ruolo dei sistema DNS è che esso serve da rubrica telefonica per Internet, andando a tradurre i nomi di computer comprensibili agli umani nei relativi indirizzi numerici interpretabili dalle macchine. Per fare un esempio, il nome di dominio \texttt{www.airbus.com} viene tradotto dal DNS nell'indirizzo IPv4 \texttt{107.154.76.155}.
 
-\subsubsection{Vulnerabilità del DNS e necessità di filtraggio}
+\subsubsection{Vulnerabilità del DNS}
 Il DNS rappresenta una porzione cruciale della rete Internet e per questo motivo la sua messa in sicurezza risulta molto importante. Infatti, se un individuo malintenzionato dovesse riuscire a comprometterlo, sarebbe in grado di bloccare, o comunque ridurre, le normali attività che avvengono sulla rete.
 
 Il sistema in oggetto è stato progettato negli anni '80 per rispondere alla necessità di una risoluzione dei nomi rapida e scalabile su una rete in continua espansione. Al momento della sua concezione, come descritto nelle specifiche originarie RFC 1034 \cite{rfc1034} e RFC 1035 \cite{rfc1035}, l'attenzione era principalmente concentrata sulla funzionalità e sull'efficienza, senza considerare i potenziali problemi di sicurezza che sarebbero emersi con la crescita esponenziale di Internet. Oltretutto, la solida fiducia che le specifiche RFC trasmettevano ai professionisti IT dell’epoca non li spinse a preoccuparsi o a indagare sui potenziali rischi di sicurezza che tale sistema poteva comportare \cite{hudaib2014dns}. Questa scelta rifletteva il contesto storico in cui è nato il DNS: la rete era allora utilizzata principalmente da enti accademici e governativi, con un livello di fiducia reciproca tra i partecipanti. Tuttavia, con l'apertura di Internet a un pubblico globale, il DNS ha rivelato vulnerabilità intrinseche, tra cui la mancanza di meccanismi nativi che garantiscano l'autenticazione delle risposte e l'integrità delle informazioni da esso fornite. Tali lacune hanno reso possibile una serie di attacchi che sfruttano le debolezze proprie del sistema DNS. Tra questi, si annoverano il DNS Spoofing, gli attacchi di tipo Distributed Denial of Service (DDoS) nei confronti dell'infrastruttura DNS e il DNS Hijacking.
@@ -34,7 +34,36 @@ Il DNS hijacking prevede la compromissione di server DNS o la manipolazione dell
 
 Le conseguenze includono il furto di credenziali, la diffusione di malware e la censura di contenuti web. Tuttavia, alcuni provider di servizi Internet (ISP) utilizzano questa tecnica per scopi commerciali, come la visualizzazione di pubblicità o la raccolta di statistiche sulla avigazione dei propri utenti. Per mitigare il DNS hijacking, si consiglia di utilizzare configurazioni DNS sicure e controllare in maniera scrupolosa le modifiche ai record DNS locali \cite{hudaib2014dns}.
 
-\paragraph{Necessità di un filtraggio DNS}
-Per affrontare queste problematiche, il filtraggio DNS rappresenta una soluzione efficace e scalabile. Oltre a bloccare domini malevoli, consente di ottimizzare l'uso delle risorse di rete e garantire conformità normativa. Tuttavia, la sua implementazione richiede un bilanciamento tra sicurezza e accessibilità, minimizzando l'impatto sulle prestazioni.
+\subsection{Il filtraggio di Internet}
+A seguito dell'analisi riguardante le vulnerabilità intrinseche del sistema DNS, emerge chiaramente l'importanza di adottare meccanismi di prevenzione per garantire una navigazione più sicura e controllata. A questo proposito, una soluzione interessante riguarda il filtraggio di Internet, che, in generale, rappresenta un insieme di tecniche e tecnologie volte a limitare o bloccare l'accesso a contenuti considerati inappropriati, illegali o dannosi. Le principali pratiche di filtraggio nell'ambito di Internet si dividono nelle tre seguenti tipologie:
+\begin{itemize}
+  \item \textbf{IP Packet Filtering}: ovvero il blocco del traffico basato su indirizzi IP o numeri di porta. Questa tecnica analizza gli header dei pacchetti per decidere se consentirne il passaggio o eliminarli. Sebbene sia semplice ed efficiente, può causare sovrafiltraggio, rendendo inaccessibili quei contenuti legittimi ospitati sullo stesso IP considerato malevolo.
 
-\subsection{Il filtraggio Internet e il posizionamento del DNS filtering}
+  \item \textbf{DNS Poisoning}: manipolazione delle risposte DNS per reindirizzare richieste a indirizzi errati o bloccarle completamente. Questo metodo è efficace nel bloccare domini specifici ma può essere aggirato utilizzando resolver DNS alternativi.
+
+  \item \textbf{URL Blocking}: blocco di URL specifici tramite proxy HTTP o tecniche come la Deep Packet Inspection (DPI). Questi sistemi analizzano il contenuto delle richieste HTTP per identificare e bloccare pagine o risorse specifiche, offrendo una maggiore precisione rispetto ai metodi sopra elencati.
+\end{itemize}
+
+Queste tecniche offrono un mix di semplicità, precisione e scalabilità, ma ciascuna presenta compromessi in termini di efficacia, costi e possibilità di essere aggirata.
+
+\subsubsection{Punti di applicazione del filtraggio di Internet}
+Il filtraggio di Internet può essere implementato in diversi punti dell'architettura di rete, con implicazioni specifiche in termini di efficacia, costi e complessità. Secondo V. Varadharajan \cite{Varadharajan2010}, i principali punti di applicazione includono:
+
+\begin{itemize}
+  \item \textbf{A monte dell'ISP}: i filtri possono essere posizionati nei fornitori internazionali di connettività o nei backbone service provider. Questo approccio consente di bloccare contenuti indesiderati prima che raggiungano l'ISP locale, risultando particolarmente utile per gestire traffico proveniente da server internazionali. Tuttavia, questa strategia richiede una stretta collaborazione tra le entità coinvolte e una chiara mappatura dei gateway internazionali.
+
+  \item \textbf{All'interno dell'ISP}: posizionare i filtri nel core della rete ISP permette di monitorare e controllare il traffico a livello centralizzato per tutti gli utenti dell'ISP. Sebbene sia efficace, questa soluzione può introdurre colli di bottiglia e richiedere investimenti significativi in hardware sofisticato, soprattutto per ISP con un alto volume di traffico.
+
+  \item \textbf{Tra l'ISP e il cliente}: applicare il filtraggio nel collegamento tra l'ISP e il cliente finale offre un controllo mirato sul traffico diretto verso reti locali o singoli utenti. Questa configurazione consente di personalizzare le policy di filtraggio, ma può comportare costi operativi elevati per ISP con grandi numeri di clienti.
+
+  \item \textbf{Tra due clienti dello stesso ISP}: in reti locali o interne a un ISP, i filtri possono essere configurati per impedire lo scambio di contenuti indesiderati tra utenti dello stesso provider. Questo approccio è utile in contesti aziendali o comunità chiuse.
+
+  \item \textbf{Tra un cliente e un sito web ospitato a livello internazionale}: i filtri possono essere utilizzati per monitorare e bloccare il traffico tra un utente e server internazionali. Questa strategia è cruciale per controllare contenuti provenienti dall'estero ma richiede la capacità di gestire connessioni transfrontaliere e un'infrastruttura adeguata.
+\end{itemize}
+
+La distribuzione del filtraggio in questi punti permette di adattare le strategie di controllo alle esigenze specifiche di un'organizzazione o di un'autorità regolatoria. Tuttavia, ogni livello comporta compromessi: il posizionamento a monte può bloccare grandi volumi di traffico, ma con rischi di sovrafiltraggio, mentre i filtri localizzati vicino agli utenti offrono maggiore precisione ma richiedono risorse significative. Una combinazione di approcci può ottimizzare l'efficacia del filtraggio, bilanciando precisione e scalabilità \cite{Varadharajan2010}.
+
+\subsection{Il filtraggio DNS}
+Tra le varie tecniche di filtraggio appena discusse, quello applicato al DNS emerge come una soluzione relativamente efficiente e scalabile. Questa tecnica manipola le risposte DNS per impedire la risoluzione dei nomi di dominio indesiderati. Ad esempio, tramite \textit{name hijacking}, un server DNS può reindirizzare una richiesta a un indirizzo non valido o mostrare un messaggio di errore \cite{Murdoch2008, Varadharajan2010}. Nonostante la sua efficacia, il filtraggio DNS soffre di problematiche come il sovrafiltraggio di domini che ospitano sia contenuti proibiti che legittimi, e può essere facilmente aggirato da utenti esperti attraverso l'uso di resolver DNS alternativi \cite{Murdoch2008}.
+
+In sintesi, il filtraggio DNS rappresenta un compromesso tra semplicità di implementazione e precisione, posizionandosi come una delle tecniche più utilizzate nel panorama del filtraggio di Internet. Tuttavia, il suo utilizzo deve essere accompagnato da una strategia più ampia che includa educazione, strumenti tecnici avanzati e misure legali per garantire un'efficace protezione degli utenti e la salvaguardia della libertà di accesso \cite{Varadharajan2010}.
