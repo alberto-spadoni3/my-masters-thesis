@@ -26,9 +26,13 @@ Il principio alla base di questa tecnica risiede nella capacità degli attaccant
 Un esempio di amplificazione DNS è quello che ha colpito Spamhaus nel 2013, considerato uno dei più grandi attacchi DDoS mai accaduti. Esso è stato caratterizzato da una richiesta di 36 byte che ha generato una risposta di 3.000 byte, amplificando il traffico di un fattore 100 e generando un volume di dati in entrata ai server della compagnia pari a 75GBps \cite{Bonasera2021}.
 
 \paragraph{DNS Hijacking}
-Il DNS hijacking prevede la compromissione di server DNS o la manipolazione delle configurazioni DNS di un utente per reindirizzare il traffico verso destinazioni controllate dall'attaccante. Questo attacco può essere implementato attraverso malware che modifica le impostazioni DNS locali o mediante la compromissione diretta dei server DNS \cite{hudaib2014dns}.
+Il DNS hijacking prevede la compromissione di server DNS o la manipolazione delle configurazioni DNS di un utente per reindirizzare il traffico verso destinazioni controllate da un malintenzionato. Questo tipo di attacco può essere implementato seguendo due strategie \cite{hudaib2014dns}:
+\begin{itemize}
+  \item attraverso l'uso di specifici malware che modificano le impostazioni DNS locali
+  \item mediante la compromissione diretta dei server DNS fidati, in modo che non si comportino come da specifica.
+\end{itemize}
 
-Le conseguenze includono il furto di credenziali, la diffusione di malware e la censura di contenuti web. Alcuni provider di servizi Internet (ISP) utilizzano questa tecnica per scopi commerciali, come la visualizzazione di pubblicità. Per mitigare il DNS hijacking, si consiglia di utilizzare configurazioni DNS sicure, abilitare DNSSEC e controllare in maniera scrupolosa le modifiche ai record DNS \cite{hudaib2014dns}.
+Le conseguenze includono il furto di credenziali, la diffusione di malware e la censura di contenuti web. Tuttavia, alcuni provider di servizi Internet (ISP) utilizzano questa tecnica per scopi commerciali, come la visualizzazione di pubblicità o la raccolta di statistiche sulla avigazione dei propri utenti. Per mitigare il DNS hijacking, si consiglia di utilizzare configurazioni DNS sicure e controllare in maniera scrupolosa le modifiche ai record DNS locali \cite{hudaib2014dns}.
 
 \paragraph{Necessità di un filtraggio DNS}
 Per affrontare queste problematiche, il filtraggio DNS rappresenta una soluzione efficace e scalabile. Oltre a bloccare domini malevoli, consente di ottimizzare l'uso delle risorse di rete e garantire conformità normativa. Tuttavia, la sua implementazione richiede un bilanciamento tra sicurezza e accessibilità, minimizzando l'impatto sulle prestazioni.
