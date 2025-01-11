@@ -37,20 +37,18 @@ Le conseguenze includono il furto di credenziali, la diffusione di malware e la 
 \subsection{Il filtraggio di Internet}
 A seguito dell'analisi riguardante le vulnerabilità intrinseche del sistema DNS, emerge chiaramente l'importanza di adottare meccanismi di prevenzione per garantire una navigazione più sicura e controllata. A questo proposito, una soluzione interessante riguarda il filtraggio di Internet, che, in generale, rappresenta un insieme di tecniche e tecnologie volte a limitare o bloccare l'accesso a contenuti considerati inappropriati, illegali o dannosi. Le principali pratiche di filtraggio nell'ambito di Internet si dividono nelle tre seguenti tipologie:
 \begin{itemize}
-  \item \textbf{IP Packet Filtering}: ovvero il blocco del traffico basato su indirizzi IP o numeri di porta. Questa tecnica analizza gli header dei pacchetti per decidere se consentirne il passaggio o eliminarli. Sebbene sia semplice ed efficiente, può causare sovrafiltraggio, rendendo inaccessibili quei contenuti legittimi ospitati sullo stesso IP considerato malevolo.
+  \item \textbf{IP Packet Filtering}: ovvero il blocco del traffico basato su indirizzi IP o numeri di porta. Questa tecnica analizza gli header dei pacchetti per decidere se consentirne il passaggio o eliminarli. Sebbene sia semplice ed efficiente, può causare sovrafiltraggio, rendendo inaccessibili quei contenuti legittimi ospitati sullo stesso IP considerato malevolo;
 
-  \item \textbf{DNS Poisoning}: manipolazione delle risposte DNS per reindirizzare richieste a indirizzi errati o bloccarle completamente. Questo metodo è efficace nel bloccare domini specifici ma può essere aggirato utilizzando resolver DNS alternativi.
+  \item \textbf{DNS Poisoning}: consiste nella manipolazione delle risposte DNS per reindirizzare richieste a indirizzi errati o per bloccarle completamente. Sebbene sia nata come una pratica malevola, i suoi principi tecnici sono stati adattati ed applicati ad un contesto legittimo di filtraggio;
 
-  \item \textbf{URL Blocking}: blocco di URL specifici tramite proxy HTTP o tecniche come la Deep Packet Inspection (DPI). Questi sistemi analizzano il contenuto delle richieste HTTP per identificare e bloccare pagine o risorse specifiche, offrendo una maggiore precisione rispetto ai metodi sopra elencati.
+  \item \textbf{URL Blocking}: implementa il blocco di URL specifici tramite proxy HTTP o tecniche come la Deep Packet Inspection (DPI). Questi sistemi analizzano il contenuto delle richieste HTTP per identificare e bloccare pagine o risorse specifiche, offrendo una maggiore precisione rispetto ai metodi sopra elencati. L'unico svantaggio di quest'ultimo approccio deriva dal fatto che risulta più complesse da implementare e richiede maggiori risorse rispetto alle altre tecniche.
 \end{itemize}
 
-Queste tecniche offrono un mix di semplicità, precisione e scalabilità, ma ciascuna presenta compromessi in termini di efficacia, costi e possibilità di essere aggirata.
-
 \subsubsection{Punti di applicazione del filtraggio di Internet}
-Il filtraggio di Internet può essere implementato in diversi punti dell'architettura di rete, con implicazioni specifiche in termini di efficacia, costi e complessità. Secondo V. Varadharajan \cite{Varadharajan2010}, i principali punti di applicazione includono:
+Il filtraggio di Internet può essere implementato in diversi livelli dell'architettura di rete, con implicazioni specifiche in termini di efficacia, costi e complessità. Secondo V. Varadharajan \cite{Varadharajan2010}, i principali punti di applicazione includono:
 
 \begin{itemize}
-  \item \textbf{A monte dell'ISP}: i filtri possono essere posizionati nei fornitori internazionali di connettività o nei backbone service provider. Questo approccio consente di bloccare contenuti indesiderati prima che raggiungano l'ISP locale, risultando particolarmente utile per gestire traffico proveniente da server internazionali. Tuttavia, questa strategia richiede una stretta collaborazione tra le entità coinvolte e una chiara mappatura dei gateway internazionali.
+  \item \textbf{A monte dell'ISP}: i filtri possono essere posizionati nei fornitori internazionali di connettività o presso le dorsali di rete. Questo approccio consente di bloccare contenuti indesiderati prima che raggiungano l'ISP locale, risultando particolarmente utile per gestire traffico proveniente da server internazionali. Tuttavia, questa strategia richiede una stretta collaborazione tra le entità coinvolte e una chiara mappatura dei gateway internazionali.
 
   \item \textbf{All'interno dell'ISP}: posizionare i filtri nel core della rete ISP permette di monitorare e controllare il traffico a livello centralizzato per tutti gli utenti dell'ISP. Sebbene sia efficace, questa soluzione può introdurre colli di bottiglia e richiedere investimenti significativi in hardware sofisticato, soprattutto per ISP con un alto volume di traffico.
 
@@ -61,9 +59,39 @@ Il filtraggio di Internet può essere implementato in diversi punti dell'archite
   \item \textbf{Tra un cliente e un sito web ospitato a livello internazionale}: i filtri possono essere utilizzati per monitorare e bloccare il traffico tra un utente e server internazionali. Questa strategia è cruciale per controllare contenuti provenienti dall'estero ma richiede la capacità di gestire connessioni transfrontaliere e un'infrastruttura adeguata.
 \end{itemize}
 
-La distribuzione del filtraggio in questi punti permette di adattare le strategie di controllo alle esigenze specifiche di un'organizzazione o di un'autorità regolatoria. Tuttavia, ogni livello comporta compromessi: il posizionamento a monte può bloccare grandi volumi di traffico, ma con rischi di sovrafiltraggio, mentre i filtri localizzati vicino agli utenti offrono maggiore precisione ma richiedono risorse significative. Una combinazione di approcci può ottimizzare l'efficacia del filtraggio, bilanciando precisione e scalabilità \cite{Varadharajan2010}.
+La caratteristica delle tecniche di filtraggio che consente loro di essere distribuite su diversi livelli, fornisce un'elevata flessibilità nell'implementazione delle strategie di controllo dei contenuti.
+Tuttavia, ogni livello si porta con sé alcuni compromessi: il posizionamento a monte può bloccare grandi volumi di traffico, ma con rischi di sovrafiltraggio, mentre i filtri localizzati vicino agli utenti offrono maggiore precisione ma richiedono risorse significative. Una combinazione di approcci, come quella messa in atto dalla British Telecom’s CleanFeed, può ottimizzare l'efficacia del filtraggio, bilanciando precisione e scalabilità \cite{Varadharajan2010}.
 
 \subsection{Il filtraggio DNS}
-Tra le varie tecniche di filtraggio appena discusse, quello applicato al DNS emerge come una soluzione relativamente efficiente e scalabile. Questa tecnica manipola le risposte DNS per impedire la risoluzione dei nomi di dominio indesiderati. Ad esempio, tramite \textit{name hijacking}, un server DNS può reindirizzare una richiesta a un indirizzo non valido o mostrare un messaggio di errore \cite{Murdoch2008, Varadharajan2010}. Nonostante la sua efficacia, il filtraggio DNS soffre di problematiche come il sovrafiltraggio di domini che ospitano sia contenuti proibiti che legittimi, e può essere facilmente aggirato da utenti esperti attraverso l'uso di resolver DNS alternativi \cite{Murdoch2008}.
+Tra le varie tecniche di filtraggio di Internet appena discusse, quello applicato al DNS emerge come una soluzione relativamente efficiente e scalabile. Questa tecnica manipola le risposte DNS per impedire la risoluzione dei nomi di dominio indesiderati. Ad esempio, tramite \textit{name hijacking}, un server DNS può reindirizzare una richiesta a un indirizzo non valido o mostrare un messaggio di errore \cite{Murdoch2008, Varadharajan2010}. Nonostante la sua efficacia, il filtraggio DNS soffre di problematiche come il sovrafiltraggio di domini che ospitano sia contenuti proibiti che legittimi, e può essere facilmente aggirato da utenti esperti attraverso l'uso di resolver DNS alternativi \cite{Murdoch2008}.
 
 In sintesi, il filtraggio DNS rappresenta un compromesso tra semplicità di implementazione e precisione, posizionandosi come una delle tecniche più utilizzate nel panorama del filtraggio di Internet. Tuttavia, il suo utilizzo deve essere accompagnato da una strategia più ampia che includa educazione, strumenti tecnici avanzati e misure legali per garantire un'efficace protezione degli utenti e la salvaguardia della libertà di accesso \cite{Varadharajan2010}.
+
+% NUOVO @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+\subsection{DNS Filtering}
+Tra le varie tecniche di Internet filtering descritte in precedenza, il filtraggio a livello DNS si distingue per la sua semplicità e versatilità. Al contrario di altri approcci, esso agisce direttamente sul sistema che costituisce la base della navigazione online. Questo lo rende un punto di controllo strategico ed efficace per implementare politiche di sicurezza e controllo dell'accesso. Oltretutto, i cybercriminali stanno sempre di più prendendo di mira il DNS per condurre le loro attività malevole. Per questo motivo, le tecniche di filtraggio a questo livello risultano ancora più centrali nella missione di rendere la rete più sicura e gli utenti meno a rischio di essere colpiti da attacchi.
+
+Nei paragrafi che seguono, verrà proposta una definizione della tecnica in oggetto, fornendo anche alcuni dettagli sulle sue possibili applicazioni pratiche e sulle tecniche che ne abilitano il funzionamento.
+
+Il \textit{DNS Filtering} consiste nell'applicare regole predefinite per bloccare o consentire richieste e risposte DNS, analogamente a quello che fa un firewall. Questa tecnica è in grado di prevenire l'accesso a contenuti malevoli o inappropriati, supportare l'applicazione di politiche aziendali e proteggere gli utenti da minacce provenienti dalla rete \cite{Magnusson2024}. Volendo essere più specifici, il filtraggio DNS trova applicazione in una vasta gamma di scenari pratici \cite{Murdoch2008, Varadharajan2010}:
+\begin{itemize}
+  \item \textbf{Sicurezza informatica}: viene utilizzato per bloccare siti di phishing o che distribuiscono malware e altri contenuti dannosi, proteggendo gli utenti dall'entrare in contatto con  potenziali minacce;
+
+  \item \textbf{Applicazione di politiche aziendali}: permette alle organizzazioni di imporre restrizioni sull'accesso a siti non correlati al lavoro, come social media o piattaforme di streaming, durante l'orario lavorativo. Questo migliora la produttività e garantisce il rispetto delle politiche aziendali;
+
+  \item \textbf{Controllo parentale}: consente la creazione di un ambiente sicuro per i minori, limitando l'accesso a contenuti non appropriati come siti per adulti o violenti;
+
+  \item \textbf{Gestione della larghezza di banda}: aiuta a limitare l'accesso a siti che consumano molta banda, come i servizi di streaming video, ottimizzando così l'utilizzo delle risorse di rete.
+\end{itemize}
+
+Nonostante il crescente interesse per il \textit{DNS Filtering}, la letteratura risulta ancora limitata nell'offrire una panoramica completa delle tecniche disponibili per implementarlo. Tuttavia, alcuni approcci rappresentano lo stato dell'arte e hanno ricevuto particolare attenzione, tra cui le \textit{Response Policy Zones} (RPZ), i \textit{Threat Intelligence Feeds} (TIF) e il rilevamento di domini generati algoritmicamente (\textit{Domain Generation Algorithm}, DGA). Queste tecniche si sono dimostrate efficaci nell'identificare e mitigare le minacce che sfruttano il DNS, ma le lacune esistenti nella ricerca sottolineano la necessità di ulteriori studi per comprenderne meglio i limiti e le possibili evoluzioni \cite{Magnusson2024}.
+
+\paragraph{Response Policy Zones (RPZ)}: è una funzionalità dei resolver DNS che consente agli amminsitratori di rete di specificare politiche per le risposte DNS, sulla base dei nomi di dominio e del contesto. Questa tecnologia di firewall DNS basata sulla reputazione opera intercettando le query e le risposte DNS, e poi le confronta con un elenco di politiche definite dall'amministratore. Quando viene rilevata una corrispondenza, il resolver restituisce una risposta in base alla politica, che poi rappresenta l'azione da compiere. Esempi di possibili azioni, sono bloccare una certa query oppure reindirizzarla verso un sito sicuro (si veda la figura FIGURA).
+
+Le RPZ rappresentano un potente strumento per l'applicazione delle politiche di sicurezza e per proteggere la rete da attività malevole. Inoltre, il loro essere flessibili e personalizzabili, consente agli amministratori di definire policy molto specifiche, che si addatano a qualsiasi necessità. Tuttavia, per evitare falsi positivi e per mantenere l'efficacia del sistema nel tempo, le RPZ necessitano di una corretta configurazione e manutenzione. Infatti, le policy hanno costantemente bisogno di essere mantenute aggiornate, partendo da informazioni accurate ed affidabili.
+
+Infine, una caratteristica delle RPZ degan di nota, è che, per loro natura, sono in grado di proteggere solo da minaggie già conosciute  \cite{Magnusson2024}.
+
+\paragraph{Threat Intelligence Feeds (TIF)}
+
+\paragraph{Domain Generation Algorithm (DGA)}
