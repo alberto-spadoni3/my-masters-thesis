@@ -80,7 +80,14 @@ Il \textit{DNS Filtering} consiste nell'applicare regole predefinite per bloccar
 
 Nonostante il crescente interesse per il \textit{DNS Filtering}, la letteratura risulta ancora limitata nell'offrire una panoramica completa delle tecniche disponibili per implementarlo. Tuttavia, alcuni approcci rappresentano lo stato dell'arte e hanno ricevuto particolare attenzione, tra cui le \textit{Response Policy Zones} (RPZ), i \textit{Threat Intelligence Feeds} (TIF) e il rilevamento di domini generati algoritmicamente (\textit{Domain Generation Algorithm}, DGA). Queste tecniche si sono dimostrate efficaci nell'identificare e mitigare le minacce che sfruttano il DNS, ma le lacune esistenti nella ricerca sottolineano la necessità di ulteriori studi per comprenderne meglio i limiti e le possibili evoluzioni \cite{Magnusson2024}.
 
-\paragraph{Response Policy Zones}: è una funzionalità dei resolver DNS che consente agli amminsitratori di rete di specificare politiche per le risposte DNS, sulla base dei nomi di dominio e del contesto. Questa tecnologia di firewall DNS basata sulla reputazione opera intercettando le query e le risposte DNS, e poi le confronta con un elenco di politiche definite dall'amministratore. Quando viene rilevata una corrispondenza, il resolver restituisce una risposta in base alla politica, che poi rappresenta l'azione da compiere. Esempi di possibili azioni, sono bloccare una certa query oppure reindirizzarla verso un sito sicuro (si veda la figura FIGURA DA FARE).
+\paragraph{Response Policy Zones}: è una funzionalità dei resolver DNS che consente agli amminsitratori di rete di specificare politiche per le risposte DNS, sulla base dei nomi di dominio e del contesto. Questa tecnologia di firewall DNS basata sulla reputazione opera intercettando le query e le risposte DNS, e poi le confronta con un elenco di politiche definite dall'amministratore. Quando viene rilevata una corrispondenza, il resolver restituisce una risposta in base alla politica, che poi rappresenta l'azione da compiere. Esempi di possibili azioni, sono bloccare una certa query oppure reindirizzarla verso un sito sicuro (si veda la figura \cref{fig:rpz}).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\linewidth]{figures/Response_Policy_zones.pdf}
+  \caption{Un resolver DNS che sfrutta le Response Policy Zones}
+  \label{fig:rpz}
+\end{figure}
 
 Le RPZ rappresentano un potente strumento per l'applicazione delle politiche di sicurezza e per proteggere la rete da attività malevole. Inoltre, il loro essere flessibili e personalizzabili, consente agli amministratori di definire policy molto specifiche, che si addatano a qualsiasi necessità. Tuttavia, per evitare falsi positivi e per mantenere l'efficacia del sistema nel tempo, le RPZ necessitano di una corretta configurazione e manutenzione. Infatti, le policy hanno costantemente bisogno di essere mantenute aggiornate, partendo da informazioni accurate ed affidabili.
 
