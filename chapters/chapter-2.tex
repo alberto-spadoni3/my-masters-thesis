@@ -116,7 +116,20 @@ Un framework che integri queste tecniche può migliorare notevolmente la capacit
 Se da un lato ci sono dei vantaggi nel rendere pubbliche tali informazioni, dall'altro potrebbero emergere argomentazioni a sfavore di questa attività. Infatti, i malintenzionati sarebbero in grado di adattare le loro metofologie di attacco sulla base delle consultabili politiche di filtraggio. Ciononostante, questo approccio potrebbe generare dei vantaggi indiretti, derianti dal fatto che i creatori di malware sarebbero costretti a modificare i propri metodi di attacco, rendendo il loro comportamento più visibile all'interno del traffico di rete. Questo fatto faciliterebbe l'itendificazione e lo studio di nuove tecniche di. Questo cambiamento, a sua volta, puù aiutare i ricercatori, e in generale i difensori, a venrie a conoscenza delle nuove tecniche di evasione emsse in campo dai cybercriminali \cite{Magnusson2024}.
 
 \section{Metodologie di reingegnerizzazione software}
+All'inizio degli anni '90 è emersa la forte necessità di reingegnerizzazione, alimentata soprattutto da tutti coloro che stavano migrando i sistemi informativi aziendali verso interfacce Web più moderne \cite{Chikofsky1990}. Ciò ha fatto si che il campo della reigegnerizzazione si sviluppasse per affrontare i problemi legati ai sistemi software divenuti ormai obsoleti. Tali sistemi, definiti con la parola inglese \emph{legacy}, risultavano tuttavia fondamentali per le operazioni ed i processi aziendali. Di conseguenza, da allora fino ad oggi, i ricercatori stanno lavorando per progettare dei modelli e dei piani d'azione che siano flessibili e riutilizzabili per poter essere applicati al processo di reigegnerizzazione dei software legacy \cite{Majthoub2018}.
 
-\subsection{Introduzione alla Reingegnerizzazione}
+\subsection{Definizioni e obiettivi}
+Sono stati Chikofsky e Cross tra i primi ricercatori ad inquadrare la reingegnerizzazione in maniera chiara e strutturata. La loro interessante definizione descrive questo concetto come, testualmente: ``\textit{the examination and alteration of software systems to reconstitute it in new form and the subsequent implementation of the new form}'' \cite{Chikofsky1990}.
 
-\subsection{Fasi del Processo di Reingegnerizzazione}
+In termini più attuali, la reingegnerizzazione software si definisce come il processo di riprogettazione e reimplementazione di sistemi legacy con l'obiettivo di migliorarne la manutenibilità. Ciò richiede un'analisi della documentazione esistente per produrne una nuova e corrispondente, una revisione dell'architettura del sistema per riorganizzarne la struttura, e infine una reimplementazione con tecnologie o linguaggi moderni che soddisfano le esigenze attuali del mercato. Tutto questo dovrebbe essere fatto cercando di mantenere quante più funzionalità possibili del sistema rivisitato \cite{sommerville2011software}.
+
+A differenza dell'ingegneria del software, che parte da specifiche e conduce alla creazione di un sistema attraverso design e implementazione (\emph{forward engineering}), la reingegnerizzazione parte da un software esistente, che viene analizzato e trasformato per derivare un sistema target.
+
+Prima di passare agli obiettivi, è utile inquadrare brevemente quelli che sono i casi in cui la reingegnerizzazione risulta necessaria. In particolare:
+\begin{itemize}
+  \item quando il codice sorgente non ha più una struttura pulita e chiara, unito al fatto che la documentazione potrebbe non esistere;
+  \item quando il supporto hardware e software nel sistema attuale diventa e obsoleto e superato a causa di cambiamenti nelle politiche organizzative o nella competizione del mercato;
+  \item quando i sistemi legacy, dopo anni di modifiche, diventano difficili ed onerosi da modificare.
+\end{itemize}
+
+% ora parlare degli obiettivi...
