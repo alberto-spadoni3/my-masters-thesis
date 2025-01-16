@@ -1,4 +1,4 @@
-\usepackage[english]{babel}
+\usepackage[italian]{babel}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{amssymb,amsmath}
@@ -10,21 +10,21 @@
 \usepackage{fancyhdr}
 
 \fancypagestyle{plain}{
-    \fancyhf{}
-    \fancyfoot[RE,LO]{\leftmark}
-    \fancyfoot[LE,RO]{\thepage}
-    \renewcommand{\footrulewidth}{1pt}
+  \fancyhf{}
+  \fancyfoot[RE,LO]{\leftmark}
+  \fancyfoot[LE,RO]{\thepage}
+  \renewcommand{\footrulewidth}{1pt}
 }
 
 \fancypagestyle{fancy}{
-    \fancyhf{}
-    \fancyhead[CE,CO]{\rightmark}
-    \fancyfoot[RE,LO]{\leftmark}
-    \fancyfoot[LE,RO]{\thepage}
-    \renewcommand{\headrulewidth}{1pt}
-    \renewcommand{\footrulewidth}{1pt}
-    \setlength{\headheight}{14.49998pt}
-    \addtolength{\topmargin}{-2.49998pt}
+  \fancyhf{}
+  \fancyhead[CE,CO]{\rightmark}
+  \fancyfoot[RE,LO]{\leftmark}
+  \fancyfoot[LE,RO]{\thepage}
+  \renewcommand{\headrulewidth}{1pt}
+  \renewcommand{\footrulewidth}{1pt}
+  \setlength{\headheight}{14.49998pt}
+  \addtolength{\topmargin}{-2.49998pt}
 }
 
 \pagestyle{fancy}
@@ -40,96 +40,104 @@
 \newcommand{\session}[1]{\def\thesession{#1}}
 \newcommand{\academicyear}[1]{\def\theacademicyear{#1}}
 
-\newenvironment{abstract}{\chapter*{\centering\abstractname}\addcontentsline{toc}{chapter}{\abstractname}}{} 
-\newenvironment{acknowledgements}{\chapter*{\acknowledgementsname}}{} 
-\newenvironment{dedication}{\chapter*{}\begin{flushright}\itshape}{\normalfont\end{flushright}}
-\newenvironment{inlinelist}{\begin{enumerate*}[label=\emph{(\roman{*})}]}{\end{enumerate*}}
+\newenvironment{abstract}{
+\chapter*{\centering\abstractname}\addcontentsline{toc}{chapter}{\abstractname}}{}
+\newenvironment{acknowledgements}{
+\chapter*{\acknowledgementsname}}{}
+\newenvironment{dedication}{
+  \chapter*{}
+\begin{flushright}\itshape}{\normalfont
+\end{flushright}}
+\newenvironment{inlinelist}{
+\begin{enumerate*}[label=\emph{(\roman{*})}]}{
+\end{enumerate*}}
 
-\newcommand{\chapterWithoutNumber}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+\newcommand{\chapterWithoutNumber}[1]{
+\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
 
 \let\oldbibliography\bibliography
 \renewcommand{\bibliography}[1]{
-    \addcontentsline{toc}{part}{}
-    \addcontentsline{toc}{chapter}{\bibname}
-    \oldbibliography{#1}
+  \addcontentsline{toc}{part}{}
+  \addcontentsline{toc}{chapter}{\bibname}
+  \oldbibliography{#1}
 }
 
 \def\themainlinespacing{1}
 \newcommand{\mainlinespacing}[1]{\def\themainlinespacing{#1}}
 \let\oldmainmatter\mainmatter
 \renewcommand{\mainmatter}{
-    \oldmainmatter
-    % \onehalfspacing % https://tex.stackexchange.com/questions/30073/why-is-the-linespread-factor-as-it-is
-    \setstretch{\themainlinespacing}
+  \oldmainmatter
+  % \onehalfspacing % https://tex.stackexchange.com/questions/30073/why-is-the-linespread-factor-as-it-is
+  \setstretch{\themainlinespacing}
 }
 
 \newcommand{\frontispiece}{
-    \newgeometry{margin=0.8in}
-    \begin{titlepage}
-        \centering
-        \large
-        \textbf{\theschool}
+  \newgeometry{margin=0.8in}
+  \begin{titlepage}
+    \centering
+    \large
+    \textbf{\theschool}
+    \\
+    \noindent\hrulefill
+    \vspace{0.4cm}
+
+    \Large
+    \theprogramme
+
+    \Huge
+    \vspace{4cm}
+    \textbf{
+      \thetitle
+    }
+
+    \large
+    \vspace{1cm}
+    Tesi di laurea in:
+    \\
+    \textsc{\thesubject}
+
+    \vspace{4cm}
+    %
+    \begin{minipage}[t]{0.64\textwidth}
+      \begin{flushleft}
+        \textit{Relatore}
         \\
-        \noindent\hrulefill
+        \textbf{\thesupervisor}
+        \\
         \vspace{0.4cm}
-        
-        \Large
-        \theprogramme
+        \ifdefined\thecosupervisor
+        \ifdefined\themorecosupervisor
+        \textit{Correlatori}
+        \\
+        \textbf{\thecosupervisor}
+        \\
+        \textbf{\themorecosupervisor}
+        \else
+        \textit{Correlatore}
+        \\
+        \textbf{\thecosupervisor}
+        \fi
+        \fi
+      \end{flushleft}
+    \end{minipage}
+    %
+    \begin{minipage}[t]{0.34\textwidth}
+      \begin{flushright}
+        \textit{Candidato}
+        \\
+        \textbf{\theauthor}
+      \end{flushright}
+    \end{minipage}
+    \\
 
-        \Huge
-        \vspace{4cm}
-        \textbf{
-            \thetitle
-        }
-        
-        \large
-        \vspace{1cm}
-        Tesi di laurea in:
-        \\
-        \textsc{\thesubject}
+    \vfill
+    \noindent\hrulefill
+    \vspace{0.3cm}
+    \Large
 
-        \vspace{4cm}
-        %
-        \begin{minipage}[t]{0.64\textwidth}
-            \begin{flushleft}
-                \textit{Relatore} 
-                \\ 
-                \textbf{\thesupervisor}
-                \\
-                \vspace{0.4cm}
-                \ifdefined\thecosupervisor
-                \ifdefined\themorecosupervisor
-                \textit{Correlatori} 
-                \\
-                \textbf{\thecosupervisor}
-                \\
-                \textbf{\themorecosupervisor}
-                \else
-                \textit{Correlatore} 
-                \\
-                \textbf{\thecosupervisor}
-                \fi
-                \fi
-            \end{flushleft}
-        \end{minipage}
-        %
-        \begin{minipage}[t]{0.34\textwidth}
-            \begin{flushright}
-                \textit{Candidato} 
-                \\ 
-                \textbf{\theauthor}
-            \end{flushright}
-        \end{minipage}
-        \\
-        
-        \vfill
-        \noindent\hrulefill
-        \vspace{0.3cm}
-        \Large
-        
-        \thesession{} Sessione di Laurea
-        \\
-        Anno Accademico \theacademicyear
-    \end{titlepage}
-    \restoregeometry
+    \thesession{} Sessione di Laurea
+    \\
+    Anno Accademico \theacademicyear
+  \end{titlepage}
+  \restoregeometry
 }
