@@ -118,7 +118,7 @@ Se da un lato ci sono dei vantaggi nel rendere pubbliche tali informazioni, dall
 \section{Metodologie di reingegnerizzazione software}
 All'inizio degli anni '90 è emersa la forte necessità di reingegnerizzazione, alimentata soprattutto da tutti coloro che stavano migrando i sistemi informativi aziendali verso interfacce Web più moderne \cite{Chikofsky1990}. Ciò ha fatto si che il campo della reigegnerizzazione si sviluppasse per affrontare i problemi legati ai sistemi software divenuti ormai obsoleti. Tali sistemi, definiti con la parola inglese \emph{legacy}, risultavano tuttavia fondamentali per le operazioni ed i processi aziendali. Di conseguenza, da allora fino ad oggi, i ricercatori stanno lavorando per progettare dei modelli e dei piani d'azione che siano flessibili e riutilizzabili per poter essere applicati al processo di reigegnerizzazione dei software legacy \cite{Majthoub2018}.
 
-\subsection{Definizioni e obiettivi}
+\subsection{Definizione e obiettivi}
 Sono stati Chikofsky e Cross tra i primi ricercatori ad inquadrare la reingegnerizzazione in maniera chiara e strutturata. La loro interessante definizione descrive questo concetto come, testualmente: ``\textit{the examination and alteration of software systems to reconstitute it in new form and the subsequent implementation of the new form}'' \cite{Chikofsky1990}.
 
 In termini più attuali, la reingegnerizzazione software si definisce come il processo di riprogettazione e reimplementazione di sistemi legacy con l'obiettivo di migliorarne la manutenibilità. Ciò richiede un'analisi della documentazione esistente per produrne una nuova e corrispondente, una revisione dell'architettura del sistema per riorganizzarne la struttura, e infine una reimplementazione con tecnologie o linguaggi moderni che soddisfano le esigenze attuali del mercato. Tutto questo dovrebbe essere fatto cercando di mantenere quante più funzionalità possibili del sistema rivisitato \cite{sommerville2011software}.
@@ -132,4 +132,40 @@ Prima di passare agli obiettivi, è utile inquadrare brevemente quelli che sono 
   \item quando i sistemi legacy, dopo anni di modifiche, diventano difficili ed onerosi da modificare.
 \end{itemize}
 
-% ora parlare degli obiettivi...
+\subsubsection{Obiettiivi della reingegnerizzazione}
+Sebbene gli obiettivi del processo di reigegnerizzazione possano variare sulla base dello scopo delle organizzazioni, è possibile individuarne 4 che risultano generali ed applicabili in ogni situazione \cite{rosenberg1996software}:
+\begin{enumerate}
+  \item \textbf{Preparazione per l'ampliamento funzionale:} la reingegnerizzazione non dovrebbe avere lo scopo diretto di migliorare le funzionalità di un sistema esistente, ma, piuttosto, di prepararlo per futuri miglioramenti. Questo include l'analisi delle attuali caratteristiche del sistema legacy per confrontarle con le specifiche desiderate, consentendo la costruzione di un sistema target più flessibile. Ad esempio, se le migliorie desiderate seguono il paradigma di programmazione oriantato agli oggetti, il sistema target può essere riprogettato utilizzando tecnologie orientate agli oggetti per semplificare il processo di incremento delle funzionalità;
+
+  \item \textbf{Miglioramento della manutenibilità:} con il passare del tempo, i sistemi tendono a diventare sempre più complessi e costosi da mantenere a causa della struttura del codice poco chiara e della documentazione assente o obsoleta. La reingegnerizzazione mira a ridisegnare il sistema suddividendolo in moduli funzionali meglio definiti e con interfacce esplicite. Questo processo include l'aggiornamento della documentazione interna ed esterna, facilitando così gli interventi futuri;
+
+  \item \textbf{Migrazione:} l'industria informatica evolve molto rapidamente, introducendo nuove tecnologie che rendono quelle attuali obsolete in pochissimo tempo. La migrazione può quindi diventare necessaria per mantenere la compatibilità con i nuovi sistemi, per sfruttare hardware e software moderni, e per evitare costi crescenti legati alla manutenzione di tecnologie superate. La reingegnerizzazione facilita questa transizione, progettando ed applicando una migrazione controllate verso nuove piattaforme hardware, sistemi operativi più moderni o linguaggi più attuali;
+
+  \item \textbf{Miglioramento dell'affidabilità:} con buona probabilità, l'affidabilità dei sistemi legacy non è mai stata ad un livello elevato. Più verosimilmente, infatti, nel corso del tempo e in seguito a molteplici modifiche, si sono verificati i cosiddetti "effetti a catena", ovvero quelle situazioni in cui una modifica introduce numerosi problemi aggiuntivi in maniera non voluta. A questo proposito, il quarto ed ultimo obiettivo della reingegnerizzazione consiste proprio nel raggiungere sul sistema target un'affidabilità più elevata rispetto a quella del sistema originario.
+\end{enumerate}
+
+\subsection{Approcci e fasi del processo}
+Tra gli approcci più comuni alla reingegnerizzazione si distinguono:
+\begin{enumerate}
+  \item \textbf{Big Bang}: sostituzione completa del sistema in un unico evento, spesso con elevati rischi e costi;
+  \item \textbf{Incrementale}: reingegnerizzazione progressiva di componenti del sistema, con minori rischi ma tempi di completamento più lunghi;
+  \item \textbf{Evolutivo}: focus sulla funzionalità, con una sostituzione graduale basata su componenti funzionalmente coesi \cite{Majthoub2018}.
+\end{enumerate}
+
+Il processo di reingegnerizzazione si articola generalmente in cinque fasi \cite{rosenberg1996software}:
+\begin{enumerate}
+  \item \textbf{Formazione del team}: identificazione delle competenze necessarie e assegnazione dei ruoli;
+  \item \textbf{Analisi di fattibilità}: valutazione dei costi, dei benefici e dei rischi associati al progetto;
+  \item \textbf{Analisi e pianificazione}: studio approfondito del sistema esistente e definizione delle caratteristiche del sistema obiettivo;
+  \item \textbf{Implementazione}: utilizzo di tecniche di reverse e forward engineering per sviluppare il nuovo sistema;
+  \item \textbf{Test e transizione}: verifica delle funzionalità e integrazione del nuovo sistema\cite{rosenberg1996software}.
+\end{enumerate}
+
+\subsection{Breve panoramica sui rischi della reingegnerizzazione}
+Nonostante i benefici, la reingegnerizzazione presenta rischi significativi:\cite{Majthoub2018}:
+\begin{itemize}
+  \item \textbf{Alti costi iniziali}: l'investimento richiesto può essere elevato;
+  \item \textbf{Perdita di funzionalità}: difficoltà nel mantenere tutte le caratteristiche del sistema originale;
+  \item \textbf{Resistenza al cambiamento}: ostacoli culturali o organizzativi possono rallentare il processo;
+  \item \textbf{Problemi tecnici}: complessità nella gestione di sistemi legacy poco documentati.
+\end{itemize}
