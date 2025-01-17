@@ -1,4 +1,4 @@
-name: Build LaTeX and deploy on GitHub Releases
+name: Build LaTeX Document
 on:
   push:
     tags: '*'
@@ -15,12 +15,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup-compile-deploy:
+  build-latex:
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: DanySK/compile-and-publish-all-latex@2.0.43
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Move chapter files
+        run: |
+          mkdir -p ignored
+          mv chapters/* ignored/
+          cp ignored/* chapters/
+
+      - name: Compile LaTeX document
+        uses: DanySK/compile-and-publish-all-latex@2.0.43
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          root_file: thesis-main.tex
+
+      - name: Restore chapter files
+        if: always()
+        run: |
+          mv ignored/* chapters/
+          rm -rf ignored
