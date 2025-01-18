@@ -183,11 +183,12 @@ Dopo aver analizzato i principali approcci adottati nella reingegnerizzazione, �
 
 Seguire queste fasi in modo strutturato è cruciale per garantire il successo di un progetto di reingegnerizzazione del software, riducendo i rischi e ottimizzando l'utilizzo di tempo e risorse.
 
-\subsection{Breve panoramica sui rischi della reingegnerizzazione}
-Nonostante i benefici, la reingegnerizzazione presenta rischi significativi:\cite{Majthoub2018}:
+\subsection{Panoramica sui rischi della reingegnerizzazione}
+Per concludere la sezione corrente e fornire un quadro ancora più completo sulla reingegnerizzazione, si ritiene opportuno fare una breve panoramica di quello che sono i potenziali rischi che questo importante processo si porta dietro, soprattutto se non viene gestito in maniera appropriata.
+
+La reingegnerizzazione del software, pur offrendo vantaggi significativi, comporta rischi che devono essere identificati e gestiti con attenzione per garantire il successo del progetto. Questi rischi si manifestano in diverse aree chiave, tra cui il processo, il reverse engineering, il forward engineering, il personale, gli strumenti e la strategia \cite{rosenberg1996software}.
 \begin{itemize}
-  \item \textbf{Alti costi iniziali}: l'investimento richiesto può essere elevato;
-  \item \textbf{Perdita di funzionalità}: difficoltà nel mantenere tutte le caratteristiche del sistema originale;
-  \item \textbf{Resistenza al cambiamento}: ostacoli culturali o organizzativi possono rallentare il processo;
-  \item \textbf{Problemi tecnici}: complessità nella gestione di sistemi legacy poco documentati.
+  \item Un rischio rilevante riguarda l'elevato costo del processo di reingegnerizzazione manuale, che potrebbe non garantire benefici proporzionati nei tempi previsti. Inoltre, la mancanza di supporto da parte del management o una selezione inadeguata dei sottosistemi da reingegnerizzare possono compromettere il progetto. Altri rischi includono una gestione insufficiente della configurazione, l'assenza del controllo qualità o di un programma di metriche adeguato, e la carenza di esperti con conoscenze applicative locali.
+  \item Nel reverse engineering, una delle principali difficoltà è il recupero di requisiti e informazioni di progettazione dal codice sorgente, specialmente se il linguaggio utilizzato non consente una rappresentazione astratta efficace. La perdita di informazioni aziendali incorporate nel codice costituisce un ulteriore rischio critico.
+  \item Anche il forward engineering presenta sfide significative. L'introduzione di nuovi requisiti o funzionalità può complicare il processo di validazione, mentre la migrazione dei dati esistenti e una preparazione insufficiente durante il reverse engineering possono influire negativamente sull'esito del progetto.
 \end{itemize}
