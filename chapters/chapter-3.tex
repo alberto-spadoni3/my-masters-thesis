@@ -1,0 +1,65 @@
+\chapter{Analisi e requisiti del sistema}
+Il sistema legacy di seguito analizzato è un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl} CITE per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente. Sviluppato in PHP con un approccio procedurale, il sistema presenta un’architettura monolitica che integra sia la gestione lato server che la generazione dell’interfaccia utente.
+
+Il presente capitolo tratta un'analisi qualitativa del sistema legacy, descrivendo la sua architettura, le tecnologie scelte per la sua implementazione. Verranno discusse anche le limitazioni ed i problemi che hanno costretto l'azienda ad iniziare un processo di reigegnerizzazione completa.
+
+Successivamente, si passerà a discutere delle esigenze di coesistenza tra il sistema legacy e il nuovo sistema in sviluppo. Saranno evidenziate le motivazioni per una transizione graduale e le principali sfide affrontate, come la sincronizzazione dei dati e la retrocompatibilità.
+
+Infine, si introdurrà il capitolo successivo, che descriverà il progetto del nuovo sistema, soffermandosi sulle scelte tecnologiche e architetturali adottate per superare le limitazioni del sistema legacy e migliorare l’esperienza utente.
+
+\section{Panoramica sulle funzionalità}
+Il pannello legacy rappresenta lo strumento principale per la gestione e configurazione del filtro DNS offerto dall'azienda. Nonostante le limitazioni architetturali e tecnologiche, il sistema fornisce un insieme di funzionalità che consentono agli utenti di configurare, monitorare e amministrare le policy di filtraggio DNS. Di seguito viene fornita una panoramica delle principali funzionalità offerte dal sistema.
+
+\subsection{Gestione delle policy di protezione}
+Il pannello consente agli amministratori di creare e configurare diversi profili di protezione, ciascuno dei quali può includere una combinazione personalizzata di filtri per:
+\begin{itemize}
+  \item Bloccare minacce informatiche come malware e phishing;
+  \item Limitare l'accesso a contenuti specifici, come siti per adulti o contenuti inappropriati;
+  \item Bloccare l'accesso ad applicazioni o servizi specifici, divisi per categoria di appartenenza. Ad esempio è possibile bloccare la piattaforma Coinbase, se si desidera impedire l'acquisto e la vendita di criptovalute;
+  \item Restringere l'accesso in base all'area geografica.
+\end{itemize}
+In aggiunta, gli utenti possono gestire liste di accesso personalizzate, tra cui:
+\begin{itemize}
+  \item \textbf{Allow list}: per consentire l'accesso a domini specifici;
+  \item \textbf{Block list}: per bloccare domini o indirizzi IP specifici.
+\end{itemize}
+Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Ciò consente di specificare delle eccezioni rispetto alle normali policy di sicurezza. Con esse, ad esempio, è possibile concedere l'accesso ad un contenuto di norma non consentito, così come bloccare un dominio che risulta legittimo.
+
+\subsection{Gestione delle reti di protezione}
+Un'altra funzionalità fondamentale del pannello è la possibilità per gli amministratori di specificare quali reti (identificate tramite indirizzi IP) devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi passino attraverso le policy di protezione impostate.  La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando tre principali modalità:
+
+\paragraph{IP pubblico statico}
+Questa configurazione è utilizzata quando la rete dispone di un IP pubblico statico, ovvero un indirizzo IP assegnato in modo permanente dal proprio ISP. In questo caso, il pannello consente di associare le policy di filtraggio a una rete identificata da uno specifico IP, garantendo che tutte le richieste DNS provenienti da tale rete siano sottoposte ai controlli e ai filtri impostati.
+
+\paragraph{IP pubblico dinamico}
+Per le reti che non dispongono di un IP pubblico statico, il sistema supporta la configurazione tramite DynamicDNS \cite{rfc2136}. Questo approccio consente di monitorare e filtrare le richieste DNS anche quando l’indirizzo IP della rete varia nel tempo, utilizzando un sistema di aggiornamento dinamico che associa un nome di dominio all’IP corrente della rete. Questo garantisce continuità nella protezione senza la necessità di aggiornamenti manuali.
+
+\paragraph{Push-Device}
+La terza modalità prevede l’utilizzo di dispositivi hardware dedicati, denominati \textit{Push-Device}, basati su tecnologia Mikrotik CITE e acquistabili direttamente dall’azienda. Questi dispositivi agiscono come intermediari tra la rete locale e il pannello di configurazione, instradando tutte le richieste DNS attraverso il filtro. Questa soluzione è particolarmente utile per le organizzazioni che richiedono una configurazione rapida e una gestione centralizzata delle reti da proteggere.
+
+\subsection{Visualizzazione e analisi dei report}
+Il pannello offre strumenti per monitorare il traffico della rete e analizzare l'efficacia delle policy di filtraggio. I report includono informazioni dettagliate come:
+\begin{itemize}
+  \item Numero di richieste DNS bloccate per malware o altre minacce;
+  \item Accessi consentiti e bloccati per paese;
+  \item Andamento temporale del traffico DNS.
+\end{itemize}
+Questi report forniscono agli amministratori una visione completa dell'attività di rete, aiutandoli a prendere decisioni informate.
+
+\subsection{Visualizzazione e analisi dei report}
+Il pannello offre una sezione dedicata alla generazione e analisi dei report relativi al traffico DNS della rete, permettendo agli amministratori di monitorare l’efficacia delle policy di filtraggio e di ottenere informazioni dettagliate sull’attività di rete in un determinato intervallo di tempo. Questi report forniscono una visione chiara e organizzata del comportamento della rete, aiutando gli utenti a identificare potenziali minacce e a ottimizzare le configurazioni esistenti.
+
+\subsubsection{Tipologie di report disponibili}
+Gli amministratori possono selezionare diversi tipi di report tramite un menù a cascata. Le principali categorie includono:
+\begin{itemize}
+  \item \textbf{Bloccati per categoria o macro-categoria}: Mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macro-categoria.
+  \item \textbf{Consentiti per paese o categoria}: Forniscono il numero di richieste consentite, organizzate per paese o per categoria di contenuti.
+  \item \textbf{Malware e minacce bloccate}: Presentano un’analisi delle richieste che hanno attivato il filtro, indicando malware o altre minacce bloccate.
+  \item \textbf{Traffico per fasce orarie o giorni}: Permettono di analizzare le richieste DNS effettuate in specifiche fasce orarie, giorni o giorni della settimana.
+  \item \textbf{Report geografici}: Forniscono una mappa del mondo che evidenzia il traffico DNS suddiviso per paesi e continenti.
+\end{itemize}
+
+Dopo aver configurato i parametri di analisi, gli utenti possono generare i report secondo diverse modalità. Essi possono essere esportati in formato PDF, oppure inviati direttamente via e-mail a destinatari predefiniti. Inoltre, il pannello offre una funzione di pianificazione che consente di programmare l'invio automatico dei report a intervalli regolari, ad esempio su base settimanale, rendendo più efficiente il monitoraggio continuo.
+
+\subsection{Gestione dei dispositivi protetti}
+Il pannello include funzionalità per gestire i dispositivi su cui è installato il client DNS dell'azienda. Questo consente di estendere la protezione ai dispositivi che si trovano al di fuori delle reti configurate per il filtraggio, garantendo una copertura continua anche in mobilità. Gli amministratori possono monitorare lo stato dei dispositivi e applicare configurazioni personalizzate a ciascuno di essi.
