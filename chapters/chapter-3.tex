@@ -1,7 +1,7 @@
 \chapter{Analisi e requisiti del sistema}
 Il sistema legacy di seguito analizzato è un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl} CITE per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente. Sviluppato in PHP con un approccio procedurale, il sistema presenta un’architettura monolitica che integra sia la gestione lato server che la generazione dell’interfaccia utente.
 
-Il presente capitolo tratta un'analisi qualitativa del sistema legacy, descrivendo la sua architettura, le tecnologie scelte per la sua implementazione. Verranno discusse anche le limitazioni ed i problemi che hanno costretto l'azienda ad iniziare un processo di reigegnerizzazione completa.
+Il presente capitolo tratta un'analisi qualitativa del sistema legacy, che inizia con una panoramica sulle funzionalità principali, per poi descriverne l'architettura e le tecnologie scelte per la sua implementazione. Verranno discusse anche le limitazioni ed i problemi che hanno costretto l'azienda ad iniziare un processo di reigegnerizzazione completa.
 
 Successivamente, si passerà a discutere delle esigenze di coesistenza tra il sistema legacy e il nuovo sistema in sviluppo. Saranno evidenziate le motivazioni per una transizione graduale e le principali sfide affrontate, come la sincronizzazione dei dati e la retrocompatibilità.
 
@@ -10,7 +10,7 @@ Infine, si introdurrà il capitolo successivo, che descriverà il progetto del n
 \section{Panoramica sulle funzionalità}
 Il pannello legacy rappresenta lo strumento principale per la gestione e configurazione del filtro DNS offerto dall'azienda. Nonostante le limitazioni architetturali e tecnologiche, il sistema fornisce un insieme di funzionalità che consentono agli utenti di configurare, monitorare e amministrare le policy di filtraggio DNS. Di seguito viene fornita una panoramica delle principali funzionalità offerte dal sistema.
 
-\subsection{Gestione delle policy di protezione}
+\subsubsection{Gestione delle policy di protezione}
 Il pannello consente agli amministratori di creare e configurare diversi profili di protezione, ciascuno dei quali può includere una combinazione personalizzata di filtri per:
 \begin{itemize}
   \item Bloccare minacce informatiche come malware e phishing;
@@ -25,7 +25,7 @@ In aggiunta, gli utenti possono gestire liste di accesso personalizzate, tra cui
 \end{itemize}
 Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Ciò consente di specificare delle eccezioni rispetto alle normali policy di sicurezza. Con esse, ad esempio, è possibile concedere l'accesso ad un contenuto di norma non consentito, così come bloccare un dominio che risulta legittimo.
 
-\subsection{Gestione delle reti di protezione}
+\subsubsection{Gestione delle reti di protezione}
 Un'altra funzionalità fondamentale del pannello è la possibilità per gli amministratori di specificare quali reti (identificate tramite indirizzi IP) devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi passino attraverso le policy di protezione impostate.  La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando tre principali modalità:
 
 \paragraph{IP pubblico statico}
@@ -37,22 +37,13 @@ Per le reti che non dispongono di un IP pubblico statico, il sistema supporta la
 \paragraph{Push-Device}
 La terza modalità prevede l’utilizzo di dispositivi hardware dedicati, denominati \textit{Push-Device}, basati su tecnologia Mikrotik CITE e acquistabili direttamente dall’azienda. Questi dispositivi agiscono come intermediari tra la rete locale e il pannello di configurazione, instradando tutte le richieste DNS attraverso il filtro. Questa soluzione è particolarmente utile per le organizzazioni che richiedono una configurazione rapida e una gestione centralizzata delle reti da proteggere.
 
-\subsection{Visualizzazione e analisi dei report}
-Il pannello offre strumenti per monitorare il traffico della rete e analizzare l'efficacia delle policy di filtraggio. I report includono informazioni dettagliate come:
-\begin{itemize}
-  \item Numero di richieste DNS bloccate per malware o altre minacce;
-  \item Accessi consentiti e bloccati per paese;
-  \item Andamento temporale del traffico DNS.
-\end{itemize}
-Questi report forniscono agli amministratori una visione completa dell'attività di rete, aiutandoli a prendere decisioni informate.
-
-\subsection{Visualizzazione e analisi dei report}
+\subsubsection{Visualizzazione e analisi dei report}
 Il pannello offre una sezione dedicata alla generazione e analisi dei report relativi al traffico DNS della rete, permettendo agli amministratori di monitorare l’efficacia delle policy di filtraggio e di ottenere informazioni dettagliate sull’attività di rete in un determinato intervallo di tempo. Questi report forniscono una visione chiara e organizzata del comportamento della rete, aiutando gli utenti a identificare potenziali minacce e a ottimizzare le configurazioni esistenti.
 
 \subsubsection{Tipologie di report disponibili}
 Gli amministratori possono selezionare diversi tipi di report tramite un menù a cascata. Le principali categorie includono:
 \begin{itemize}
-  \item \textbf{Bloccati per categoria o macro-categoria}: Mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macro-categoria.
+  \item \textbf{Bloccati per categoria}: Mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macro-categoria.
   \item \textbf{Consentiti per paese o categoria}: Forniscono il numero di richieste consentite, organizzate per paese o per categoria di contenuti.
   \item \textbf{Malware e minacce bloccate}: Presentano un’analisi delle richieste che hanno attivato il filtro, indicando malware o altre minacce bloccate.
   \item \textbf{Traffico per fasce orarie o giorni}: Permettono di analizzare le richieste DNS effettuate in specifiche fasce orarie, giorni o giorni della settimana.
@@ -61,5 +52,37 @@ Gli amministratori possono selezionare diversi tipi di report tramite un menù a
 
 Dopo aver configurato i parametri di analisi, gli utenti possono generare i report secondo diverse modalità. Essi possono essere esportati in formato PDF, oppure inviati direttamente via e-mail a destinatari predefiniti. Inoltre, il pannello offre una funzione di pianificazione che consente di programmare l'invio automatico dei report a intervalli regolari, ad esempio su base settimanale, rendendo più efficiente il monitoraggio continuo.
 
-\subsection{Gestione dei dispositivi protetti}
-Il pannello include funzionalità per gestire i dispositivi su cui è installato il client DNS dell'azienda. Questo consente di estendere la protezione ai dispositivi che si trovano al di fuori delle reti configurate per il filtraggio, garantendo una copertura continua anche in mobilità. Gli amministratori possono monitorare lo stato dei dispositivi e applicare configurazioni personalizzate a ciascuno di essi.
+\subsubsection{Gestione dei dispositivi protetti}
+Il pannello include anche una funzionalità per gestire i dispositivi su cui è installato il client DNS dell'azienda. Esso consente di estendere la protezione ai dispositivi che si trovano al di fuori delle reti configurate per il filtraggio, garantendo una copertura continua anche in mobilità. Questa configurazione permette inoltre di tracciare con precisione quale dispositivo ha originato una determinata richiesta DNS, fornendo agli amministratori un maggiore controllo e una visibilità dettagliata sulle attività della rete.
+
+\subsubsection{Funzionalità aggiuntive}
+Oltre alle funzionalità principali già descritte, il pannello Web offre una serie di strumenti utili per migliorare la gestione e il controllo delle configurazioni. Tra queste, vi è la possibilità di personalizzare la pagina di blocco che viene visualizzata dagli utenti ogni volta che tentano di accedere a un dominio non consentito. Il pannello consente anche di verificare facilmente a quale categoria appartiene un determinato sito Web, aiutando gli amministratori a valutare come configurare al meglio le politiche di filtraggio.
+
+Un’altra funzionalità interessante è la visualizzazione del traffico DNS in tempo reale, che fornisce un monitoraggio immediato dell’attività di rete. Inoltre, il sistema supporta l'importazione di domini in formato batch, permettendo di aggiungere rapidamente liste di siti Web consentiti o bloccati attraverso file di testo.
+
+Per concludere la panoramica sulle funzionalità, il pannello possiede un'importante integrazione con la tecnologia \emph{Active Directory} di Microsoft, che consente di ottenere informazioni dettagliate non solo sul dispositivo che ha originato una determinata richiesta DNS, ma anche sull’utente associato.
+
+\section{Architettura del software legacy}
+Il pannello Web fino ad ora descritto dal punto di vista delle sole funzionalità è un sistema sviluppato con un'architettura monolitica. Nonostante sia possibile identificare due macro-sezioni, denominate \textit{Customer area} e \textit{Pannello cloud}, non vi è una reale modularizzazione del frontend e del backend. Tutto il codice risulta scritto in modo procedurale, senza l’adozione di un paradigma orientato agli oggetti, e con una scarsa separazione delle responsabilità.
+
+\subsection{Tecnologie utilizzate}
+\paragraph{Backend e frontend}
+Il backend è interamente sviluppato in PHP, utilizzando un approccio "plain", ossia privo di framework moderni come Laravel CITE. Per il frontend sono stati utilizzati HTML, CSS e una versione obsoleta di jQuery (\texttt{1.x}) CITE, che limita le possibilità di modernizzazione dell'interfaccia. In alcuni casi, il codice PHP si occupa anche di generare dinamicamente script JavaScript, i quali eseguono ulteriori chiamate a codice PHP lato server.
+
+\paragraph{Integrazione con API esterne}
+L'azienda ha sviluppato un set di API pubbliche che consentono di gestire il filtro DNS senza dover necessariamente utilizzare il pannello Web in questione. Queste API offrono agli utenti la possibilità di integrare il filtro DNS in applicazioni personalizzate o di sviluppare un proprio client per la gestione delle configurazioni.
+
+Nel tempo, alcune operazioni che il sistema legacy eseguiva direttamente sono state trasferite alle API, le quali ora centralizzano la business logic e gestiscono l'interazione con il database. Il pannello Web, in questi casi, funge da semplice interfaccia per chiamare le API. Tuttavia, molte operazioni continuano a implementare direttamente la logica applicativa, accedendo al database senza passare attraverso le API.
+
+\subsection{Limitazioni riscontrate}
+\subsubsection{Problemi architetturali}
+Il sistema legacy presenta numerosi limiti dovuti a scelte architetturali e tecnologiche datate, che influiscono negativamente sulla manutenibilità e sull'evoluzione del software. La mancanza di una chiara separazione tra frontend e backend complica la gestione del codice, rendendo difficoltosa l’adozione di nuove tecnologie. In particolare, l’utilizzo di PHP per generare dinamicamente codice JavaScript introduce ulteriore complessità, limitando la modularità e aumentando il rischio di introdurre errori.
+
+L’architettura monolitica rappresenta una delle principali debolezze del sistema. Qualsiasi modifica, anche minima, comporta interventi che possono avere ripercussioni su altre parti del codice, a causa dell’assenza di un design accurato e di una netta separazione delle responsabilità. Questo approccio non solo rallenta il ciclo di sviluppo, ma aumenta significativamente il rischio di regressioni e rende difficoltoso il debugging. La mancanza di modularità aggrava ulteriormente il problema: ogni nuova funzionalità o aggiornamento richiede un lavoro complesso e rischioso, che spesso si traduce in un incremento della fragilità del sistema.
+
+In generale, la combinazione di un'architettura monolitica, tecnologie obsolete e una progettazione poco accurata rende il sistema estremamente difficile da manutenere e aggiornare. Tali caratteristiche limitano la capacità dell'azienda di rispondere rapidamente a nuove esigenze o di introdurre miglioramenti necessari per stare al passo con le tecnologie moderne.
+
+\subsubsection{Problemi di usabilità}
+L'interfaccia utente del sistema, progettata con tecnologie ormai superate, presenta numerose limitazioni che penalizzano l’esperienza dell’utente finale. L’uso di una versione obsoleta di jQuery e la mancanza di un design moderno rendono l’interfaccia meno intuitiva e più difficile da navigare. Questi problemi di usabilità influiscono negativamente sulla produttività degli utenti e sulla percezione complessiva del sistema.
+
+Un design datato e poco performante ostacola inoltre la capacità del sistema di competere con soluzioni moderne, limitando il suo appeal sia per gli utenti attuali sia per potenziali nuovi clienti. Questi limiti sottolineano la necessità di una completa revisione sia tecnologica che strutturale.
