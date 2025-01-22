@@ -1,13 +1,15 @@
 \chapter{Analisi e requisiti del sistema}
-Il sistema legacy di seguito analizzato è un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl} CITE per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente. Sviluppato in PHP con un approccio procedurale, il sistema presenta un’architettura monolitica che integra sia la gestione lato server che la generazione dell’interfaccia utente.
 
-Il presente capitolo tratta un'analisi qualitativa del sistema legacy, che inizia con una panoramica sulle funzionalità principali, per poi descriverne l'architettura e le tecnologie scelte per la sua implementazione. Verranno discusse anche le limitazioni ed i problemi che hanno costretto l'azienda ad iniziare un processo di reigegnerizzazione completa.
+Il presente capitolo fornisce un'analisi introduttiva del sistema legacy, descrivendone le funzionalità principali, l'architettura e le tecnologie impiegate. Verranno evidenziati i limiti strutturali e operativi che hanno portato l'azienda a intraprendere un processo di reingegnerizzazione, con l'obiettivo di sviluppare un sistema più moderno, scalabile e manutenibile.
 
-Successivamente, si passerà a discutere delle esigenze di coesistenza tra il sistema legacy e il nuovo sistema in sviluppo. Saranno evidenziate le motivazioni per una transizione graduale e le principali sfide affrontate, come la sincronizzazione dei dati e la retrocompatibilità.
+Un aspetto centrale di questa analisi riguarda l’esigenza di coesistenza tra il sistema legacy e il nuovo sistema, almeno nelle prime fasi di transizione. Verranno discussi i motivi che rendono necessaria una convivenza temporanea, insieme alle principali sfide tecniche e organizzative, come la sincronizzazione dei dati e il mantenimento della retrocompatibilità.
 
-Infine, si introdurrà il capitolo successivo, che descriverà il progetto del nuovo sistema, soffermandosi sulle scelte tecnologiche e architetturali adottate per superare le limitazioni del sistema legacy e migliorare l’esperienza utente.
+Infine, il capitolo introdurrà gli obiettivi ed i requisiti principali che hanno guidato la progettazione del nuovo sistema, preparandosi a descrivere nel dettaglio, nel capitolo successivo, il design e le scelte architetturali adottate per superare le limitazioni del sistema legacy e rispondere alle nuove esigenze aziendali.
 
-\section{Panoramica sulle funzionalità}
+\section{Introduzione al sistema esistente}
+Il sistema legacy qui analizzato rappresenta un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl} CITE per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente. Sviluppato in PHP con un approccio procedurale, il sistema presenta un’architettura monolitica che integra sia la gestione lato server che la generazione dell’interfaccia utente.
+
+\subsection{Panoramica sulle funzionalità}
 Il pannello legacy rappresenta lo strumento principale per la gestione e configurazione del filtro DNS offerto dall'azienda. Nonostante le limitazioni architetturali e tecnologiche, il sistema fornisce un insieme di funzionalità che consentono agli utenti di configurare, monitorare e amministrare le policy di filtraggio DNS. Di seguito viene fornita una panoramica delle principali funzionalità offerte dal sistema.
 
 \subsubsection{Gestione delle policy di protezione}
@@ -62,11 +64,10 @@ Un’altra funzionalità interessante è la visualizzazione del traffico DNS in 
 
 Per concludere la panoramica sulle funzionalità, il pannello possiede un'importante integrazione con la tecnologia \emph{Active Directory} di Microsoft, che consente di ottenere informazioni dettagliate non solo sul dispositivo che ha originato una determinata richiesta DNS, ma anche sull’utente associato.
 
-\section{Architettura del software legacy}
+\subsection{Architettura e tecnologie utilizzate}
 Il pannello Web fino ad ora descritto dal punto di vista delle sole funzionalità è un sistema sviluppato con un'architettura monolitica. Nonostante sia possibile identificare due macro-sezioni, denominate \textit{Customer area} e \textit{Pannello cloud}, non vi è una reale modularizzazione del frontend e del backend. Tutto il codice risulta scritto in modo procedurale, senza l’adozione di un paradigma orientato agli oggetti, e con una scarsa separazione delle responsabilità.
 
-\subsection{Tecnologie utilizzate}
-\paragraph{Backend e frontend}
+\subsubsection{Tecnologie utilizzate}
 Il backend è interamente sviluppato in PHP, utilizzando un approccio "plain", ossia privo di framework moderni come Laravel CITE. Per il frontend sono stati utilizzati HTML, CSS e una versione obsoleta di jQuery (\texttt{1.x}) CITE, che limita le possibilità di modernizzazione dell'interfaccia. In alcuni casi, il codice PHP si occupa anche di generare dinamicamente script JavaScript, i quali eseguono ulteriori chiamate a codice PHP lato server.
 
 \paragraph{Integrazione con API esterne}
