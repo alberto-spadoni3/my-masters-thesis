@@ -1,16 +1,16 @@
 \chapter{Analisi e requisiti del sistema}
 
-Il presente capitolo fornisce un'analisi introduttiva del sistema legacy, descrivendone le funzionalità principali, l'architettura e le tecnologie impiegate. Verranno evidenziati i limiti strutturali e operativi che hanno portato l'azienda a intraprendere un processo di reingegnerizzazione, con l'obiettivo di sviluppare un sistema più moderno, scalabile e manutenibile.
+Il presente capitolo fornisce un'analisi introduttiva sul sistema legacy, descrivendone le funzionalità principali, l'architettura e le tecnologie impiegate. Verranno evidenziati i limiti strutturali e operativi che hanno portato l'azienda a intraprendere un processo di reingegnerizzazione, con l'obiettivo di sviluppare un sistema più moderno, scalabile e manutenibile.
 
-Un aspetto centrale di questa analisi riguarda l’esigenza di coesistenza tra il sistema legacy e il nuovo sistema, almeno nelle prime fasi di transizione. Verranno discussi i motivi che rendono necessaria una convivenza temporanea, insieme alle principali sfide tecniche e organizzative, come la sincronizzazione dei dati e il mantenimento della retrocompatibilità.
+Un aspetto centrale di questa analisi riguarda l’esigenza di coesistenza tra il sistema legacy e il nuovo sistema, almeno nelle prime fasi di transizione. Verranno quindi discussi i motivi che rendono necessaria una convivenza temporanea, insieme alle principali sfide tecniche e organizzative, come la sincronizzazione dei dati e il mantenimento della retrocompatibilità.
 
-Infine, il capitolo introdurrà gli obiettivi ed i requisiti principali che hanno guidato la progettazione del nuovo sistema, preparandosi a descrivere nel dettaglio, nel capitolo successivo, il design e le scelte architetturali adottate per superare le limitazioni del sistema legacy e rispondere alle nuove esigenze aziendali.
+Infine, il capitolo presenterà gli obiettivi ed i requisiti principali che hanno guidato la progettazione del nuovo sistema, preparandosi a descrivere in dettaglio, nel capitolo successivo, il design e le scelte architetturali adottate per superare le limitazioni del sistema legacy e rispondere alle nuove esigenze aziendali e di mercato.
 
 \section{Introduzione al sistema esistente}
-Il sistema legacy qui analizzato rappresenta un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl}\footnote{\url{https://flashstart.com}} per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente.
+Il sistema legacy qui esaminato rappresenta un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl}\footnote{\url{https://flashstart.com}} per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette fatte durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente.
 
 \subsubsection{Terminologia e definizioni}
-In questo capitolo vengono utilizzate alcune terminologie specifiche che descrivono concetti e funzionalità del sistema in esame. Pertanto, prima di approfondire la discussione, è opportuno fornire una breve spiegazione di questi termini, utilizzati dall'azienda per rappresentare concetti chiave del dominio applicativo.
+Da qui in avanti verranno utilizzate alcune terminologie specifiche che descrivono concetti e funzionalità del sistema legacy. Pertanto, prima di proseguire con la sua analisi, è opportuno fornire una breve spiegazione di questi termini, utilizzati dall'azienda per rappresentare concetti chiave del dominio applicativo.
 
 \begin{itemize}
   \item \textbf{Rete}: identifica un indirizzo IP registrato nel sistema e associato alla sede di un cliente, come ad esempio una scuola. Le reti possono essere statiche (IP pubblico fisso) o dinamiche (IP pubblico variabile).
@@ -21,136 +21,136 @@ In questo capitolo vengono utilizzate alcune terminologie specifiche che descriv
 
   \item \textbf{Managed Service Provider (MSP)}: è un particolare tipo di Dealer che, oltre a vendere licenze, si occupa anche della configurazione e della gestione delle policy di sicurezza per i propri clienti. A differenza dei precedenti fornitori di servizi, gli MSP impediscono ai clienti finali di accedere al pannello, occupandosi interamente della gestione.
 
-  \item \textbf{Whitelabel}: una funzionalità che consente ai fornitori di servizi, come gli MSP, di personalizzare il pannello di gestione con il proprio logo, colori e branding, nascondendo ogni riferimento al produttore originale del sistema.
+  \item \textbf{Whitelabel}: una funzionalità che consente ai fornitori di servizi, come gli MSP, di personalizzare il pannello Web con il proprio logo, colori e branding, nascondendo ogni riferimento al produttore originale del sistema.
 
-  \item \textbf{ClientShield}: Un'applicazione per dispositivi desktop e mobile che consente di registrare un endpoint nel pannello e sfruttare il filtro DNS aziendale.
+  \item \textbf{ClientShield}: Un'applicazione per computer e dispositivi mobili sviluppata dall'azienda, che consente di registrare un endpoint nel sistema e sfruttare il filtro DNS anche al di fuori della rete usuale.
 \end{itemize}
 
 \subsection{Panoramica sulle funzionalità}
-Il pannello legacy rappresenta lo strumento principale per la gestione e configurazione del filtro DNS offerto dall'azienda. Nonostante le limitazioni architetturali e tecnologiche, il sistema fornisce un insieme di funzionalità che consentono agli utenti di configurare, monitorare e amministrare le policy di filtraggio DNS. Di seguito viene fornita una panoramica delle principali funzionalità offerte dal sistema.
+Il pannello Web legacy rappresenta lo strumento principale per la gestione e configurazione del filtro DNS offerto dall'azienda. Nonostante le limitazioni architetturali e tecnologiche, il sistema fornisce un insieme di funzionalità che consentono agli utenti di configurare, monitorare e amministrare le policy di filtraggio DNS. Di seguito viene fornita una panoramica delle principali funzionalità offerte dal suddetto pannello.
 
 \subsubsection{Gestione delle policy di protezione}
 Il pannello consente agli amministratori di creare e configurare diversi profili di protezione, ciascuno dei quali può includere una combinazione personalizzata di filtri per:
 \begin{itemize}
   \item Bloccare minacce informatiche come malware e phishing;
   \item Limitare l'accesso a contenuti specifici, come siti per adulti o contenuti inappropriati;
-  \item Bloccare l'accesso ad applicazioni o servizi specifici, divisi per categoria di appartenenza. Ad esempio è possibile bloccare la piattaforma Coinbase\footnote{\url{https://www.coinbase.com}}, appartenente alla categoria \textit{CryproMining}, se si desidera impedire l'acquisto e la vendita di criptovalute;
-  \item Restringere l'accesso in base all'area geografica.
+  \item Bloccare l'accesso ad applicazioni o servizi specifici, divisi per categoria di appartenenza;
+  \item Bloccare l'accesso a pagine Web e servizi provenienti da determinate aree geografiche.
 \end{itemize}
-In aggiunta, gli utenti possono gestire liste di accesso personalizzate, tra cui:
+Per aumentare il grado di flessibilità del filtro, gli utenti possono creare delle liste di accesso personalizzate, tra cui:
 \begin{itemize}
   \item \textbf{Allow list}: per consentire l'accesso a domini specifici;
   \item \textbf{Block list}: per bloccare domini o indirizzi IP specifici.
 \end{itemize}
-Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Ciò consente di specificare delle eccezioni rispetto alle normali policy di sicurezza. Con esse, ad esempio, è possibile concedere l'accesso ad un contenuto di norma non consentito, così come bloccare un dominio che risulta legittimo.
+Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Per questo motivo, esse consentono di specificare delle eccezioni rispetto alle normali policy di sicurezza. Ad esempio, è possibile concedere l'accesso ad un contenuto di norma non consentito, oppure bloccare un dominio che risulta legittimo.
 
 \subsubsection{Gestione delle reti di protezione}
-Un'altra funzionalità fondamentale del pannello è la possibilità per gli amministratori di specificare quali reti (identificate tramite indirizzi IP) devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi passino attraverso le policy di protezione impostate. La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando tre principali modalità:
+Un'altra funzionalità fondamentale del pannello è la possibilità per gli amministratori di specificare quali reti devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi IP passino attraverso le policy di protezione impostate. La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando tre principali modalità:
+\begin{itemize}
+  \item \textbf{IP pubblico statico}: questa configurazione è utilizzata quando la rete dispone di un IP pubblico statico, ovvero un indirizzo IP assegnato in modo permanente dal proprio ISP. In questo caso, il pannello consente di associare le policy di filtraggio a una rete identificata da uno specifico IP, garantendo che tutte le richieste DNS provenienti da tale rete siano sottoposte ai controlli e ai filtri impostati;
 
-\paragraph{IP pubblico statico}
-Questa configurazione è utilizzata quando la rete dispone di un IP pubblico statico, ovvero un indirizzo IP assegnato in modo permanente dal proprio ISP. In questo caso, il pannello consente di associare le policy di filtraggio a una rete identificata da uno specifico IP, garantendo che tutte le richieste DNS provenienti da tale rete siano sottoposte ai controlli e ai filtri impostati.
+  \item \textbf{IP pubblico dinamico}: per le reti che non dispongono di un IP pubblico statico, il sistema supporta la configurazione tramite DynamicDNS \cite{rfc2136}. Questo approccio consente di monitorare e filtrare le richieste DNS anche quando l’indirizzo IP della rete varia nel tempo, utilizzando un sistema di aggiornamento dinamico che associa un nome di dominio all’IP corrente della rete. Questo garantisce continuità nella protezione senza la necessità di aggiornamenti manuali;
 
-\paragraph{IP pubblico dinamico}
-Per le reti che non dispongono di un IP pubblico statico, il sistema supporta la configurazione tramite DynamicDNS \cite{rfc2136}. Questo approccio consente di monitorare e filtrare le richieste DNS anche quando l’indirizzo IP della rete varia nel tempo, utilizzando un sistema di aggiornamento dinamico che associa un nome di dominio all’IP corrente della rete. Questo garantisce continuità nella protezione senza la necessità di aggiornamenti manuali.
-
-\paragraph{Push-Device}
-La terza modalità prevede l’utilizzo di dispositivi hardware dedicati, denominati \textit{Push-Device}, basati su tecnologia Mikrotik\footnote{\url{https://mikrotik.com}} e acquistabili direttamente dall’azienda. Questi dispositivi agiscono come intermediari tra la rete locale e il pannello di configurazione, instradando tutte le richieste DNS attraverso il filtro. Questa soluzione è particolarmente utile per le organizzazioni che richiedono una configurazione rapida e una gestione centralizzata delle reti da proteggere.
+  \item \textbf{Push-Device}: la terza modalità prevede l’utilizzo di dispositivi hardware dedicati, denominati \textit{Push-Device}, basati su tecnologia Mikrotik\footnote{\url{https://mikrotik.com}} e acquistabili direttamente dall’azienda. Questi dispositivi agiscono come intermediari tra la rete locale e il pannello di configurazione, instradando tutte le richieste DNS attraverso il filtro. Questa soluzione è particolarmente utile per le organizzazioni che richiedono una configurazione rapida e una gestione centralizzata delle reti da proteggere.
+\end{itemize}
 
 \subsubsection{Visualizzazione e analisi dei report}
 Il pannello offre una sezione dedicata alla generazione e analisi dei report relativi al traffico DNS della rete, permettendo agli amministratori di monitorare l’efficacia delle policy di filtraggio e di ottenere informazioni dettagliate sull’attività di rete in un determinato intervallo di tempo. Questi report forniscono una visione chiara e organizzata del comportamento della rete, aiutando gli utenti a identificare potenziali minacce e a ottimizzare le configurazioni esistenti.
 
 \subsubsection{Tipologie di report disponibili}
-Gli amministratori possono selezionare diversi tipi di report tramite un menù a cascata. Le principali categorie includono:
+Tramite un menù a cascata, è possibile selezionare diversi tipi di report, tra cui:
 \begin{itemize}
-  \item \textbf{Bloccati per categoria}: Mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macro-categoria.
-  \item \textbf{Consentiti per paese o categoria}: Forniscono il numero di richieste consentite, organizzate per paese o per categoria di contenuti.
-  \item \textbf{Malware e minacce bloccate}: Presentano un’analisi delle richieste che hanno attivato il filtro, indicando malware o altre minacce bloccate.
-  \item \textbf{Traffico per fasce orarie o giorni}: Permettono di analizzare le richieste DNS effettuate in specifiche fasce orarie, giorni o giorni della settimana.
-  \item \textbf{Report geografici}: Forniscono una mappa del mondo che evidenzia il traffico DNS suddiviso per paesi e continenti.
+  \item \textbf{Bloccati per categoria}: mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macro-categoria;
+  \item \textbf{Consentiti per paese o categoria}: forniscono il numero di richieste consentite, organizzate per paese o per categoria di contenuti;
+  \item \textbf{Malware e minacce bloccate}: presentano un’analisi delle richieste che hanno attivato il filtro, indicando malware o altre minacce bloccate;
+  \item \textbf{Traffico per fasce orarie o giorni}: permettono di analizzare le richieste DNS effettuate in specifiche fasce orarie o giorni della settimana;
+  \item \textbf{Report geografici}: forniscono una mappa del mondo che evidenzia il traffico DNS suddiviso per paesi e continenti.
 \end{itemize}
 
 Dopo aver configurato i parametri di analisi, gli utenti possono generare i report secondo diverse modalità. Essi possono essere esportati in formato PDF, oppure inviati direttamente via e-mail a destinatari predefiniti. Inoltre, il pannello offre una funzione di pianificazione che consente di programmare l'invio automatico dei report a intervalli regolari, ad esempio su base settimanale, rendendo più efficiente il monitoraggio continuo.
 
-\subsubsection{Gestione dei dispositivi protetti}
-Il pannello include anche una funzionalità per gestire i dispositivi su cui è installato il client DNS dell'azienda. Esso consente di estendere la protezione ai dispositivi che si trovano al di fuori delle reti configurate per il filtraggio, garantendo una copertura continua anche in mobilità. Questa configurazione permette inoltre di tracciare con precisione quale dispositivo ha originato una determinata richiesta DNS, fornendo agli amministratori un maggiore controllo e una visibilità dettagliata sulle attività della rete.
+\subsubsection{Gestione dei dispositivi protetti (Endpoint)}
+Il pannello include anche una funzionalità per gestire i dispositivi su cui è installato il ClientShield. In particolare, questa configurazione permette di tracciare con precisione quale dispositivo ha originato una determinata richiesta DNS, fornendo agli amministratori un maggiore controllo e una visibilità dettagliata sulle attività della rete.
 
 \subsubsection{Funzionalità aggiuntive}
-Oltre alle funzionalità principali già descritte, il pannello Web offre una serie di strumenti utili per migliorare la gestione e il controllo delle configurazioni. Tra queste, vi è la possibilità di personalizzare la pagina di blocco che viene visualizzata dagli utenti ogni volta che tentano di accedere a un dominio non consentito. Il pannello consente anche di verificare facilmente a quale categoria appartiene un determinato sito Web, aiutando gli amministratori a valutare come configurare al meglio le politiche di filtraggio.
-
+Oltre alle funzionalità principali già descritte, il pannello Web offre una serie di strumenti utili per migliorare la gestione e il controllo delle configurazioni. Tra queste, vi è la possibilità di personalizzare la pagina di blocco che viene visualizzata dagli utenti ogni volta che tentano di accedere a un dominio non consentito.
+%
+Il pannello consente anche di verificare facilmente a quale categoria appartiene un determinato sito Web, aiutando gli amministratori a valutare come configurare al meglio le politiche di filtraggio.
+%
 Un’altra funzionalità interessante è la visualizzazione del traffico DNS in tempo reale, che fornisce un monitoraggio immediato dell’attività di rete. Inoltre, il sistema supporta l'importazione di domini in formato batch, permettendo di aggiungere rapidamente liste di siti Web consentiti o bloccati attraverso file di testo.
 
-Per concludere la panoramica sulle funzionalità, il pannello possiede un'importante integrazione con la tecnologia Active Directory di Microsoft, che consente di ottenere informazioni dettagliate non solo sul dispositivo che ha originato una determinata richiesta DNS, ma anche sull’utente associato.
+Per concludere la panoramica sulle funzionalità, il pannello possiede un'importante integrazione con la tecnologia Active Directory di Microsoft, che consente di ottenere informazioni dettagliate non solo sul dispositivo che ha originato una determinata richiesta DNS, ma anche sull’utente utilizzato per accedere a tale macchina.
 
 \subsection{Architettura e tecnologie utilizzate}
-Il pannello Web fino ad ora descritto dal punto di vista delle sole funzionalità è un sistema sviluppato con un'architettura monolitica. Nonostante sia possibile identificare due macro-sezioni, denominate \textit{Customer area} e \textit{Pannello cloud}, non vi è una reale modularizzazione del frontend e del backend. Tutto il codice risulta scritto in modo procedurale, senza l’adozione di un paradigma orientato agli oggetti, e con una scarsa separazione delle responsabilità.
+Il pannello Web in esame, fino ad ora descritto solo dal punto di vista delle funzionalità, presenta un'architettura monolitica, tipica dei vecchi sistemi Web-based. Nonostante sia possibile identificare due macro-sezioni, denominate \textit{Customer area} e \textit{Pannello cloud}, non vi è una reale modularizzazione del frontend e del backend. Tutto il codice risulta scritto in modo procedurale, senza l’adozione di un paradigma orientato agli oggetti, e con una scarsa separazione delle responsabilità.
 
 \subsubsection{Tecnologie utilizzate}
 Il backend è interamente sviluppato in PHP, utilizzando un approccio "plain", ossia privo di framework moderni come Laravel\footnote{\url{https://laravel.com}}. Per il frontend sono stati utilizzati HTML, CSS e una versione obsoleta di jQuery\footnote{\url{https://jquery.com}} (\texttt{1.x}), che limita le possibilità di modernizzazione dell'interfaccia. In alcuni casi, il codice PHP si occupa anche di generare dinamicamente script JavaScript, i quali eseguono ulteriori chiamate a codice PHP lato server.
 
-\paragraph{Integrazione con API esterne}
+\subsubsection{Integrazione con API esterne}
 L'azienda ha sviluppato un set di API pubbliche che consentono di gestire il filtro DNS senza dover necessariamente utilizzare il pannello Web in questione. Queste API offrono agli utenti la possibilità di integrare il filtro DNS in applicazioni personalizzate o di sviluppare un proprio client per la gestione delle configurazioni.
 
-Nel tempo, alcune operazioni che il sistema legacy eseguiva direttamente sono state trasferite alle API, le quali ora centralizzano la business logic e gestiscono l'interazione con il database. Il pannello Web, in questi casi, funge da semplice interfaccia per chiamare le API. Tuttavia, molte operazioni continuano a implementare direttamente la logica applicativa, accedendo al database senza passare attraverso le API.
+Nel tempo, alcune operazioni che il sistema legacy eseguiva direttamente sono state trasferite alle suddette API, le quali centralizzano la business logic e gestiscono l'interazione con il database. Il pannello Web, in questi casi, funge da semplice interfaccia per chiamare le API. Tuttavia, molte operazioni continuano a risiedere direttamente sul sistema, implementando la logica applicativa e accedendo alla base dati.
 
 \subsubsection{Gestione del database}
-Il sistema legacy utilizza due database distinti per gestire le sue funzionalità e garantire la persistenza delle configurazioni. Entrambi adottano un sistema di database \emph{relazionale}, che organizza, cioè, i dati in tabelle collegate tra loro tramite un sistema di chiavi. La differenza principale risiede nella tecnologia sottostante: una base dati utilizza MySQL, mentre l’altra è basata su PostgreSQL. Ciascuna di esse è destinata a scopi specifici e presenta caratteristiche diverse in termini di configurazione e prestazioni.
+Il sistema legacy utilizza due database distinti per gestire le sue funzionalità e garantire la persistenza delle configurazioni. Entrambi adottano un motore di database \emph{relazionale}, che organizza i dati in tabelle collegate tra loro tramite un sistema di chiavi. La differenza principale risiede nella tecnologia sottostante: una base dati utilizza MySQL\footnote{\url{https://www.mysql.com}}, mentre l’altra è basata su PostgreSQL\footnote{\url{https://www.postgresql.org}}. Ciascuna di esse è destinata a scopi specifici e presenta caratteristiche diverse in termini di configurazione e prestazioni.
 
-Il database MySQL è dedicato esclusivamente alla gestione delle licenze e dei dati anagrafici dei clienti. Esso non è in replica ed è ospitato su un server interno all’azienda. Sebbene questa configurazione sia sufficiente per un utilizzo locale, rappresenta un collo di bottiglia per gli utenti geograficamente lontani dalla sede aziendale. Infatti, tutte le richieste che hanno a che fare con i dati dei glienti o delle licenze, devono necessariamente raggiungere il server centrale per essere processate, causando latenze significative.
+Il database MySQL è dedicato esclusivamente alla gestione delle licenze e dei dati anagrafici dei clienti. Esso viene ospitato su un server interno all’azienda e non è replicato in altre regioni. Questa configurazione rappresenta un collo di bottiglia significativo per gli utenti distanti dalla sede aziendale, poiché tutte le richieste relative ai dati dei clienti o delle licenze (usate soprattutto nella fase di accesso al pannello) devono necessariamente essere inviate al server centrale per essere elaborate, causando latenze elevate.
 
 Il database PostgreSQL, invece, è utilizzato per tutti gli altri dati, inclusi i report, le regole di protezione e le liste dei domini da bloccare. Questo database è configurato in replica globale, garantendo così prestazioni più elevate e tempi di risposta migliori per i clienti situati in diverse aree geografiche. Grazie a questa configurazione, i dati necessari al funzionamento del filtro DNS possono essere accessibili rapidamente da qualunque parte del mondo.
 
-Un aspetto di fondamentale importanza per l'azienda è rappresentato dal contenuto del database, che costituisce un valore strategico significativo. Al suo interno, infatti, è presente una lista dei domini associati alla relativa categoria di appartenenza. Questa categorizzazione è utilizzata direttamente dal filtro DNS per bloccare l'accesso a determinati siti in base alle regole configurate dagli utenti. L'operazione di categorizzazione viene gestita internamente all'azienda e si basa su un approccio di intelligenza artificiale. Tale sistema analizza i testi delle pagine Web e determina automaticamente la categoria di appartenenza di ciascun dominio, migliorando l'efficacia del filtro DNS e arricchendo continuamente il patrimonio informativo del database.
+Un aspetto di fondamentale importanza per l'azienda è rappresentato dal contenuto del suddetto database, che costituisce un valore strategico significativo. Al suo interno, infatti, è presente una lista dei domini associati alla relativa categoria di appartenenza. Questa categorizzazione è utilizzata direttamente dal filtro DNS per bloccare l'accesso a determinati siti in base alle regole configurate dagli utenti. L'operazione di categorizzazione viene gestita internamente all'azienda e si basa su un approccio di intelligenza artificiale. Tale sistema analizza i testi delle pagine Web e determina automaticamente la categoria di appartenenza di ciascun dominio, migliorando l'efficacia del filtro DNS e arricchendo continuamente il patrimonio informativo del database.
 
 \subsection{Limitazioni riscontrate}
 Il sistema legacy presenta numerose limitazioni che hanno reso necessaria una completa reingegnerizzazione. Queste riguardano sia l’assenza di funzionalità fondamentali, come il supporto alla multiutenza, sia problematiche strutturali e di usabilità che compromettono la flessibilità e l’efficienza operativa dello stesso.
 
-\subsubsection{Assenza del supporto alla multiutenza}
-Una delle principali limitazioni del sistema legacy, e tra le più sentite dal parco clienti dell'azienda, riguarda l'assenza di un supporto per la multiutenza. Attualmente, il sistema consente a ciascun cliente di avere un solo account utente per accedere al pannello di configurazione. Questo account possiede i priviledgi di amministratore, senza, però, dare la possibilità di creare profili aggiuntivi con ruoli differenziati, come account di sola lettura o con permessi ridotti.
+\subsubsection{Mancanza del supporto alla multiutenza}
+Una delle principali limitazioni del sistema legacy, e tra quelle più sentite dai clienti dell'azienda, è l’assenza di un supporto per la multiutenza. Attualmente, infatti, il sistema permette a ciascun cliente di disporre di un unico account per accedere al pannello di configurazione, che possiede i privilegi di amministratore.
 
-Questa mancanza rappresenta un ostacolo significativo, soprattutto per i fornitori di servizi che integrano il filtro DNS in altri prodotti o lo rivendono ad aziende terze. Questi ultimi si trovano spesso a dover gestire configurazioni e politiche di protezione per conto dei loro clienti, ma l'assenza di un sistema multiutente impedisce di delegare determinate operazioni o di offrire accesso limitato a figure specifiche all’interno delle organizzazioni servite. Allo stesso modo, chi utilizza direttamente il pannello non può creare profili con permessi ridotti, ad esempio per utenti che necessitano soltanto di monitorare le configurazioni o consultare i report senza possibilità di modificarli.
+Questa mancanza rappresenta un ostacolo significativo, soprattutto per i dealer o gli MSP che integrano il filtro DNS in altri prodotti o lo rivendono ad aziende terze. Questi ultimi si trovano spesso a dover gestire configurazioni e politiche di protezione per conto dei loro clienti, ma l'assenza di un sistema multiutente impedisce di delegare determinate operazioni o di offrire accesso limitato a figure specifiche all’interno delle organizzazioni servite. Allo stesso modo, chi utilizza direttamente il pannello non può creare profili con permessi ridotti, ad esempio per utenti che necessitano soltanto di monitorare le configurazioni o consultare i report senza possibilità di modificarli.
 
-Implementare la funzionalità in questione nel sistema attuale richiederebbe modifiche strutturali profonde, che non sono realisticamente attuabili senza stravolgere l’intero sistema. Questa limitazione, oltre a impattare negativamente sull'esperienza utente, è una delle principali motivazioni che ha spinto l'azienda a intraprendere il processo di reingegnerizzazione completa.
+Implementare la funzionalità in questione nel sistema attuale richiederebbe modifiche strutturali profonde, che non sono realisticamente attuabili senza un suo completo stravolgimento.
 
 \subsubsection{Profili di protezione non condivisibili}
+Un’altra significativa limitazione del sistema legacy riguarda l’impossibilità di condividere i profili di protezione tra diversi utenti. Attualmente, ogni profilo è strettamente associato a un singolo cliente, senza alcuna possibilità di essere condiviso o ereditato da altri. Questa carenza rappresenta un ostacolo rilevante, specialmente per gli MSP che gestiscono clienti con esigenze simili, come un gruppo di scuole o aziende dello stesso settore. In tali casi, sarebbe estremamente utile disporre di profili condivisi che consentano di applicare la stessa configurazione a più clienti contemporaneamente.
 
-Un’altra significativa limitazione del sistema legacy riguarda l’impossibilità di condividere i profili di protezione tra diversi utenti. Attualmente, ogni profilo è strettamente associato a un singolo cliente, senza alcuna possibilità di essere condiviso o ereditato da altri. Questa carenza rappresenta un ostacolo rilevante, specialmente per i fornitori di servizi che gestiscono clienti con esigenze simili, come un gruppo di scuole o aziende dello stesso settore. In tali casi, sarebbe estremamente utile disporre di profili condivisi che consentano di applicare la stessa configurazione a più clienti contemporaneamente.
-
-Inoltre, la mancanza di questa funzionalità aumenta il carico di lavoro in caso di modifiche alle regole di protezione. Con l’attuale sistema, infatti, ogni modifica deve essere effettuata manualmente su ciascun cliente, imponendo un processo lungo e soggetto a errori. Questa funzionalità, che il sistema legacy non è in grado di supportare, si è trasformata in un requisito chiave per il nuovo sistema.
+Inoltre, la mancanza di questa funzionalità aumenta il carico di lavoro in caso di modifiche alle regole di protezione. La situazione attuale, infatti, è tale per cui ogni variazione deve essere riportata manualmente su ciascun cliente, imponendo un processo lungo e soggetto a errori.
 
 \subsubsection{Limiti e debolezze architetturali}
-Il sistema legacy presenta numerosi limiti dovuti a scelte architetturali e tecnologiche datate, che influiscono negativamente sulla manutenibilità e sull'evoluzione del software. La mancanza di una chiara separazione tra frontend e backend complica la gestione del codice, rendendo difficoltosa l’adozione di nuove tecnologie. In particolare, l’utilizzo di PHP per generare dinamicamente codice JavaScript introduce ulteriore complessità, limitando la modularità e aumentando il rischio di introdurre errori.
+Il sistema legacy presenta numerosi limiti dovuti a scelte architetturali e tecnologiche datate, che influiscono negativamente sulla manutenibilità e sull'evoluzione del software. La mancanza di una chiara separazione tra frontend e backend complica la gestione del codice, rendendo difficoltosa l’adozione di nuove tecnologie. Oltretutto, pratiche quali l’utilizzo di PHP per generare dinamicamente codice JavaScript introducono ulteriore complessità ed opacità dei sorgenti, limitando la modularità e aumentando il rischio di commettere errori.
 
 L’architettura monolitica rappresenta una delle principali debolezze del sistema. Qualsiasi modifica, anche minima, comporta interventi che possono avere ripercussioni su altre parti del codice, a causa dell’assenza di un design accurato e di una netta separazione delle responsabilità. Questo approccio non solo rallenta il ciclo di sviluppo, ma aumenta significativamente il rischio di regressioni e rende difficoltoso il debugging. La mancanza di modularità aggrava ulteriormente il problema: ogni nuova funzionalità o aggiornamento richiede un lavoro complesso e rischioso, che spesso si traduce in un incremento della fragilità del sistema.
 
-In generale, la combinazione di un'architettura monolitica, tecnologie obsolete e una progettazione poco accurata rende il sistema estremamente difficile da manutenere e aggiornare. Tali caratteristiche limitano la capacità dell'azienda di rispondere rapidamente a nuove esigenze o di introdurre miglioramenti necessari per stare al passo con le tecnologie moderne.
-
 \subsubsection{Problemi di usabilità}
-L'interfaccia utente del sistema, progettata con tecnologie ormai superate, presenta numerose limitazioni che penalizzano l’esperienza dell’utente finale. L’uso di una versione obsoleta di jQuery e la mancanza di un design moderno rendono l’interfaccia meno intuitiva e più difficile da navigare. Questi problemi di usabilità influiscono negativamente sulla produttività degli utenti e sulla percezione complessiva del sistema.
+L'interfaccia utente del sistema, sviluppata con tecnologie ormai obsolete, presenta diverse limitazioni che compromettono l’esperienza degli utenti finali. L’utilizzo di una versione datata di jQuery, unito all’assenza di un layout moderno, rende l’interfaccia poco intuitiva e difficoltosa da navigare. Questi problemi non solo riducono l’efficienza operativa degli utenti, ma influenzano negativamente anche la percezione complessiva del sistema.
 
-Un design datato e poco performante ostacola inoltre la capacità del sistema di competere con soluzioni moderne, limitando il suo appeal sia per gli utenti attuali sia per potenziali nuovi clienti. Questi limiti sottolineano la necessità di una completa revisione sia tecnologica che strutturale.
+Un design grafico superato e poco efficiente limita inoltre la capacità del sistema di competere con soluzioni contemporanee, riducendone l’attrattiva sia per gli utenti attuali che per potenziali nuovi clienti.
+
+\subsubsection{Conclusione}
+Le limitazioni evidenziate, che includono l’assenza di funzionalità essenziali come la multiutenza e i profili condivisibili, le debolezze architetturali e i problemi legati all’usabilità e all’interfaccia utente, mettono in luce la rigidità e l'obsolescenza del sistema legacy. Tali carenze ostacolano non solo l'efficienza operativa e la scalabilità del sistema, ma anche la capacità dell'azienda di rispondere alle richieste di mercato e di competere con soluzioni moderne. Questi fattori rendono indispensabile una completa reingegnerizzazione per soddisfare le esigenze attuali e future, garantendo al contempo un sistema moderno, scalabile ed efficiente.
 
 \section{Esigenze di coesistenza dei due sistemi}
-La transizione dal sistema legacy al nuovo sistema richiede una coesistenza temporanea tra i due, necessaria per garantire la continuità operativa del filtro DNS e dei servizi offerti agli utenti. Spegnere il vecchio sistema prima che tutte le funzionalità siano completamente trasferite e operative nel nuovo sistema non è un’opzione praticabile, poiché ciò comporterebbe disservizi significativi, compromettendo la protezione della rete e, in alcuni casi, l'accesso ad Internet da parte degli utenti. Di conseguenza, si è reso necessario adottare un approccio ibrido, in cui entrambi i sistemi coesistono fino al completamento della migrazione.
+La transizione dal sistema legacy al nuovo sistema richiede una coesistenza temporanea tra i due, necessaria per garantire la continuità operativa del filtro DNS e dei servizi offerti agli utenti. Spegnere il vecchio sistema prima che tutte le funzionalità siano completamente trasferite e operative nel nuovo pannello non è un’opzione praticabile. Infatti, ciò comporterebbe disservizi significativi, compromettendo la protezione della rete e, in alcuni casi, l'accesso ad Internet da parte degli utenti. Di conseguenza, si è reso necessario adottare un approccio ibrido, in cui entrambi i sistemi coesistono fino al completamento della migrazione.
 
 Un elemento centrale di questa coesistenza riguarda la gestione della retrocompatibilità, che si focalizza principalmente sui dati, piuttosto che sulle funzionalità. Tutti i servizi attualmente offerti dal sistema legacy devono essere necessariamente trasferiti al nuovo sistema. Durante questa fase di transizione, i dati relativi a tali funzionalità saranno visualizzabili su entrambi i sistemi. Tuttavia, nel momento in cui una funzione sarà completamente operativa nel nuovo sistema, la corrispondente sul legacy sarà disattivata, lasciando attivi i dati solo per la consultazione.
 
-Per quanto riguarda le caratteristiche innovative, il nuovo sistema introdurrà delle funzioni che non possono essere supportate dal legacy a causa di limiti tecnici e architetturali. In questi casi, i dati generati da tali funzionalità saranno visibili nel pannello legacy in modo molto limitato, offrendo agli utenti solo un accesso in lettura. La gestione e la configurazione di queste nuove componenti, dovranno essere necessariamente effettuate tramite il nuovo sistema. Questo approccio permetterà agli utenti di iniziare a familiarizzare con il nuovo ambiente e le sue potenzialità, garantendo al contempo una migrazione graduale e controllata.
+Per quanto riguarda le caratteristiche innovative, il nuovo sistema introdurrà delle funzioni che non possono essere supportate dal legacy a causa di limiti tecnici e architetturali. In questi casi, i dati generati da tali funzionalità saranno visibili nel pannello legacy in modo molto limitato, offrendo agli utenti un accesso in sola lettura. La gestione e la configurazione di queste nuove componenti dovranno essere necessariamente effettuate tramite il nuovo sistema. Questo approccio permetterà agli utenti di iniziare a familiarizzare con il nuovo ambiente e le sue potenzialità, garantendo al contempo una migrazione graduale e controllata.
 
-Un altro aspetto fondamentale riguarda la migrazione dei dati. Nel breve termine, non è previsto un passaggio completo delle informazioni dal legacy al nuovo sistema. I dati esistenti continueranno a essere utilizzati nelle tabelle legacy, mentre nuove strutture verranno create solo dove necessario per supportare le funzionalità del nuovo sistema.
+Un altro aspetto fondamentale riguarda la migrazione dei dati: nel breve termine, non è previsto un passaggio completo delle informazioni dal legacy al nuovo sistema. I dati esistenti rimarranno nelle tabelle legacy, mentre nuove strutture verranno aggiunte esclusivamente per supportare le funzionalità introdotte nel nuovo sistema.
 
 Questa coesistenza rappresenta non solo una necessità operativa, ma anche una sfida tecnica e organizzativa non banale. Infatti, oltre a garantire che entrambi i sistemi possano condividere i dati senza interferenze, è essenziale mantenere l’integrità e la coerenza delle informazioni durante tutta la fase di transizione. Le soluzioni tecniche adottate per gestire questa coesistenza saranno descritte in dettaglio nel capitolo successivo.
 
 \section{Obiettivi e requisiti del nuovo sistema}
-\subsection{Obiettivi del nuovo sistema}
+\subsection{Obiettivi}
 Il nuovo sistema nasce con l'obiettivo di posizionarsi come una soluzione moderna e professionale, capace di soddisfare le esigenze di un mercato in espansione e di attirare anche clienti di grandi dimensioni. Per raggiungere questo scopo, è fondamentale che il pannello abbia un'interfaccia più curata e in linea con gli standard richiesti da organizzazioni complesse. Questo aspetto si inserisce in un più ampio percorso di rinnovamento della  \textit{brand identity} aziendale, che include un nuovo logo, una palette di colori aggiornata e uno stile comunicativo uniforme.
 
-Dal punto di vista tecnico, il sistema dovrà superare le limitazioni strutturali del legacy, modernizzando l'architettura per renderla più robusta e scalabile, in modo da poter gestire un numero crescente di utenti. Una delle priorità è quella di ridurre i tempi necessari per la manutenzione e l’aggiornamento, facilitando al contempo l’integrazione di nuove funzionalità. Inoltre, il sistema dovrà essere progettato per migliorare l’usabilità specifica per i fornitori di servizi, offrendo loro strumenti più pratici per gestire configurazioni e policy di protezione su scala.
+Dal punto di vista tecnico, il sistema dovrà superare le limitazioni strutturali del legacy, modernizzando l'architettura per renderla più robusta e scalabile, in modo da poter gestire un numero crescente di utenti. Una delle priorità è quella di ridurre i tempi necessari per la manutenzione e l’aggiornamento, facilitando al contempo l’integrazione di nuove funzionalità. Inoltre, il sistema dovrà essere progettato per migliorare l’usabilità specifica per i fornitori di servizi, come dealer ed MSP, offrendo loro strumenti più pratici per gestire configurazioni e policy di protezione su scala.
 
 Un altro obiettivo fondamentale coincide con l'introduzione di nuove funzionalità avanzate per rispondere alle crescenti esigenze del mercato. Tra queste, l’implementazione dell’autenticazione a più fattori per migliorare la sicurezza degli account, il supporto alla creazione di regole di protezione condivisibili tra più clienti in modo centralizzato e la possibilità di gestire configurazioni multiutente con permessi differenziati.
 
 Infine, il nuovo sistema dovrà supportare la personalizzazione in modalità \emph{whitelabel}, pensata specialmente per i fornitori di servizi che desiderano rivendere il filtro DNS ai propri clienti con un branding personalizzato. Questo permetterà ai fornitori di presentare il sistema con il proprio logo, nome e stile grafico, nascondendo ogni riferimento al produttore originale, in modo da integrare il filtro DNS come parte del loro portfolio di soluzioni.
 
-\subsection{Requisiti del nuovo sistema}
+\subsection{Requisiti}
 I requisiti riportati di seguito si riferiscono alla porzione del sistema alla cui implementazione si è contribuito durante il tirocinio in preparazione della presente tesi. Le funzionalità che verranno introdotte successivamente, sebbene parte del sistema finale, non saranno trattate in questa sede poiché non rientrano nell’ambito delle attività svolte.
 
 \subsubsection{Requisiti funzionali}
@@ -163,17 +163,16 @@ I requisiti riportati di seguito si riferiscono alla porzione del sistema alla c
 
   \item \textbf{Dashboard per MSP}:
     \begin{itemize}
-      \item Deve essere presente una schermata dedicata ai Managed Service Provider (MSP), non disponibile nel sistema legacy;
-      \item La dashboard deve offrire una panoramica dei clienti gestiti, con report aggregati, statistiche e la possibilità di impersonare i clienti per monitorarli o gestirli;
-      \item La dashboard deve adattarsi dinamicamente in base al tipo di utente MSP che accede al sistema.
+      \item Deve essere presente una schermata dedicata agli MSP, che fornisce loro una panoramica dei clienti gestiti, con report e statistiche aggregati, e la possibilità di impersonare i clienti per monitorarli o gestirli;
+      \item La schermata deve inoltre adattarsi dinamicamente in base al tipo di utente MSP che accede al sistema. Ciò significa che i vari componenti grafici vengono visualizzati solo se l'utilizzatore ha il permesso di visionarli, così come la possibilità di modificare le loro proprietà.
     \end{itemize}
 
   \item \textbf{Gestione dei template di protezione}:
     \begin{itemize}
       \item Il sistema deve consentire la creazione e la gestione di insiemi di regole di protezione globali, detti \emph{template}, che possono essere assegnati a diversi clienti;
       \item Le modifiche apportate a tali template devono essere propagate automaticamente a tutti i clienti a cui sono stati assegnati;
-      \item Devono essere disponibili template di eccezioni personalizzati, configurabili per soddisfare esigenze specifiche;
-      \item I template devono supportare opzioni di configurazione come: categorie e app da bloccare, paesi da bloccare, attivazione SafeSearch, bloccare tutto tranne alcuni domini specifici.
+      \item Devono anche essere disponibili template di eccezioni personalizzati, configurabili per soddisfare esigenze specifiche;
+      \item I template devono supportare opzioni di configurazione come: categorie e applicazioni da bloccare, paesi da bloccare, attivazione SafeSearch, blocco completo tranne alcuni domini specifici.
     \end{itemize}
 
   \item \textbf{Reportistica}:
@@ -191,12 +190,12 @@ I requisiti riportati di seguito si riferiscono alla porzione del sistema alla c
 
   \item \textbf{Personalizzazione Whitelabel}:
     \begin{itemize}
-      \item Il sistema deve supportare la personalizzazione whitelabel riservata agli MSP, consentendo di modificare elementi come: nome, logo, palette di colori, menu, messaggi personalizzati al login, email per il supporto, notifiche e redirect.
+      \item Il sistema deve supportare la personalizzazione whitelabel riservata agli MSP, consentendo di modificare elementi come: nome, logo, palette di colori, menù, messaggi personalizzati al login, email per il supporto, notifiche e redirect.
     \end{itemize}
 
   \item \textbf{Audit log}:
     \begin{itemize}
-      \item Il sistema deve registrare in un audit log dettagliato tutte le azioni eseguite dagli utenti, inclusi gli accessi al sistema e le modifiche alla configurazione del filtro.
+      \item Il sistema deve essere provvisto di uno strumento che vada a registrare in un log dettagliato tutte le azioni eseguite dagli utenti, inclusi gli accessi al pannello e le modifiche alla configurazione del filtro.
     \end{itemize}
 
   \item \textbf{Retrocompatibilità}:
@@ -223,13 +222,14 @@ I requisiti riportati di seguito si riferiscono alla porzione del sistema alla c
 
   \item \textbf{Manutenibilità}:
     \begin{itemize}
-      \item Il sistema deve essere sviluppato in modo modulare, per semplificare la manutenzione e consentire l’estensione con nuove funzionalità.
+      \item Il sistema deve essere sviluppato in modo modulare, per semplificare la manutenzione e consentire l’estensione con nuove funzionalità;
+      \item Ci deve essere una netta distinzione tra frontend e backend, così come la suddivisione del backend in molteplici microservizi.
     \end{itemize}
 
   \item \textbf{Interazione con il database}:
     \begin{itemize}
       \item Il sistema deve utilizzare lo stesso database del legacy, poiché non è prevista una migrazione dei dati nel breve termine;
       \item I dati esistenti nel database legacy devono essere utilizzati dal nuovo sistema senza alcuna modifica alle tabelle o alla struttura attuale, in modo da non compromettere l’operatività del vecchio sistema;
-      \item Il database sarà ampliato per supportare nuove funzionalità, esclusivamente attraverso l’aggiunta di nuove tabelle o dati, senza modificare la struttura esistente.
+      \item Il database sarà ampliato per supportare nuove funzionalità esclusivamente attraverso l’aggiunta di nuove tabelle o dati, senza modificare la struttura esistente in alcun modo.
     \end{itemize}
 \end{itemize}
