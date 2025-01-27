@@ -7,7 +7,24 @@ Un aspetto centrale di questa analisi riguarda l’esigenza di coesistenza tra i
 Infine, il capitolo introdurrà gli obiettivi ed i requisiti principali che hanno guidato la progettazione del nuovo sistema, preparandosi a descrivere nel dettaglio, nel capitolo successivo, il design e le scelte architetturali adottate per superare le limitazioni del sistema legacy e rispondere alle nuove esigenze aziendali.
 
 \section{Introduzione al sistema esistente}
-Il sistema legacy qui analizzato rappresenta un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl}\footnote{\url{https://flashstart.com}} per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente. Sviluppato in PHP con un approccio procedurale, il sistema presenta un’architettura monolitica che integra sia la gestione lato server che la generazione dell’interfaccia utente.
+Il sistema legacy qui analizzato rappresenta un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl}\footnote{\url{https://flashstart.com}} per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente.
+
+\subsubsection{Terminologia e definizioni}
+In questo capitolo vengono utilizzate alcune terminologie specifiche che descrivono concetti e funzionalità del sistema in esame. Pertanto, prima di approfondire la discussione, è opportuno fornire una breve spiegazione di questi termini, utilizzati dall'azienda per rappresentare concetti chiave del dominio applicativo.
+
+\begin{itemize}
+  \item \textbf{Rete}: identifica un indirizzo IP registrato nel sistema e associato alla sede di un cliente, come ad esempio una scuola. Le reti possono essere statiche (IP pubblico fisso) o dinamiche (IP pubblico variabile).
+
+  \item \textbf{Endpoint}: rappresenta un dispositivo fisico specifico registrato nel sistema, come un computer o uno smartphone. A differenza della rete, un endpoint è associato direttamente a un dispositivo, piuttosto che a un indirizzo IP generico.
+
+  \item \textbf{Dealer}: un rivenditore che vende licenze del filtro DNS ai clienti finali, i quali devono, in autonomia, configurare le proprie policy di sicurezza tramite il pannello Web.
+
+  \item \textbf{Managed Service Provider (MSP)}: è un particolare tipo di Dealer che, oltre a vendere licenze, si occupa anche della configurazione e della gestione delle policy di sicurezza per i propri clienti. A differenza dei precedenti fornitori di servizi, gli MSP impediscono ai clienti finali di accedere al pannello, occupandosi interamente della gestione.
+
+  \item \textbf{Whitelabel}: una funzionalità che consente ai fornitori di servizi, come gli MSP, di personalizzare il pannello di gestione con il proprio logo, colori e branding, nascondendo ogni riferimento al produttore originale del sistema.
+
+  \item \textbf{ClientShield}: Un'applicazione per dispositivi desktop e mobile che consente di registrare un endpoint nel pannello e sfruttare il filtro DNS aziendale.
+\end{itemize}
 
 \subsection{Panoramica sulle funzionalità}
 Il pannello legacy rappresenta lo strumento principale per la gestione e configurazione del filtro DNS offerto dall'azienda. Nonostante le limitazioni architetturali e tecnologiche, il sistema fornisce un insieme di funzionalità che consentono agli utenti di configurare, monitorare e amministrare le policy di filtraggio DNS. Di seguito viene fornita una panoramica delle principali funzionalità offerte dal sistema.
