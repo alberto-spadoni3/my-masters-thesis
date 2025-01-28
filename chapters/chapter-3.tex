@@ -163,16 +163,19 @@ I requisiti riportati di seguito si riferiscono alla porzione del sistema alla c
 
   \item \textbf{Dashboard per MSP}:
     \begin{itemize}
-      \item Deve essere presente una schermata dedicata agli MSP, che fornisce loro una panoramica dei clienti gestiti, con report e statistiche aggregati, e la possibilità di impersonare i clienti per monitorarli o gestirli;
-      \item La schermata deve inoltre adattarsi dinamicamente in base al tipo di utente MSP che accede al sistema. Ciò significa che i vari componenti grafici vengono visualizzati solo se l'utilizzatore ha il permesso di visionarli, così come la possibilità di modificare le loro proprietà.
+      \item Deve essere presente una schermata dedicata agli MSP, che fornisce loro una panoramica dei clienti gestiti;
+      \item Tale panoramica deve includere report e statistiche aggregate che consentono di monitorare il traffico sulla rete e avere una panoramica completa sull'utilizzo del filtro;
+      \item Deve inoltre essere presente la possibilitàà di impersonare uno dei clienti in gestione al fornitore di servizi, che ha l'effetto di visualizzare la schermata del pannello come se tale cliente avesse effettuato l'accesso con il suo account utente. A quel punto, l'MSP deve essere in grado non solo di visionare i report e le statistiche relative a tale utente, ma anche di andare a monitorare ed eventualmente modificare la sua configurazione del filtro;
+      \item La schermata deve adattarsi dinamicamente in base al tipo di utente (MSP o cliente finale) che accede al sistema. Ciò significa che i vari componenti grafici vengono visualizzati solo se l'utilizzatore ha il permesso di visionarli, così come la possibilità di modificare le loro proprietà.
     \end{itemize}
 
   \item \textbf{Gestione dei template di protezione}:
     \begin{itemize}
       \item Il sistema deve consentire la creazione e la gestione di insiemi di regole di protezione globali, detti \emph{template}, che possono essere assegnati a diversi clienti;
+      \item I template devono supportare opzioni di configurazione come: categorie e applicazioni da bloccare, paesi da bloccare, attivazione SafeSearch, blocco completo tranne alcuni domini specifici;
       \item Le modifiche apportate a tali template devono essere propagate automaticamente a tutti i clienti a cui sono stati assegnati;
       \item Devono anche essere disponibili template di eccezioni personalizzati, configurabili per soddisfare esigenze specifiche;
-      \item I template devono supportare opzioni di configurazione come: categorie e applicazioni da bloccare, paesi da bloccare, attivazione SafeSearch, blocco completo tranne alcuni domini specifici.
+      \item Le liste di eccezioni devono poter essere importate nel sistema anche per mezzo di file di testo in formato \texttt{.txt} o \texttt{.csv}.
     \end{itemize}
 
   \item \textbf{Reportistica}:
