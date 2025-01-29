@@ -30,7 +30,7 @@ Da qui in avanti verranno utilizzate alcune terminologie specifiche che descrivo
 Il pannello Web legacy rappresenta lo strumento principale per la gestione e configurazione del filtro DNS offerto dall'azienda. Nonostante le limitazioni architetturali e tecnologiche, il sistema fornisce un insieme di funzionalità che consentono agli utenti di configurare, monitorare e amministrare le policy di filtraggio DNS. Di seguito viene fornita una panoramica delle principali funzionalità offerte dal suddetto pannello.
 
 \subsubsection{Gestione delle policy di protezione}
-Il pannello consente agli amministratori di creare e configurare diversi profili di protezione, ciascuno dei quali può includere una combinazione personalizzata di filtri per:
+Il pannello consente di creare e configurare diversi profili di protezione, ciascuno dei quali può includere una combinazione personalizzata di filtri per:
 \begin{itemize}
   \item Bloccare minacce informatiche come malware e phishing;
   \item Limitare l'accesso a contenuti specifici, come siti per adulti o contenuti inappropriati;
@@ -45,7 +45,7 @@ Per aumentare il grado di flessibilità del filtro, gli utenti possono creare de
 Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Per questo motivo, esse consentono di specificare delle eccezioni rispetto alle normali policy di sicurezza. Ad esempio, è possibile concedere l'accesso ad un contenuto di norma non consentito, oppure bloccare un dominio che risulta legittimo.
 
 \subsubsection{Gestione delle reti di protezione}
-Un'altra funzionalità fondamentale del pannello è la possibilità per gli amministratori di specificare quali reti devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi IP passino attraverso le policy di protezione impostate. La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando tre principali modalità:
+Un'altra funzionalità fondamentale del pannello è la possibilità di specificare quali reti devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi IP passino attraverso le policy di protezione impostate. La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando tre principali modalità:
 \begin{itemize}
   \item \textbf{IP pubblico statico}: questa configurazione è utilizzata quando la rete dispone di un IP pubblico statico, ovvero un indirizzo IP assegnato in modo permanente dal proprio ISP. In questo caso, il pannello consente di associare le policy di filtraggio a una rete identificata da uno specifico IP, garantendo che tutte le richieste DNS provenienti da tale rete siano sottoposte ai controlli e ai filtri impostati;
 
@@ -55,9 +55,9 @@ Un'altra funzionalità fondamentale del pannello è la possibilità per gli ammi
 \end{itemize}
 
 \subsubsection{Visualizzazione e analisi dei report}
-Il pannello offre una sezione dedicata alla generazione e analisi dei report relativi al traffico DNS della rete, permettendo agli amministratori di monitorare l’efficacia delle policy di filtraggio e di ottenere informazioni dettagliate sull’attività di rete in un determinato intervallo di tempo. Questi report forniscono una visione chiara e organizzata del comportamento della rete, aiutando gli utenti a identificare potenziali minacce e a ottimizzare le configurazioni esistenti.
+Il pannello offre una sezione dedicata alla generazione e analisi dei report relativi al traffico DNS della rete, permettendo di monitorare l’efficacia delle policy di filtraggio e di ottenere informazioni dettagliate sull’attività di rete in un determinato intervallo di tempo. Questi report forniscono una visione chiara e organizzata del comportamento della rete, aiutando gli utenti a identificare potenziali minacce e a ottimizzare le configurazioni esistenti.
 
-\subsubsection{Tipologie di report disponibili}
+\paragraph{Tipologie di report disponibili}
 Tramite un menù a cascata, è possibile selezionare diversi tipi di report, tra cui:
 \begin{itemize}
   \item \textbf{Bloccati per categoria}: mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macro-categoria;
@@ -70,12 +70,12 @@ Tramite un menù a cascata, è possibile selezionare diversi tipi di report, tra
 Dopo aver configurato i parametri di analisi, gli utenti possono generare i report secondo diverse modalità. Essi possono essere esportati in formato PDF, oppure inviati direttamente via e-mail a destinatari predefiniti. Inoltre, il pannello offre una funzione di pianificazione che consente di programmare l'invio automatico dei report a intervalli regolari, ad esempio su base settimanale, rendendo più efficiente il monitoraggio continuo.
 
 \subsubsection{Gestione dei dispositivi protetti (Endpoint)}
-Il pannello include anche una funzionalità per gestire i dispositivi su cui è installato il ClientShield. In particolare, questa configurazione permette di tracciare con precisione quale dispositivo ha originato una determinata richiesta DNS, fornendo agli amministratori un maggiore controllo e una visibilità dettagliata sulle attività della rete.
+Il pannello include anche una funzionalità per gestire i dispositivi su cui è installato il ClientShield. In particolare, questa configurazione permette di tracciare con precisione quale dispositivo ha originato una determinata richiesta DNS, fornendo un maggiore controllo e un livello di dettaglio maggiore sulle attività della rete.
 
 \subsubsection{Funzionalità aggiuntive}
 Oltre alle funzionalità principali già descritte, il pannello Web offre una serie di strumenti utili per migliorare la gestione e il controllo delle configurazioni. Tra queste, vi è la possibilità di personalizzare la pagina di blocco che viene visualizzata dagli utenti ogni volta che tentano di accedere a un dominio non consentito.
 %
-Il pannello consente anche di verificare facilmente a quale categoria appartiene un determinato sito Web, aiutando gli amministratori a valutare come configurare al meglio le politiche di filtraggio.
+Il pannello consente anche di verificare facilmente a quale categoria appartiene un determinato sito Web, aiutando gli utenti a valutare come configurare al meglio le politiche di filtraggio.
 %
 Un’altra funzionalità interessante è la visualizzazione del traffico DNS in tempo reale, che fornisce un monitoraggio immediato dell’attività di rete. Inoltre, il sistema supporta l'importazione di domini in formato batch, permettendo di aggiungere rapidamente liste di siti Web consentiti o bloccati attraverso file di testo.
 
