@@ -50,7 +50,7 @@ Un'altra funzionalità fondamentale del pannello è la possibilità di specifica
 \begin{itemize}
   \item \textbf{IP pubblico statico}: questa configurazione è utilizzata quando la rete dispone di un IP pubblico statico, ovvero un indirizzo IP assegnato in modo permanente dal proprio ISP. In questo caso, il pannello consente di associare le policy di filtraggio a una rete identificata da uno specifico IP, garantendo che tutte le richieste DNS provenienti da tale rete siano sottoposte ai controlli e ai filtri impostati;
 
-  \item \textbf{IP pubblico dinamico}: per le reti che non dispongono di un IP pubblico statico, il sistema supporta la configurazione tramite DynamicDNS \cite{rfc2136}. Questo approccio consente di monitorare e filtrare le richieste DNS anche quando l’indirizzo IP della rete varia nel tempo, utilizzando un sistema di aggiornamento dinamico che associa un nome di dominio all’IP corrente della rete. Questo garantisce continuità nella protezione senza la necessità di aggiornamenti manuali;
+  \item \textbf{IP pubblico dinamico}: per le reti che non dispongono di un IP pubblico statico, il sistema supporta la configurazione tramite DynamicDNS\footnote{\url{https://www.rfc-editor.org/rfc/rfc2136.html}}. Questo approccio consente di monitorare e filtrare le richieste DNS anche quando l’indirizzo IP della rete varia nel tempo, utilizzando un sistema di aggiornamento dinamico che associa un nome di dominio all’IP corrente della rete. Questo garantisce continuità nella protezione senza la necessità di aggiornamenti manuali;
 \end{itemize}
 
 \subsubsection{Visualizzazione e analisi dei report}
