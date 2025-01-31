@@ -152,43 +152,58 @@ Un'altra caratteristica fondamentale che differenzia questa prima versione da qu
 Infine, una funzionalità fondamentale che differenzia questa prima versione da quella legacy è la gestione avanzata della multiutenza, una caratteristica assente nel sistema precedente. Nel nuovo pannello, sarà possibile associare più utenti a un singolo cliente, ciascuno con ruoli e permessi differenziati. Questo rappresenta un miglioramento significativo rispetto al passato, in cui l’accesso al pannello di configurazione era ristretto a un unico account per cliente. Grazie a questa funzione, più operatori all'interno di un'organizzazione potranno collaborare alla gestione delle policy di filtraggio DNS, con livelli di accesso che vanno dall'amministrazione completa alla sola consultazione dei report.
 
 \subsection{Requisiti}
-I requisiti riportati di seguito si riferiscono alla porzione del sistema alla cui implementazione si è contribuito durante il tirocinio in preparazione della presente tesi. Le funzionalità che verranno introdotte successivamente, sebbene parte del sistema finale, non saranno trattate in questa sede poiché non rientrano nell’ambito delle attività svolte.
+I requisiti riportati di seguito forniscono una panoramica delle funzionalità previste per il nuovo sistema. Tuttavia, solo una parte di essi è stata sviluppata o analizzata direttamente nel contesto del tirocinio in preparazione della presente tesi. Le funzionalità che verranno introdotte successivamente, pur essendo parte integrante del sistema finale, sono incluse in questa sezione per offrire una visione completa, ma non saranno trattate nel dettaglio nel capitolo di design.
 
 \subsubsection{Requisiti funzionali}
 \begin{itemize}
+  \item \textbf{Operatività del nuovo sistema al rilascio}
+    \begin{itemize}
+      \item Il nuovo sistema deve includere fin dalla prima release tutte le macrofunzionalità necessarie per garantire la piena operatività del pannello di configurazione, in modo da consentire la transizione completa dal sistema legacy.
+      \item Le funzionalità essenziali devono comprendere la gestione delle reti, la gestione utenti e permessi (compresa la multiutenza), la configurazione delle policy di filtraggio e la reportistica avanzata.
+      \item Oltre a queste caratteristiche ereditate dal legacy, il nuovo sistema dovrà introdurre almeno una caratteristica distintiva rispetto alla versione precedente. In particolare, sarà implementata la gestione avanzata dei template, che consentirà di definire profili condivisi per applicare configurazioni comuni a più clienti.
+      \item Prima della dismissione del legacy, tutte le funzionalità previste dovranno essere completamente operative e testate.
+    \end{itemize}
+
+  \item \textbf{Migrazione interna dei dati}:
+    \begin{itemize}
+      \item Tutti i dati del sistema legacy devono essere migrati nel nuovo sistema prima del rilascio, garantendo continuità operativa per gli utenti.
+      \item Il processo di migrazione deve avvenire internamente all’azienda, senza richiedere interventi manuali da parte degli utenti finali.
+      \item L’integrità e la coerenza dei dati devono essere assicurate, evitando perdite o incongruenze tra il vecchio e il nuovo sistema.
+    \end{itemize}
+
   \item \textbf{Multiutenza e gestione utenti}:
     \begin{itemize}
-      \item Il sistema deve supportare la multiutenza con ruoli differenziati, quali SuperAdmin, Admin e altri con permessi limitati;
+      \item Il sistema deve supportare la multiutenza con ruoli differenziati, quali SuperAdmin, Admin e altri con permessi limitati.
       \item La creazione e la gestione degli utenti deve essere riservata agli amministratori.
     \end{itemize}
 
   \item \textbf{Dashboard per MSP}:
     \begin{itemize}
-      \item Deve essere presente una schermata dedicata agli MSP, che fornisce loro una panoramica dei clienti gestiti;
-      \item Tale panoramica deve includere report e statistiche aggregate che consentono di monitorare il traffico sulla rete e avere una panoramica completa sull'utilizzo del filtro;
-      \item Deve inoltre essere presente la possibilitàà di impersonare uno dei clienti in gestione al fornitore di servizi, che ha l'effetto di visualizzare la schermata del pannello come se tale cliente avesse effettuato l'accesso con il suo account utente. A quel punto, l'MSP deve essere in grado non solo di visionare i report e le statistiche relative a tale utente, ma anche di andare a monitorare ed eventualmente modificare la sua configurazione del filtro;
-      \item La schermata deve adattarsi dinamicamente in base al tipo di utente (MSP o cliente finale) che accede al sistema. Ciò significa che i vari componenti grafici vengono visualizzati solo se l'utilizzatore ha il permesso di visionarli, così come la possibilità di modificare le loro proprietà.
+      \item Deve essere presente una schermata dedicata agli MSP, che fornisce loro una panoramica dei clienti gestiti.
+      \item Tale panoramica deve includere report e statistiche aggregate che consentano di monitorare il traffico sulla rete e avere una visione completa sull'utilizzo del filtro.
+      \item Deve inoltre essere presente la possibilità di impersonare uno dei clienti in gestione al fornitore di servizi, visualizzando il pannello come se tale cliente avesse effettuato l'accesso con il proprio account utente. L’MSP deve essere in grado non solo di visionare i report e le statistiche relative al cliente, ma anche di monitorare ed eventualmente modificare la sua configurazione del filtro.
+      \item La schermata deve adattarsi dinamicamente in base al tipo di utente (MSP o cliente finale), mostrando solo i componenti grafici e le funzionalità a cui l’utente ha accesso.
     \end{itemize}
 
   \item \textbf{Gestione dei template di protezione}:
     \begin{itemize}
-      \item Il sistema deve consentire la creazione e la gestione di insiemi di regole di protezione globali, detti \emph{template}, che possono essere assegnati a diversi clienti;
-      \item I template devono supportare opzioni di configurazione come: categorie e applicazioni da bloccare, paesi da bloccare, attivazione SafeSearch, blocco completo tranne alcuni domini specifici;
-      \item Le modifiche apportate a tali template devono essere propagate automaticamente a tutti i clienti a cui sono stati assegnati;
-      \item Devono anche essere disponibili template di eccezioni personalizzati, configurabili per soddisfare esigenze specifiche;
-      \item Le liste di eccezioni devono poter essere importate nel sistema anche per mezzo di file di testo in formato \texttt{.txt} o \texttt{.csv}.
+      \item Il sistema deve consentire la creazione e la gestione di insiemi di regole di protezione globali, detti \emph{template}, che possono essere assegnati a diversi clienti.
+      \item I template devono supportare opzioni di configurazione come: categorie e applicazioni da bloccare, paesi da bloccare, attivazione SafeSearch, blocco completo tranne alcuni domini specifici.
+      \item Le modifiche apportate ai template devono essere propagate automaticamente a tutti i clienti a cui sono stati assegnati.
+      \item Devono essere disponibili template di eccezioni personalizzati, configurabili per soddisfare esigenze specifiche.
+      \item Le liste di eccezioni devono poter essere importate nel sistema anche tramite file di testo in formato \texttt{.txt} o \texttt{.csv}.
     \end{itemize}
 
   \item \textbf{Reportistica}:
     \begin{itemize}
-      \item Il sistema deve permettere di creare, visualizzare ed esportare report personalizzati;
-      \item I report devono poter coprire intervalli temporali più estesi rispetto a quanto permetteva il sistema legacy, passando da un mese a 3, 6, o anche 12 mesi per singolo report.
+      \item Il sistema deve permettere di creare, visualizzare ed esportare report personalizzati.
+      \item I report devono poter coprire intervalli temporali più estesi rispetto al legacy, passando da un mese a 3, 6 o anche 12 mesi per singolo report.
     \end{itemize}
 
   \item \textbf{Notifiche}:
     \begin{itemize}
-      \item Il sistema deve fornire notifiche direttamente nel pannello Web e via email;
-      \item Le notifiche devono riguardare: nuove funzionalità rilasciate, errori di rete e malware rilevati;
+      \item Il sistema deve fornire notifiche direttamente nel pannello Web e via email.
+      \item Le notifiche devono riguardare nuove funzionalità rilasciate, errori di rete e malware rilevati.
       \item Le notifiche via email devono includere report pianificati dagli utenti.
     \end{itemize}
 
@@ -199,43 +214,36 @@ I requisiti riportati di seguito si riferiscono alla porzione del sistema alla c
 
   \item \textbf{Audit log}:
     \begin{itemize}
-      \item Il sistema deve essere provvisto di uno strumento che vada a registrare in un log dettagliato tutte le azioni eseguite dagli utenti, inclusi gli accessi al pannello e le modifiche alla configurazione del filtro.
-    \end{itemize}
-
-  \item \textbf{Retrocompatibilità}:
-    \begin{itemize}
-      \item Il nuovo sistema deve garantire la coesistenza con il legacy durante la fase di transizione, assicurando che le funzionalità essenziali riprese dal sistema attuale continuino ad operare correttamente fino al completamento della migrazione;
-      \item Durante la fase di coesistenza, i dati generati dal nuovo sistema devono essere accessibili anche nel legacy, quando necessario, per garantire una transizione fluida e una compatibilità dei flussi operativi.
+      \item Il sistema deve registrare in un log dettagliato tutte le azioni eseguite dagli utenti, inclusi gli accessi al pannello e le modifiche alla configurazione del filtro.
     \end{itemize}
 \end{itemize}
 
 \subsubsection{Requisiti non funzionali}
 \begin{itemize}
+  \item \textbf{Modellazione del dominio e gestione del database}:
+    \begin{itemize}
+      \item Il sistema deve prevedere una nuova modellazione del dominio, al fine di migliorare la struttura dei dati e rendere il database più robusto ed efficace.
+      \item Il database deve essere progettato in modo da garantire una gestione più coerente delle relazioni tra entità, evitando le problematiche riscontrate nel sistema legacy.
+    \end{itemize}
+
   \item \textbf{Sicurezza}:
     \begin{itemize}
-      \item Il sistema deve implementare l’autenticazione a più fattori (MFA) per tutti gli utenti;
+      \item Il sistema deve implementare l’autenticazione a più fattori (MFA) per tutti gli utenti.
       \item La sicurezza deve essere garantita tramite un sistema di autorizzazione centralizzato, che gestisca permessi e operazioni in base ai ruoli degli utenti e alle licenze possedute. Questo servizio dedicato deve applicare le autorizzazioni a tutti i livelli, includendo le API, l’interfaccia del pannello e la gestione delle policy.
     \end{itemize}
 
   \item \textbf{Usabilità e interfaccia utente}:
     \begin{itemize}
-      \item L’interfaccia deve essere moderna, accattivante e progettata per garantire una user experience migliorata;
-      \item Il design deve avere un look professionale e orientato a clienti di grandi organizzazioni (look enterprise);
+      \item L’interfaccia deve essere moderna, accattivante e progettata per garantire una user experience migliorata.
+      \item Il design deve avere un look professionale e orientato a clienti di grandi organizzazioni (look enterprise).
       \item L’interfaccia deve essere responsive e ottimizzata per l’utilizzo su qualsiasi dispositivo.
     \end{itemize}
 
   \item \textbf{Manutenibilità}:
     \begin{itemize}
-      \item Il sistema deve essere sviluppato in modo modulare, per semplificare la manutenzione e consentire l’estensione con nuove funzionalità;
+      \item Il sistema deve essere sviluppato in modo modulare, per semplificare la manutenzione e consentire l’estensione con nuove funzionalità.
       \item Ci deve essere una netta distinzione tra frontend e backend, così come la suddivisione del backend in molteplici microservizi.
-    \end{itemize}
-
-  \item \textbf{Interazione con il database}:
-    \begin{itemize}
-      \item Il sistema deve utilizzare lo stesso database del legacy, poiché non è prevista una migrazione dei dati nel breve termine;
-      \item I dati esistenti nel database legacy devono essere utilizzati dal nuovo sistema senza alcuna modifica alle tabelle o alla struttura attuale, in modo da non compromettere l’operatività del vecchio sistema;
-      \item Il database sarà ampliato per supportare nuove funzionalità esclusivamente attraverso l’aggiunta di nuove tabelle o dati, senza modificare la struttura esistente in alcun modo.
     \end{itemize}
 \end{itemize}
 
-Sebbene i requisiti elencati rappresentino una panoramica piuttosto ampia delle caratteristiche previste per il sistema finale, solo una parte di essi sarà trattata nel presente lavoro. In particolare, il design descritto nel prossimo capitolo si concentrerà sulle funzionalità sviluppate o analizzate direttamente nel contesto del tirocinio, mentre i restanti requisiti sono stati inclusi per fornire una visione globale del sistema.
+Le scelte progettuali adottate per l'implementazione delle funzionalità sviluppate nel contesto di questa tesi verranno discusse nel capitolo successivo.
