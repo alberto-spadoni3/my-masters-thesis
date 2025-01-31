@@ -46,13 +46,11 @@ Per aumentare il grado di flessibilità del filtro, gli utenti possono creare de
 Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Per questo motivo, esse consentono di specificare delle eccezioni rispetto alle normali policy di sicurezza. Ad esempio, è possibile concedere l'accesso ad un contenuto di norma non consentito, oppure bloccare un dominio che risulta legittimo.
 
 \subsubsection{Gestione delle reti di protezione}
-Un'altra funzionalità fondamentale del pannello è la possibilità di specificare quali reti devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi IP passino attraverso le policy di protezione impostate. La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando tre principali modalità:
+Un'altra funzionalità fondamentale del pannello è la possibilità di specificare quali reti devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi IP passino attraverso le policy di protezione impostate. La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando due principali modalità:
 \begin{itemize}
   \item \textbf{IP pubblico statico}: questa configurazione è utilizzata quando la rete dispone di un IP pubblico statico, ovvero un indirizzo IP assegnato in modo permanente dal proprio ISP. In questo caso, il pannello consente di associare le policy di filtraggio a una rete identificata da uno specifico IP, garantendo che tutte le richieste DNS provenienti da tale rete siano sottoposte ai controlli e ai filtri impostati;
 
   \item \textbf{IP pubblico dinamico}: per le reti che non dispongono di un IP pubblico statico, il sistema supporta la configurazione tramite DynamicDNS \cite{rfc2136}. Questo approccio consente di monitorare e filtrare le richieste DNS anche quando l’indirizzo IP della rete varia nel tempo, utilizzando un sistema di aggiornamento dinamico che associa un nome di dominio all’IP corrente della rete. Questo garantisce continuità nella protezione senza la necessità di aggiornamenti manuali;
-
-  \item \textbf{Push-Device}: la terza modalità prevede l’utilizzo di dispositivi hardware dedicati, denominati \textit{Push-Device}, basati su tecnologia Mikrotik\footnote{\url{https://mikrotik.com}} e acquistabili direttamente dall’azienda. Questi dispositivi agiscono come intermediari tra la rete locale e il pannello di configurazione, instradando tutte le richieste DNS attraverso il filtro. Questa soluzione è particolarmente utile per le organizzazioni che richiedono una configurazione rapida e una gestione centralizzata delle reti da proteggere.
 \end{itemize}
 
 \subsubsection{Visualizzazione e analisi dei report}
@@ -247,3 +245,7 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
 \end{itemize}
 
 Le scelte progettuali adottate per l'implementazione delle funzionalità sviluppate nel contesto di questa tesi verranno discusse nel capitolo successivo.
+
+\subsection{Analisi del dominio del nuovo sistema}
+
+Nell'ambito della progettazione del nuovo sistema, è stato necessario analizzare il dominio applicativo per strutturare in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi permette di definire una base concettuale per la modellazione dei dati e per l'implementazione delle funzionalità richieste. Al momento, la modellazione è ancora in fase di sviluppo e riguarda principalmente la gestione degli utenti e dei loro permessi, in linea con l'obiettivo di supportare la multiutenza e garantire una gestione centralizzata delle autorizzazioni.
