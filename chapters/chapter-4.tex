@@ -28,8 +28,28 @@ Anche tutte le operazioni di elaborazione dei dati, come le computazioni o la ge
 \subsection{Backend}
 Come già accennato, il backend non è stato concepito come un unico servizio monolitico, ma si è optato per una suddivizione in più microservizi, ciascuno responsabile di una specifica funzionalità o modulo del sistema. Questa scomposizione è stata ottenuta analizzando il sistema legacy, identificando le principali componenti e progettando un microservizio per ognuna di esse.
 
-Tutti i microservizi del backend sono progettati secondo un'architettura uniforme, la quale implementa un servizio Web che espone un'API di tipo REST. Questo standardizzazione agevola lo sviluppo e la manutenzione del backend, rendendo i microservizi facilmente scalabili e intercambiabili. Più in dettaglio, ogni microservizio è strutturato secondo i seguenti livelli:
+Di seguito, vengono descritte le principali componenti di cui il backend è composto.
 
+\paragraph{Auth}
+Il microservizio \texttt{auth} è responsabile dell'autenticazione e dell'autorizzazione degli utenti. L'autenticazione è implementata attraverso il meccanismo JWT (JSON Web Token), che consente di gestire sessioni sicure senza la necessità di mantenere uno stato lato server.
+L'autorizzazione, invece, fornisce un sistema per determinare se un utente ha i permessi necessari per eseguire una determinata azione. Questa valutazione si basa sul ruolo dell'utente e sulla licenza a lui associata, garantendo così un controllo granulare sugli accessi alle funzionalità della piattaforma.
+
+\paragraph{Report}
+Il microservizio \texttt{report} gestisce la generazione e la visualizzazione dei report relativi alle attività di filtraggio DNS. Nella prima versione del sistema, questa funzionalità è limitata alla visualizzazione di report specifici per gli MSP. Questo microservizio si interfaccia con il database per raccogliere e aggregare i dati necessari, fornendo agli utenti una panoramica dettagliata sull'attività di filtraggio e sull'efficacia delle policy applicate.
+
+\paragraph{Organization}
+Il microservizio \texttt{organization} è un componente chiave per l'implementazione della multiutenza. Esso si occupa di gestire tutte le operazioni CRUD sugli utenti, consentendo di creare nuovi account, modificare i ruoli, nonché rimuovere utenti dalle organizzazioni.
+Grazie a questo servizio, più utenti possono essere associati a un'unica organizzazione con livelli di accesso differenziati, migliorando la flessibilità e la gestione delle autorizzazioni.
+
+\paragraph{Protection}
+Il microservizio \texttt{protection} è responsabile della gestione delle policy di protezione applicate agli utenti e alle organizzazioni. Questo servizio permette di creare, modificare ed eliminare i profili di protezione, ossia insiemi di regole che determinano quali contenuti possono essere filtrati o consentiti.
+Inoltre, gestisce la creazione e l’amministrazione dei profili condivisi, che consentono di applicare una configurazione comune a più clienti senza dover definire manualmente le stesse regole per ciascuno di essi.
+
+\paragraph{Licensing}
+Il microservizio \texttt{licensing} si occupa della gestione delle licenze associate agli utenti e alle organizzazioni. Attraverso questo servizio, è possibile visualizzare lo stato delle licenze attive, gestire le assegnazioni e monitorare la loro scadenza.
+Questo microservizio è essenziale per garantire che ogni utente abbia accesso solo alle funzionalità previste dal proprio piano, permettendo un controllo efficace sui livelli di servizio offerti.
+
+Tutti i microservizi appena discussi seguono un'architettura uniforme, basata sull'esposizione di API REST da parte del framework Web Express\footnote{\url{https://expressjs.com}}. Questa standardizzazione semplifica lo sviluppo e la manutenzione, garantendo che i microservizi siano facilmente scalabili e sostituibili senza impattare il funzionamento complessivo del sistema. Dal punto di vista strutturale, ogni microservizio è organizzato secondo un'architettura a livelli, composta dalle seguenti componenti:
 \begin{itemize}
   \item \textbf{Routes}: file che definiscono tutte le rotte e la loro struttura, specificando i percorsi, i parametri e i metodi HTTP supportati. Questo livello si occupa di mappare le richieste esterne ai rispettivi controller.
 
