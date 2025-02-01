@@ -137,7 +137,7 @@ Dopo il rilascio, la fase di transizione sarà limitata esclusivamente al period
 
 Questa strategia di transizione consente di semplificare il passaggio al nuovo sistema, evitando la necessità di mantenere attivi entrambi i pannelli per un lungo periodo. Inoltre, riduce i rischi legati alla gestione della retrocompatibilità e permette di concentrare gli sforzi sullo sviluppo del nuovo sistema senza vincoli imposti dall’integrazione con il legacy.
 
-\section{Obiettivi e requisiti del nuovo sistema}
+\section{Analisi del nuovo sistema}
 \subsection{Obiettivi}
 Il nuovo sistema nasce con l'obiettivo di posizionarsi come una soluzione moderna e professionale, capace di soddisfare le esigenze di un mercato in espansione e di attirare anche clienti di grandi dimensioni. Per raggiungere questo scopo, è fondamentale che il pannello abbia un'interfaccia più curata e in linea con gli standard richiesti da organizzazioni complesse. Questo aspetto si inserisce in un più ampio percorso di rinnovamento della \textit{brand identity} aziendale, che include un nuovo logo, una palette di colori aggiornata e uno stile comunicativo uniforme.
 
@@ -246,6 +246,64 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
 
 Le scelte progettuali adottate per l'implementazione delle funzionalità sviluppate nel contesto di questa tesi verranno discusse nel capitolo successivo.
 
-\subsection{Analisi del dominio del nuovo sistema}
+\subsection{Analisi del dominio}
+Nell'ambito della progettazione del nuovo sistema, è stato necessario analizzare il dominio applicativo per strutturare in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi permette di definire una base concettuale per la modellazione dei dati e per l'implementazione delle funzionalità richieste. Al momento, la modellazione è ancora in fase di sviluppo e la seguente descrizione delinea una versione parziale del sistema, in cui le entità \textbf{Protection}, \textbf{Network}, \textbf{License} e \textbf{Report} non sono state ancora completamente definite insieme al team aziendale. Tuttavia, si è deciso di includerle ugualmente in modo da fornire un quadro più chiaro dell'intero dominio. Al contrario, le entità \textbf{Organization} e \textbf{User} sono state completamente modellate e rappresentano il cuore del sistema multi-tenant.
 
-Nell'ambito della progettazione del nuovo sistema, è stato necessario analizzare il dominio applicativo per strutturare in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi permette di definire una base concettuale per la modellazione dei dati e per l'implementazione delle funzionalità richieste. Al momento, la modellazione è ancora in fase di sviluppo e riguarda principalmente la gestione degli utenti e dei loro permessi, in linea con l'obiettivo di supportare la multiutenza e garantire una gestione centralizzata delle autorizzazioni.
+\subsubsection{Descrizione del Modello}
+In \Cref{fig:domain_model} è riportato il diagramma delle classi in formato UML che rappresenta il dominio applicativo del nuovo sistema. Tale rappresentazione, non ha la pretesa di essere esaustiva, soprattutto dal punto di vista degli attributi e dei metodi delle classi, ma mira a fornire una visione d'insieme delle entità coinvolte e delle relazioni tra di esse.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{./figures/nuovo-cloud-model.png}
+  \caption{Diagramma delle classi relativo al dominio applicativo del nuovo sistema.}
+  \label{fig:domain_model}
+\end{figure}
+
+\subsubsection{Organization}
+L'entità \texttt{Organization} rappresenta il fulcro del sistema multi-tenant ed è il punto di riferimento per tutte le altre componenti. Ogni utente, configurazione di filtraggio e reportistica è direttamente associato a un'organizzazione, che costituisce il contesto primario in cui avvengono le operazioni all'interno del sistema.
+
+L'organizzazione è l'elemento che definisce l'esistenza stessa di un utente all'interno del sistema. Questi ultimi, infatti, non esistono al di fuori del contesto organizzativo: ogni utente deve appartenere a una specifica organizzazione e non può operare al di fuori di essa. Al momento della creazione di una nuova organizzazione, viene automaticamente generato un primo utente con permessi di amministratore. Tale amministratore ha la facoltà di creare nuovi utenti all'interno della propria organizzazione, o in quelle da essa gestite.
+
+L'entità in questione non si limita a definire il perimetro degli utenti, ma è il nodo centrale attorno al quale ruotano tutte le altre configurazioni del sistema. Ogni organizzazione è associata a una o più reti (Network), che rappresentano gli indirizzi IP da sottoporre al filtraggio DNS. Le configurazioni di protezione (Protection), che definiscono cosa filtrare, sono legate all'organizzazione e non ai singoli utenti. Questo significa che tutte le policy di filtraggio sono decise a livello organizzativo. I dati statistici relativi all’utilizzo del sistema di filtraggio DNS sono raccolti e visualizzati a livello di organizzazione, consentendo agli utenti di monitorare il traffico filtrato e le attività correlate.
+
+Ogni organizzazione è identificata da un id univoco, un nome e una tipologia che ne determina il ruolo all'interno del sistema. Esistono due macrotipologie di organizzazione:
+\begin{itemize}
+  \item Organizzazioni che gestiscono altre organizzazioni, ovvero Managed Service Provider e Dealer.
+    \begin{itemize}
+      \item MSP: oltre a rivendere il servizio di filtraggio DNS, si occupano direttamente della gestione della protezione per i loro clienti. In questo modello, il cliente finale non ha autonomia sulle proprie policy di protezione, in quanto è l'MSP a definirle e amministrarle.
+      \item Dealer: rivendono il servizio di filtraggio DNS, ma senza occuparsi della configurazione delle policy. I clienti finali hanno piena libertà di gestione delle proprie protezioni.
+    \end{itemize}
+  \item Clienti finali, che possono essere:
+    \begin{itemize}
+      \item Altre organizzazioni, come scuole, hotel, aziende, attività commerciali.
+      \item Singoli individui, che desiderano proteggere la propria rete domestica e i propri dispositivi personali.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{User}
+L'entità \texttt{User} rappresenta qualsiasi soggetto in grado di accedere al pannello di configurazione di un'organizzazione ed eseguire azioni sulla base dei permessi definiti dal proprio ruolo. Gli utenti operano sempre all'interno del contesto di un'organizzazione, non potendo esistere in modo indipendente. Il sistema adotta un modello a ruoli per differenziare le capacità operative di ciascun utente, limitandone o ampliandone i privilegi a seconda delle necessità organizzative.
+
+Esistono cinque tipologie di utenti, ciascuna con permessi specifici nell'ambito della propria organizzazione:
+\begin{itemize}
+  \item \textbf{SuperAdmin}: rappresenta l'utente con i più alti privilegi possibili. Questo ruolo è riservato al team di supporto dell'azienda produttrice del filtro DNS e gode di accesso illimitato a tutte le organizzazioni registrate nel sistema. Un SuperAdmin può creare ed eliminare utenti e organizzazioni, modificare qualsiasi policy e visionare tutti i report disponibili, indipendentemente dal cliente a cui sono associati.
+  \item \textbf{Admin}: è l'utente amministratore della propria organizzazione e di tutte quelle al di sotto di essa nella gerarchia. Ha pieno controllo sulle entità amministrate ed è l'unico utente con il permesso di creare nuovi account all'interno del proprio contesto organizzativo.
+  \item \textbf{Policy}: ha la facoltà di gestire le reti (Network) e i profili di protezione (Protection) all'interno della propria organizzazione. Non dispone di permessi amministrativi e non può gestire gli utenti.
+  \item \textbf{Editor}: ha privilegi simili all'utente di tipo Policy, ma con un ambito più ristretto. In particolare, può gestire solo le configurazioni di sicurezza (Protection), senza poter modificare le impostazioni delle reti.
+  \item \textbf{ReadOnly}: è l'utente con il livello di accesso più limitato. Ha esclusivamente il permesso di visionare report e statistiche, senza poter modificare alcuna configurazione. Il suo ruolo è strettamente legato al monitoraggio passivo delle attività del filtro DNS per una data organizzazione.
+\end{itemize}
+
+Ogni utente è identificato da un id, un nome, un ruolo e un username. Il campo username contiene l'indirizzo email dell'utente ed è utilizzato per l'autenticazione all'interno del sistema.
+
+\subsubsection{License}
+L'entità \texttt{License} rappresenta una delle componenti ancora in fase di modellazione, ma il suo ruolo nel sistema è chiaro: essa determina il livello di servizio del prodotto associato a un'organizzazione e influisce sui permessi e sulle funzionalità disponibili per quest’ultima. Ogni organizzazione deve disporre di almeno una licenza attiva per poter usufruire del servizio di filtraggio DNS.
+
+Esistono diverse tipologie di licenze, tra cui quelle di prova, che vengono fornite gratuitamente con lo scopo di illustrare e dimostrare le capacità del prodotto prima di un eventuale acquisto. Oltre alle licenze di prova, sono previste licenze a pagamento con diversi livelli di servizio, i cui dettagli non sono ancora stati completamente definiti.
+
+L'assegnazione di una licenza può essere effettuata esclusivamente da un utente con il ruolo di SuperAdmin, oppure dall’Admin di un’organizzazione di tipo MSP o Dealer. Ciò significa che solo il produttore del software e gli intermediari autorizzati possono concedere o modificare una licenza per un'organizzazione cliente.
+
+\subsubsection{Report}
+L'entità \texttt{Report} rappresenta la capacità del sistema di generare e visualizzare dati analitici relativi all'attività di filtraggio DNS per una o più organizzazioni. Lo scopo principale di un report è quello di fornire un monitoraggio dettagliato sull'utilizzo del filtro, offrendo statistiche utili per comprendere il traffico di rete e l'efficacia delle policy di protezione adottate. Tra le informazioni contenute in un report vi sono, ad esempio, il numero di richieste DNS bloccate, le cinque categorie di siti più frequentemente filtrate, il numero di domini non risolti e altri indicatori rilevanti per la sicurezza della rete.
+
+Una caratteristica distintiva del nuovo sistema è la possibilità di generare report aggregati, che includono dati provenienti da più organizzazioni. Questa funzionalità è particolarmente utile per gli MSP, in quanto consente loro di ottenere una panoramica completa e centralizzata sui clienti che gestiscono. I report aggregati possono includere informazioni come l’elenco dei malware rilevati e i dispositivi su cui sono stati identificati, il numero di sessioni attive e altre metriche relative alla sicurezza e alla gestione del traffico DNS.
+
+L'entità `Report` non è ancora stata completamente modellata, ma il suo ruolo nel sistema è fondamentale per garantire una visibilità chiara e approfondita sull’efficacia delle configurazioni di filtraggio applicate alle reti delle organizzazioni.
