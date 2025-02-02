@@ -7,7 +7,7 @@ Solo una volta completato, il nuovo pannello sostituirà integralmente il legacy
 
 Proseguendo, il capitolo illustrerà gli obiettivi e i requisiti principali che hanno guidato la progettazione del nuovo sistema, preparando la discussione del capitolo successivo, in cui verranno descritte nel dettaglio le scelte architetturali adottate per superare le limitazioni del sistema legacy e rispondere alle nuove esigenze aziendali e di mercato.
 
-Per concludere il capitolo, verrà effettuata l'analisi del dominio applicativo, con l'obiettivo di identificare i concetti e le funzionalità chiave del sistema legacy. Questa analisi è fondamentale per comprendere a fondo il contesto in cui si colloca il nuovo sistema e per garantire una corretta trasposizione delle funzionalità esistenti nel nuovo pannello di configurazione.
+Infine, la parte finale del capitolo sarà dedicata all'analisi del dominio applicativo, con l'obiettivo di identificare i concetti e le entità fondamentali del sistema legacy che verranno utilizzati per la progettazione del nuovo sistema. Questa analisi è essenziale per definire una base strutturata su cui modellare le funzionalità del nuovo pannello di configurazione, garantendo una transizione coerente e ben organizzata dalle logiche del sistema precedente a quelle della nuova implementazione.
 
 \section{Introduzione al sistema esistente}
 Il sistema legacy qui esaminato rappresenta un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl}\footnote{\url{https://flashstart.com}} per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette fatte durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente.
@@ -131,7 +131,7 @@ Un design grafico superato e poco efficiente limita inoltre la capacità del sis
 Le limitazioni evidenziate, che includono l’assenza di funzionalità essenziali come la multiutenza e i profili condivisibili, le debolezze architetturali e i problemi legati all’usabilità e all’interfaccia utente, mettono in luce la rigidità e l'obsolescenza del sistema legacy. Tali carenze ostacolano non solo l'efficienza operativa e la scalabilità del sistema, ma anche la capacità dell'azienda di rispondere alle richieste di mercato e di competere con soluzioni moderne. Questi fattori rendono indispensabile una completa reingegnerizzazione per soddisfare le esigenze attuali e future, garantendo al contempo un sistema moderno, scalabile ed efficiente.
 
 \section{Esigenze di transizione tra i due sistemi}
-La transizione dal sistema legacy al nuovo pannello di configurazione seguirà una strategia differente rispetto a quanto inizialmente previsto. Non sarà più adottato un approccio di coesistenza graduale tra i due sistemi, bensì una transizione netta non appena il nuovo sistema sarà pronto per il rilascio. Durante la fase di sviluppo, il vecchio pannello rimarrà l’unico utilizzato dagli utenti, mentre il nuovo verrà completato fino a includere tutte le quattro macrofunzionalità fondamentali necessarie per garantirne l’operatività, oltre a una nuova funzionalità dedicata alla gestione dei profili condivisi (\emph{template}). Solo a quel punto avverrà il passaggio definitivo al nuovo sistema.
+La transizione dal sistema legacy al nuovo pannello di configurazione seguirà una strategia differente rispetto a quanto inizialmente previsto. Non sarà più adottato un approccio di coesistenza graduale tra i due sistemi, bensì una transizione netta non appena il nuovo sistema sarà pronto per il rilascio. Durante la fase di sviluppo, il vecchio pannello rimarrà l’unico utilizzato dagli utenti, mentre il nuovo verrà completato fino a includere tutte le macrofunzionalità fondamentali necessarie per garantirne l’operatività, oltre a una nuova funzionalità dedicata alla gestione dei profili condivisi. Solo a quel punto avverrà il passaggio definitivo al nuovo sistema.
 
 Poiché gli utenti si ritroveranno i propri dati direttamente nel nuovo pannello, la migrazione delle informazioni dal legacy al nuovo sistema diventa un requisito fondamentale. Questo processo avverrà internamente all’azienda e dovrà garantire che tutti i dati necessari alle funzionalità trasferite siano disponibili nel nuovo sistema prima del rilascio. Le strategie di migrazione adottate dovranno assicurare la completa integrità e coerenza delle informazioni, evitando perdite o incongruenze tra i due ambienti.
 
@@ -187,7 +187,7 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
 
   \item \textbf{Gestione dei template di protezione}:
     \begin{itemize}
-      \item Il sistema deve consentire la creazione e la gestione di insiemi di regole di protezione globali, detti \emph{template}, che possono essere assegnati a diversi clienti.
+      \item Il sistema deve consentire la creazione e la gestione di template, che possono essere assegnati a diversi clienti.
       \item I template devono supportare opzioni di configurazione come: categorie e applicazioni da bloccare, paesi da bloccare, attivazione SafeSearch, blocco completo tranne alcuni domini specifici.
       \item Le modifiche apportate ai template devono essere propagate automaticamente a tutti i clienti a cui sono stati assegnati.
       \item Devono essere disponibili template di eccezioni personalizzati, configurabili per soddisfare esigenze specifiche.
@@ -249,7 +249,11 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
 Le scelte progettuali adottate per l'implementazione delle funzionalità sviluppate nel contesto di questa tesi verranno discusse nel capitolo successivo.
 
 \subsection{Analisi del dominio}
-Nell'ambito della progettazione del nuovo sistema, è stato necessario analizzare il dominio applicativo per strutturare in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi permette di definire una base concettuale per la modellazione dei dati e per l'implementazione delle funzionalità richieste. Al momento, la modellazione è ancora in fase di sviluppo e la seguente descrizione delinea una versione parziale del sistema, in cui le entità \textbf{Protection}, \textbf{Network}, \textbf{License} e \textbf{Report} non sono state ancora completamente definite insieme al team aziendale. Tuttavia, si è deciso di includerle ugualmente in modo da fornire un quadro più chiaro dell'intero dominio. Al contrario, le entità \textbf{Organization} e \textbf{User} sono state completamente modellate e rappresentano il cuore del sistema multi-tenant.
+Per progettare correttamente il nuovo sistema, è stato necessario analizzare il dominio applicativo, partendo dalla struttura concettuale del sistema legacy per definire in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi fornisce una base strutturata per la modellazione dei dati e per l'implementazione delle funzionalità previste nel nuovo pannello di configurazione.
+
+Attualmente, la modellazione è ancora in fase di sviluppo e la seguente descrizione rappresenta una versione parziale del sistema. In particolare, le entità \textbf{Protection}, \textbf{Network}, \textbf{License} e \textbf{Report} non sono state ancora completamente definite insieme al team aziendale. Tuttavia, si è scelto di includerle ugualmente per fornire un quadro più completo del dominio e delineare le aree che necessiteranno di ulteriori approfondimenti.
+
+Al contrario, le entità \textbf{Organization} e \textbf{User} sono state completamente modellate e costituiscono il nucleo del sistema multi-tenant.
 
 \subsubsection{Descrizione del Modello}
 In \Cref{fig:domain_model} è riportato il diagramma delle classi in formato UML che rappresenta il dominio applicativo del nuovo sistema. Tale rappresentazione, non ha la pretesa di essere esaustiva, soprattutto dal punto di vista degli attributi e dei metodi delle classi, ma mira a fornire una visione d'insieme delle entità coinvolte e delle relazioni tra di esse.
@@ -290,7 +294,7 @@ Esistono cinque tipologie di utenti, ciascuna con permessi specifici nell'ambito
   \item \textbf{SuperAdmin}: rappresenta l'utente con i più alti privilegi possibili. Questo ruolo è riservato al team di supporto dell'azienda produttrice del filtro DNS e gode di accesso illimitato a tutte le organizzazioni registrate nel sistema. Un SuperAdmin può creare ed eliminare utenti e organizzazioni, modificare qualsiasi policy e visionare tutti i report disponibili, indipendentemente dal cliente a cui sono associati.
   \item \textbf{Admin}: è l'utente amministratore della propria organizzazione e di tutte quelle al di sotto di essa nella gerarchia. Ha pieno controllo sulle entità amministrate ed è l'unico utente con il permesso di creare nuovi account all'interno del proprio contesto organizzativo.
   \item \textbf{Policy}: ha la facoltà di gestire le reti (Network) e i profili di protezione (Protection) all'interno della propria organizzazione. Non dispone di permessi amministrativi e non può gestire gli utenti.
-  \item \textbf{Editor}: ha privilegi simili all'utente di tipo Policy, ma con un ambito più ristretto. In particolare, può gestire solo le configurazioni di sicurezza (Protection), senza poter modificare le impostazioni delle reti.
+  \item \textbf{Editor}: ha privilegi simili all'utente di tipo Policy, ma con un ambito più ristretto. In particolare, può gestire solo le configurazioni di sicurezza, senza poter modificare le impostazioni delle reti.
   \item \textbf{ReadOnly}: è l'utente con il livello di accesso più limitato. Ha esclusivamente il permesso di visionare report e statistiche, senza poter modificare alcuna configurazione. Il suo ruolo è strettamente legato al monitoraggio passivo delle attività del filtro DNS per una data organizzazione.
 \end{itemize}
 
@@ -308,4 +312,47 @@ L'entità \texttt{Report} rappresenta la capacità del sistema di generare e vis
 
 Una caratteristica distintiva del nuovo sistema è la possibilità di generare report aggregati, che includono dati provenienti da più organizzazioni. Questa funzionalità è particolarmente utile per gli MSP, in quanto consente loro di ottenere una panoramica completa e centralizzata sui clienti che gestiscono. I report aggregati possono includere informazioni come l’elenco dei malware rilevati e i dispositivi su cui sono stati identificati, il numero di sessioni attive e altre metriche relative alla sicurezza e alla gestione del traffico DNS.
 
-L'entità `Report` non è ancora stata completamente modellata, ma il suo ruolo nel sistema è fondamentale per garantire una visibilità chiara e approfondita sull’efficacia delle configurazioni di filtraggio applicate alle reti delle organizzazioni.
+L'entità Report non è ancora stata completamente modellata, ma il suo ruolo nel sistema è fondamentale per garantire una visibilità chiara e approfondita sull’efficacia delle configurazioni di filtraggio applicate alle reti delle organizzazioni.
+
+\subsubsection{Protection}
+L'entità \texttt{Protection} rappresenta il concetto di protezione associato a una rete (Network), determinando in che modo il sistema di filtraggio DNS deve bloccare o consentire l'accesso ai contenuti. Ogni istanza di Protection è composta da una lista di policy di sicurezza, ognuna delle quali specifica una particolare configurazione del filtro. Generalmente, una Protection viene creata da un'organizzazione e assegnata a una o più delle proprie reti, definendo le regole di filtraggio applicate al traffico generato da tali indirizzi IP.
+
+Con lo sviluppo del nuovo sistema, l’entità in esame introduce un'importante evoluzione: la possibilità di essere condivisa tra più organizzazioni. Se un’Organization crea una Protection e la contrassegna come condivisibile, tale configurazione potrà essere visualizzata e assegnata dai clienti gestiti dall'organizzazione creatrice. Questa funzionalità risulta particolarmente utile per gli MSP e i Dealer, che possono fornire ai propri clienti configurazioni predefinite e standardizzate senza richiedere loro di crearne di nuove.
+
+Un ulteriore vantaggio del nuovo modello è la propagazione automatica delle modifiche per le Protection condivise. Se l’organizzazione creatrice aggiorna una configurazione di protezione condivisa, tutte le organizzazioni che la utilizzano vedranno applicate automaticamente le modifiche senza necessità di intervento manuale. Per supportare questa logica, la modellazione prevede due relazioni distinte tra Protection e Organization:
+\begin{enumerate}
+  \item Una relazione di \textit{associazione semplice} che esprime la creazione, collegando un’Organization alla Protection che ha generato.
+  \item Una relazione di \textit{aggregazione} che esprime l’utilizzo, collegando una Protection a una o più Organization che la utilizzano. Questa relazione è valida sia per le Protection non condivise, che per quelle condivise.
+\end{enumerate}
+
+Nonostante la sua importanza, Protection da sola non è sufficiente a garantire il livello di granularità richiesto da un moderno sistema di filtraggio DNS. Per questo motivo, essa è composta da una lista di configurazioni più specifiche, rappresentate dall'entità ProtectionPolicy, che definisce nel dettaglio il comportamento della protezione.
+
+\subsubsection{ProtectionPolicy}
+L'entità \texttt{ProtectionPolicy} rappresenta un insieme di regole appartenenti alla stessa tipologia di protezione, definita dall'attributo \texttt{ProtectionType}. Poiché il sistema di filtraggio DNS prevede diverse categorie di protezione, la modellazione adotta una struttura a due livelli: l'entità Protection mantiene la lista delle policy applicate, mentre ogni elemento di questa lista (ProtectionPolicy) contiene le regole specifiche relative a una determinata categoria di protezione.
+
+Questa suddivisione consente di organizzare in modo chiaro e modulare le configurazioni di sicurezza. Un'istanza di Protection può essere composta da più ProtectionPolicy, ciascuna responsabile di un particolare aspetto del filtraggio. Questo approccio permette alle organizzazioni di combinare diverse policy all'interno di un'unica configurazione di protezione, garantendo così una gestione flessibile e scalabile delle regole di filtraggio DNS.
+
+I possibili tipi di protezione (ProtectionType) includono:
+\begin{itemize}
+  \item \textbf{ThreatProtection}: blocca siti identificati come minacce alla sicurezza, come malware e phishing.
+  \item \textbf{ContentFilter}: filtra i contenuti sulla base della loro categoria tematica (es. pornografia, giochi d'azzardo, social network).
+  \item \textbf{ApplicationBlock}: impedisce l’accesso a specifiche applicazioni o servizi online.
+  \item \textbf{IPAddressBlock}: blocca l'accesso a determinati indirizzi IP.
+  \item \textbf{SearchEnginesProtection}: applica restrizioni alle ricerche sui motori di ricerca, come l'attivazione forzata della modalità SafeSearch.
+  \item \textbf{GeoBlock}: limita l’accesso a domini o indirizzi IP in base alla loro geolocalizzazione.
+  \item \textbf{AllowList} e \textbf{BlockList}: definiscono eccezioni personalizzate, rispettivamente per consentire o bloccare domini specifici.
+\end{itemize}
+
+\subsubsection{Network}
+L'entità \texttt{Network} riveste un ruolo fondamentale nel presente dominio applicativo, in quanto definisce l’ambito su cui devono essere applicate le regole di protezione del filtro DNS. Ogni rete è associata a un'Organization e rappresenta il punto di ingresso del traffico che verrà sottoposto a filtraggio. La configurazione della protezione di una rete è determinata dalla Protection assegnata ad essa, specificando così quali policy devono essere applicate.
+
+Questa relazione tra Network e Organization è modellata come una \textit{composizione}, indicando che una rete non può esistere senza l’Organization a cui appartiene. Se un'organizzazione viene eliminata, anche tutte le reti ad essa associate vengono rimosse.
+
+Una rete può appartenere a una delle seguenti tipologie, identificate dall'enumerazione \texttt{NetworkType}:
+\begin{itemize}
+  \item \textbf{Static}: identifica reti con un indirizzo IP statico, il cui riferimento rimane invariato nel tempo.
+  \item \textbf{Dynamic}: rappresenta reti con indirizzo IP dinamico, che necessitano dell’ausilio di un servizio di DynamicDNS per garantire un'associazione stabile nel tempo.
+  \item \textbf{Remote}: utilizzata per proteggere dispositivi mobili ed endpoint aziendali che richiedono la protezione del filtro DNS anche quando non sono connessi alla rete principale dell'organizzazione.
+\end{itemize}
+
+Ogni Network è identificata da un id, da un ipAddress e da un flag isCIDR, che indica se l’indirizzo IP è espresso in formato CIDR\footnote{\url{https://datatracker.ietf.org/doc/html/rfc4632}}. L’associazione tra Network e Protection permette di applicare un insieme di policy a una specifica rete, garantendo così un controllo granulare sul filtraggio del traffico DNS.
