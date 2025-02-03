@@ -1,4 +1,4 @@
-\section{Design del nuovo sistema}
+\chapter{Design}
 
 Il presente capitolo descrive le scelte architetturali, tecnologiche e progettuali adottate per soddisfare gli obiettivi e i requisiti definiti nel capitolo precedente. L'attenzione si concentra sulle funzionalità sviluppate o analizzate durante il tirocinio, pur accennando alle linee guida per alcune delle funzionalità future, al fine di offrire una visione più completa del sistema.
 
@@ -26,9 +26,9 @@ Un altro aspetto chiave dell'architettura è la gestione dell'autenticazione, im
 Anche tutte le operazioni di elaborazione dei dati, come le computazioni o la gestione delle regole di business, sono demandate al backend. Questo approccio garantisce una maggiore coerenza e centralizzazione della logica applicativa, riducendo la complessità del frontend e migliorando la scalabilità del sistema.
 
 \subsection{Backend}
-Come già accennato, il backend non è stato concepito come un unico servizio monolitico, ma si è optato per una suddivizione in più microservizi, ciascuno responsabile di una specifica funzionalità o modulo del sistema. Questa scomposizione è stata ottenuta analizzando il sistema legacy, identificando le principali componenti e progettando un microservizio per ognuna di esse.
+Come già accennato, il backend non è stato concepito come un unico servizio monolitico, ma si è optato per una suddivisione in più microservizi, ciascuno responsabile di una specifica funzionalità o modulo del sistema. La definizione di questi microservizi è stata guidata dall'analisi del dominio (\Cref{sec:domain-analysis}), individuando le principali entità e le loro responsabilità all'interno dell'architettura complessiva. Questo approccio ha permesso di modellare il backend in modo coerente con le esigenze del sistema, garantendo una chiara separazione delle responsabilità e facilitando l'evoluzione futura della piattaforma.
 
-Di seguito, vengono descritte le principali componenti di cui il backend è composto.
+Di seguito, vengono descritti i principali microservizi di cui il backend è composto.
 
 \paragraph{Auth}
 Il microservizio \texttt{auth} è responsabile dell'autenticazione e dell'autorizzazione degli utenti. L'autenticazione è implementata attraverso il meccanismo JWT (JSON Web Token), che consente di gestire sessioni sicure senza la necessità di mantenere uno stato lato server.
@@ -49,15 +49,24 @@ Inoltre, gestisce la creazione e l’amministrazione dei profili condivisi, che 
 Il microservizio \texttt{licensing} si occupa della gestione delle licenze associate agli utenti e alle organizzazioni. Attraverso questo servizio, è possibile visualizzare lo stato delle licenze attive, gestire le assegnazioni e monitorare la loro scadenza.
 Questo microservizio è essenziale per garantire che ogni utente abbia accesso solo alle funzionalità previste dal proprio piano, permettendo un controllo efficace sui livelli di servizio offerti.
 
-Tutti i microservizi appena discussi seguono un'architettura uniforme, basata sull'esposizione di API REST da parte del framework Web Express\footnote{\url{https://expressjs.com}}. Questa standardizzazione semplifica lo sviluppo e la manutenzione, garantendo che i microservizi siano facilmente scalabili e sostituibili senza impattare il funzionamento complessivo del sistema. Dal punto di vista strutturale, ogni microservizio è organizzato secondo un'architettura a livelli, composta dalle seguenti componenti:
+\subsubsection{Architettura a livelli}
+Tutti i microservizi appena discussi seguono un'architettura uniforme, basata sull'esposizione di API REST da parte del framework Web Express\footnote{\url{https://expressjs.com}}. Questa standardizzazione semplifica lo sviluppo e la manutenzione, garantendo che i microservizi siano facilmente scalabili e sostituibili senza impattare il funzionamento complessivo del sistema. Dal punto di vista strutturale, ogni microservizio è organizzato secondo un'architettura a livelli, ben visibile in \Cref{fig:microservice-architecture}, e composta dalle seguenti componenti:
+
 \begin{itemize}
-  \item \textbf{Routes}: file che definiscono tutte le rotte e la loro struttura, specificando i percorsi, i parametri e i metodi HTTP supportati. Questo livello si occupa di mappare le richieste esterne ai rispettivi controller.
+  \item \textbf{Routes}: rappresentano il punto di ingresso delle richieste HTTP. Si occupano di instradare ogni richiesta in base al percorso e al metodo HTTP associato, inoltrandola al controller appropriato per la gestione.
 
-  \item \textbf{Controllers}: contengono i metodi responsabili della gestione delle richieste HTTP. I controller ricevono le richieste, ne validano i parametri, delegano l'elaborazione ai servizi, raccolgono i risultati e generano le risposte HTTP in formato JSON.
+  \item \textbf{Controllers}: gestiscono le richieste ricevute, validano i parametri in ingresso ed eseguono le operazioni necessarie delegando l’elaborazione al livello dei servizi. Una volta ottenuto il risultato, i controller generano le risposte HTTP da restituire ai client.
 
-  \item \textbf{Services}: introducono un grado di astrazione tra i controller e il livello di accesso ai dati (repository). I servizi implementano la logica di business, interagiscono con la base di dati tramite i repository e gestiscono operazioni come la serializzazione e deserializzazione dei dati. Questo strato garantisce che la rappresentazione dei dati sul database sia trasparente agli utilizzatori delle API, come il frontend.
+  \item \textbf{Services}: costituiscono il livello dedicato all'implementazione della logica di business. Si occupano di elaborare i dati e interagire con il livello di accesso agli stessi, senza dipendere direttamente dalle richieste HTTP. Questo livello intermedio garantisce una maggiore modularità e facilita il riutilizzo delle funzionalità tra diversi controller.
 
-  \item \textbf{Repositories}: rappresentano il livello più vicino ai dati. Qui vengono implementati i metodi che accedono direttamente al database e che eseguono operazioni CRUD specifiche per i vari tipi di dati gestiti. I repository devono rimanere semplici e focalizzati esclusivamente sull'accesso ai dati, senza includere logica di business o presentazione.
+  \item \textbf{Repositories}: forniscono un’interfaccia per l’accesso ai dati, eseguendo operazioni di lettura e scrittura sul database. Questo livello è responsabile esclusivamente della gestione dei dati e dell'interazione con il database, mantenendo separata la logica applicativa dal livello di persistenza.
 \end{itemize}
 
-Questa suddivisione in livelli garantisce una chiara separazione delle responsabilità, migliorando la manutenibilità e la scalabilità del sistema. Inoltre, l'organizzazione del backend in livelli si presta particolarmente bene a contesti come questo, in cui è necessario garantire la retrocompatibilità con una base di dati legacy, avente tabelle malformate. Con questa architettura, i livelli più alti nascondono le logiche implementative sottostanti, permettendo di gestire in modo trasparente eventuali differenze tra il nuovo schema del database e quello esistente. Inoltre, risulta agevole implementare strategie di fallback, permettendo alle funzionalità che devono ancora riferirsi al database legacy di operare senza compromettere il funzionamento generale del sistema.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/microservice-architecture.pdf}
+  \caption{Architettura a livelli dei microservizi del backend}
+  \label{fig:microservice-architecture}
+\end{figure}
+
+Questa suddivisione in livelli garantisce una chiara separazione delle responsabilità, migliorando la manutenibilità e la scalabilità del sistema. Inoltre, consente di evolvere il backend in modo strutturato, rendendo più semplice l'aggiunta di nuove funzionalità o modifiche alle logiche applicative senza impattare gli altri componenti.
