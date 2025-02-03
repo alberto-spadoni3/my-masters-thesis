@@ -252,16 +252,15 @@ Le scelte progettuali adottate per l'implementazione delle funzionalità svilupp
 Per progettare correttamente il nuovo sistema, è stato necessario analizzare il dominio applicativo, partendo dalla struttura concettuale del sistema legacy per definire in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi fornisce una base strutturata per la modellazione dei dati e per l'implementazione delle funzionalità previste nel nuovo pannello di configurazione.
 
 Attualmente, la modellazione è ancora in fase di sviluppo e la seguente descrizione rappresenta una versione parziale del sistema. In particolare, le entità \textbf{Protection}, \textbf{Network}, \textbf{License} e \textbf{Report} non sono state ancora completamente definite insieme al team aziendale. Tuttavia, si è scelto di includerle ugualmente per fornire un quadro più completo del dominio e delineare le aree che necessiteranno di ulteriori approfondimenti.
-
+%
 Al contrario, le entità \textbf{Organization} e \textbf{User} sono state completamente modellate e costituiscono il nucleo del sistema multi-tenant.
 
-\subsubsection{Descrizione del Modello}
 In \Cref{fig:domain_model} è riportato il diagramma delle classi in formato UML che rappresenta il dominio applicativo del nuovo sistema. Tale rappresentazione, non ha la pretesa di essere esaustiva, soprattutto dal punto di vista degli attributi e dei metodi delle classi, ma mira a fornire una visione d'insieme delle entità coinvolte e delle relazioni tra di esse.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\textwidth]{./figures/nuovo-cloud-model.png}
-  \caption{Diagramma delle classi relativo al dominio applicativo del nuovo sistema.}
+  \includegraphics[width=1\textwidth]{./figures/domain-model.png}
+  \caption{Diagramma relativo al dominio applicativo del nuovo sistema.}
   \label{fig:domain_model}
 \end{figure}
 
@@ -274,15 +273,15 @@ L'entità in questione non si limita a definire il perimetro degli utenti, ma è
 
 Ogni organizzazione è identificata da un id univoco, un nome e una tipologia che ne determina il ruolo all'interno del sistema. Esistono due macrotipologie di organizzazione:
 \begin{itemize}
-  \item Organizzazioni che gestiscono altre organizzazioni, ovvero Managed Service Provider e Dealer.
+  \item \textbf{Organizzazioni che gestiscono altre organizzazioni}, ovvero Managed Service Provider e Dealer.
     \begin{itemize}
-      \item MSP: oltre a rivendere il servizio di filtraggio DNS, si occupano direttamente della gestione della protezione per i loro clienti. In questo modello, il cliente finale non ha autonomia sulle proprie policy di protezione, in quanto è l'MSP a definirle e amministrarle.
-      \item Dealer: rivendono il servizio di filtraggio DNS, ma senza occuparsi della configurazione delle policy. I clienti finali hanno piena libertà di gestione delle proprie protezioni.
+      \item \textbf{MSP}: oltre a rivendere il servizio di filtraggio DNS, si occupano direttamente della gestione della protezione per i loro clienti. In questo modello, il cliente finale non ha autonomia sulle proprie policy di protezione, in quanto è l'MSP a definirle e amministrarle.
+      \item \textbf{Dealer}: rivendono il servizio di filtraggio DNS, ma senza occuparsi della configurazione delle policy. I clienti finali hanno piena libertà di gestione delle proprie protezioni.
     \end{itemize}
-  \item Clienti finali, che possono essere:
+  \item \textbf{Clienti finali}, che possono essere:
     \begin{itemize}
-      \item Altre organizzazioni, come scuole, hotel, aziende, attività commerciali.
-      \item Singoli individui, che desiderano proteggere la propria rete domestica e i propri dispositivi personali.
+      \item \textbf{Altre organizzazioni}, come scuole, hotel, aziende, attività commerciali.
+      \item \textbf{Singoli individui}, che desiderano proteggere la propria rete domestica e i propri dispositivi personali.
     \end{itemize}
 \end{itemize}
 
