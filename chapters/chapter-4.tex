@@ -6,13 +6,20 @@ La progettazione del nuovo sistema punta a superare i limiti identificati nel le
 
 Il capitolo è strutturato come segue: dopo una descrizione dell’architettura generale del sistema, si approfondiranno le principali componenti e funzionalità chiave, come la multiutenza e la gestione degli errori. Infine, saranno discussi gli aspetti relativi al miglioramento del database e alle strategie messe in campo per garantire una corretta migrazione dei dati dal sistema legacy.
 
-\section{Architettura generale}
-
-Per la progettazione del nuovo sistema è stata adottata un'architettura a microservizi, caratterizzata da una separazione netta tra frontend e backend. Questa scelta è motivata dalla necessità di superare i limiti architetturali del sistema legacy, introducendo modularità e una chiara separazione delle responsabilità tra i vari componenti.
+\section{Architettura generale} Per la progettazione del nuovo sistema è stata adottata un'architettura a microservizi, caratterizzata da una separazione netta tra frontend e backend. Questa scelta è motivata dalla necessità di superare i limiti architetturali del sistema legacy, introducendo modularità e una chiara separazione delle responsabilità tra i vari componenti.
 
 Nel nuovo sistema, il frontend è rappresentato da un singolo microservizio dedicato alla logica di presentazione dei dati e all'interazione con l'utente. Il backend, invece, è stato suddiviso in molteplici microservizi indipendenti, ciascuno dedicato a un modulo o a una funzionalità specifica dell'applicativo. Questa scomposizione consente di ottenere una maggiore flessibilità, facilitando sia l'aggiunta di nuove funzionalità che la manutenzione del sistema.
 
-I microservizi comunicano tra loro utilizzando il protocollo HTTP e, più specificamente, attraverso API RESTful che ciascuno di essi espone. Queste API vengono inoltre utilizzate sia dal frontend sia per la creazione delle API pubbliche aziendali. Queste ultime, già presenti insieme al sistema legacy, sono state rinnovate per adattarsi alle nuove logiche di funzionamento introdotte nel nuovo sistema.
+I microservizi comunicano tra loro utilizzando il protocollo HTTP e, più specificamente, attraverso le API RESTful che ciascuno di essi espone. Esse vengono inoltre utilizzate sia dal frontend sia per la creazione delle API pubbliche aziendali. Queste ultime, già presenti insieme al sistema legacy, sono state rinnovate per adattarsi alle nuove logiche di funzionamento introdotte nel nuovo sistema.
+
+Una rappresentazione schematica dell'architettura del sistema è riportata in \Cref{fig:system-architecture}, dove sono evidenziate le principali componenti del frontend e del backend. Il diagramma mostra come il primo gestisca l'interazione con l'utente attraverso moduli specifici per il routing e per la gestione dello stato e della sessione, mentre il secondo sia organizzato in servizi dedicati a funzionalità come gestione utenti e autenticazione.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{figures/system-architecture.pdf}
+  \caption{Architettura generale del sistema.}
+  \label{fig:system-architecture}
+\end{figure}
 
 \subsection{Frontend}
 Il frontend è stato progettato come una Single-Page Application (SPA), scelta che consente di offrire agli utenti un'esperienza fluida ed un accesso rapido da qualsiasi browser, senza bisogno di installare nessun applicativo. Questo microservizio si occupa esclusivamente della logica di presentazione, implementando l'interfaccia grafica e gestendo l'interazione con gli utenti finali. Infatti, tutte le operazioni di elaborazione dei dati, come le computazioni o la gestione delle regole di business, sono demandate al backend.
@@ -24,8 +31,7 @@ Per garantire un design coerente e accelerare lo sviluppo dell'interfaccia, è s
 \subsection{Backend}
 Come già accennato, il backend non è stato concepito come un unico servizio monolitico, ma si è optato per una suddivisione in più microservizi, ciascuno responsabile di una specifica funzionalità o modulo del sistema. La definizione di questi microservizi è stata guidata dall'analisi del dominio (\Cref{sec:domain-analysis}), individuando le principali entità e le loro responsabilità all'interno dell'architettura complessiva. Questo approccio ha permesso di modellare il backend in modo coerente con le esigenze del sistema, garantendo una chiara separazione delle responsabilità e facilitando l'evoluzione futura della piattaforma.
 
-Di seguito, vengono descritti i principali microservizi di cui il backend è composto.
-
+Di seguito, vengono descritti i principali microservizi di cui il backend è composto:
 \paragraph{Auth}
 Il microservizio \texttt{auth} è responsabile dell'autenticazione e dell'autorizzazione degli utenti. L'autenticazione è implementata attraverso il meccanismo JWT (JSON Web Token), che consente di gestire sessioni sicure senza la necessità di mantenere uno stato lato server.
 L'autorizzazione, invece, fornisce un sistema per determinare se un utente ha i permessi necessari per eseguire una determinata azione. Questa valutazione si basa sul ruolo dell'utente e sulla licenza a lui associata, garantendo così un controllo granulare sugli accessi alle funzionalità della piattaforma.
