@@ -66,7 +66,7 @@ Tutti i microservizi appena discussi seguono un'architettura uniforme, basata su
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{figures/microservice-architecture.pdf}
+  \includegraphics[width=0.8\textwidth]{figures/microservice-architecture.pdf}
   \caption{Architettura a livelli dei microservizi del backend}
   \label{fig:microservice-architecture}
 \end{figure}
@@ -104,7 +104,25 @@ L'adozione di Prisma ha quindi reso la gestione del database più strutturata, s
 Il nuovo sistema adotta un database relazionale con tecnologia PostgreSQL, scelta dettata principalmente dalla necessità di garantire la compatibilità con i dati gestiti dal sistema legacy. Oltre a questo requisito, PostgreSQL è stato selezionato per le sue caratteristiche di affidabilità, scalabilità e performance, rendendolo una soluzione solida per applicazioni che devono gestire un elevato volume di dati e richieste concorrenti.
 
 \section{Funzionalità chiave}
-% \subsection{Multiutenza}
+
+\subsection{Multiutenza e gestione degli utenti}
+
+\subsubsection{Introduzione alla multiutenza}
+Nel nuovo sistema, la multiutenza si riferisce alla possibilità per un'organizzazione di disporre di molteplici credenziali di accesso, consentendo a diversi utenti di accedere al pannello di configurazione del filtro per amministrarne le caratteristiche o monitorare le statistiche, in base al loro ruolo.. Questo rappresenta un notevole miglioramento rispetto al sistema precedente, in cui ogni cliente disponeva di un unico account con permessi di amministratore. Tale limitazione risultava problematica per le organizzazioni più strutturate, che necessitavano di un accesso distribuito tra più figure con differenti livelli di autorizzazione.
+
+\subsubsection{Modello attuale di gestione degli utenti}
+Attualmente, come già spiegato nella \Cref{sec:domain-analysis}, gli utenti esistono solo nel contesto dell'organizzazione di cui fanno parte. Ogni organizzazione, infatti, al momento della creazione, dispone di un account utente con ruolo di amministratore (Admin). Questo utente ha la possibilità di creare altri utenti, assegnando loro un ruolo specifico e un'organizzazione di appartenenza. Tale organizzazione può essere la stessa di chi effettua la creazione, oppure una delle organizzazioni gestite nel caso di utenti appartenenti a MSP o Dealer. Inoltre, l'utente con ruolo di Admin può modificare le informazioni di qualsiasi utente della propria gerarchia, nonché eliminarlo.
+
+\subsubsection{Gestione dell'autenticazione e della sessione}
+In precedenza è già stato detto che l'autenticazione nel backend avviene tramite il meccanismo JWT. La password degli utenti non viene salvata nel database in chiaro, bensì viene cifrata mediante la nota funzione di hashing \textit{bcrypt}\footnote{\url{https://en.wikipedia.org/wiki/Bcrypt}}, utilizzando un \textit{salt} con valore 10. In fase di login, il backend restituisce l'\textit{access token} nel corpo della risposta, mentre il \textit{refresh token} viene inviato come cookie HTTP-only. Questa scelta progettuale incrementa la sicurezza e semplifica la gestione lato client, poiché il browser gestisce automaticamente l'invio dei cookie nelle richieste verso il dominio del backend.
+
+Lato frontend, l'autenticazione è gestita tramite la libreria NextAuth.js\footnote{\url{https://next-auth.js.org}}, che semplifica la gestione dell'accesso e della sessione richiedendo solo una configurazione minima. Questa libreria invia automaticamente le richieste di autenticazione al backend per ottenere i token e mantiene attiva la sessione dell'utente. Inoltre, il sistema include un meccanismo di reindirizzamento automatico alla schermata di login in caso di sessione scaduta, garantendo che l'accesso al pannello avvenga solo previa autenticazione.
+
+\subsubsection{Limitazioni e aspetti da migliorare}
+Attualmente, il sistema non implementa un modello completo di Role-Based Access Control (RBAC), sebbene le entità del modello siano già predisposte per supportarlo. Oltre agli utenti Admin, esistono solo quelli ReadOnly, i quali possono essere creati dagli Admin ed accedere al pannello.
+
+La gestione dei permessi risulta complessa in quanto dipende non solo dal ruolo dell'utente, ma anche dai permessi associati all'organizzazione di appartenenza, i quali sono ulteriormente influenzati dalla tipologia di licenza associata. La soluzione prevista prevede la definizione di una lista di permessi derivanti da questi fattori, che verranno poi aggregati e consolidati in fase di autorizzazione. Questo sistema di permessi sarà applicato sia nel frontend, per la gestione dell'accesso alle pagine e ai componenti dell'interfaccia utente, sia nel backend, per la protezione delle API e delle operazioni disponibili per ciascun utente.
+
 \subsection{Gestione degli errori}
 Uno degli aspetti chiave della progettazione del nuovo sistema riguarda la definizione di un meccanismo di gestione degli errori strutturato e centralizzato. Questo sistema, sviluppato appositamente nell’ambito del tirocinio che ha portato alla presente tesi, consente di rappresentare e trattare in modo coerente le diverse tipologie di errore, garantendo uniformità tra backend e frontend e migliorando l’esperienza utente.
 
