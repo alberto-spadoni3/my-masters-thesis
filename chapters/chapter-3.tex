@@ -259,8 +259,8 @@ In \Cref{fig:domain_model} è riportato il diagramma delle classi in formato UML
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\textwidth]{./figures/domain-model.png}
-  \caption{Diagramma relativo al dominio applicativo del nuovo sistema.}
+  \includegraphics[width=1\textwidth]{figures/domain-model.png}
+  \caption{Diagramma delle classi UML relativo al dominio applicativo del nuovo sistema.}
   \label{fig:domain_model}
 \end{figure}
 
@@ -271,7 +271,7 @@ L'organizzazione è l'elemento che definisce l'esistenza stessa di un utente all
 
 L'entità in questione non si limita a definire il perimetro degli utenti, ma è il nodo centrale attorno al quale ruotano tutte le altre configurazioni del sistema. Ogni organizzazione è associata a una o più reti (Network), che rappresentano gli indirizzi IP da sottoporre al filtraggio DNS. Le configurazioni di protezione (Protection), che definiscono cosa filtrare, sono legate all'organizzazione e non ai singoli utenti. Questo significa che tutte le policy di filtraggio sono decise a livello organizzativo. I dati statistici relativi all’utilizzo del sistema di filtraggio DNS sono raccolti e visualizzati a livello di organizzazione, consentendo agli utenti di monitorare il traffico filtrato e le attività correlate.
 
-Ogni organizzazione è identificata da un id univoco, un nome e una tipologia che ne determina il ruolo all'interno del sistema. Esistono due macrotipologie di organizzazione:
+Ogni organizzazione è identificata da un \texttt{id} univoco, un nome (\texttt{name}) e una tipologia (\texttt{type}) che ne determina il ruolo all'interno del sistema. Esistono due macrotipologie di organizzazione:
 \begin{itemize}
   \item \textbf{Organizzazioni che gestiscono altre organizzazioni}, ovvero Managed Service Provider e Dealer.
     \begin{itemize}
@@ -297,7 +297,7 @@ Esistono cinque tipologie di utenti, ciascuna con permessi specifici nell'ambito
   \item \textbf{ReadOnly}: è l'utente con il livello di accesso più limitato. Ha esclusivamente il permesso di visionare report e statistiche, senza poter modificare alcuna configurazione. Il suo ruolo è strettamente legato al monitoraggio passivo delle attività del filtro DNS per una data organizzazione.
 \end{itemize}
 
-Ogni utente è identificato da un id, un nome, un ruolo e un username. Il campo username contiene l'indirizzo email dell'utente ed è utilizzato per l'autenticazione all'interno del sistema.
+Ogni utente è identificato da un \texttt{id}, un nome (\texttt{name}), un ruolo (\texttt{role}) e da uno \texttt{username}. Quest'ultimo campo contiene l'indirizzo email dell'utente ed è utilizzato per l'autenticazione all'interno del sistema.
 
 \subsubsection{License}
 L'entità \texttt{License} rappresenta una delle componenti ancora in fase di modellazione, ma il suo ruolo nel sistema è chiaro: essa determina il livello di servizio del prodotto associato a un'organizzazione e influisce sui permessi e sulle funzionalità disponibili per quest’ultima. Ogni organizzazione deve disporre di almeno una licenza attiva per poter usufruire del servizio di filtraggio DNS.
@@ -354,4 +354,4 @@ Una rete può appartenere a una delle seguenti tipologie, identificate dall'enum
   \item \textbf{Remote}: utilizzata per proteggere dispositivi mobili ed endpoint aziendali che richiedono la protezione del filtro DNS anche quando non sono connessi alla rete principale dell'organizzazione.
 \end{itemize}
 
-Ogni Network è identificata da un id, da un ipAddress e da un flag isCIDR, che indica se l’indirizzo IP è espresso in formato CIDR\footnote{\url{https://datatracker.ietf.org/doc/html/rfc4632}}. L’associazione tra Network e Protection permette di applicare un insieme di policy a una specifica rete, garantendo così un controllo granulare sul filtraggio del traffico DNS.
+Ogni Network è identificata da un \texttt{id}, da un \texttt{type} e da un \texttt{inetAddress}. Quest'ultimo supporta sia indirizzi IPv4 che IPv6 e consente l'inserimento di intervalli IP secondo lo standard CIDR\footnote{\url{https://datatracker.ietf.org/doc/html/rfc4632}}, specificandoli con una barra finale (es. \texttt{192.168.1.0/24}). L'associazione tra \texttt{Network} e \texttt{Protection} permette di applicare un insieme di policy a una specifica rete, garantendo così un controllo granulare sul filtraggio del traffico DNS.
