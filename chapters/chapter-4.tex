@@ -52,22 +52,26 @@ Il microservizio \texttt{licensing} si occupa della gestione delle licenze assoc
 Questo microservizio è essenziale per garantire che ogni utente abbia accesso solo alle funzionalità previste dal proprio piano, permettendo un controllo efficace sui livelli di servizio offerti.
 
 \subsubsection{Architettura a livelli}
-Tutti i microservizi appena discussi seguono un'architettura uniforme, basata sull'esposizione di API REST. Questa standardizzazione semplifica lo sviluppo e la manutenzione, garantendo che i microservizi siano facilmente scalabili e sostituibili senza impattare il funzionamento complessivo del sistema. Dal punto di vista strutturale, ogni microservizio è organizzato secondo un'architettura a livelli, ben visibile in \Cref{fig:microservice-architecture}, e composta dalle seguenti componenti:
+I microservizi appena discussi adottano un'architettura uniforme, basata sull'esposizione di API REST, garantendo una progettazione modulare e scalabile. Tale struttura consente di mantenere indipendenti le diverse componenti del sistema, facilitando la manutenzione e l'evoluzione del software. Ogni microservizio è organizzato in più livelli, ciascuno con responsabilità ben definite, come illustrato in \Cref{fig:microservice-architecture}:
 
 \begin{itemize}
-  \item \textbf{Routes}: rappresentano il punto di ingresso delle richieste HTTP. Si occupano di instradare ogni richiesta in base al percorso e al metodo HTTP associato, inoltrandola al controller appropriato per la gestione.
+  \item \textbf{Routes}: rappresenta il punto di ingresso delle richieste HTTP. Questo livello si occupa di applicare eventuali middleware, come quello per la gestione dell'autenticazione JWT e di indirizzare le richieste verso il controller appropriato, in base al metodo HTTP e al percorso richiesto.
 
-  \item \textbf{Controllers}: gestiscono le richieste ricevute, validano i parametri in ingresso ed eseguono le operazioni necessarie delegando l’elaborazione al livello dei servizi. Una volta ottenuto il risultato, i controller generano le risposte HTTP da restituire ai client.
+  \item \textbf{Controllers}: ricevono le richieste dai Routes, validano i parametri in ingresso e delegano l'elaborazione ai servizi applicativi. Una volta ottenuto il risultato, i controller generano la risposta HTTP da restituire al client.
 
-  \item \textbf{Services}: costituiscono il livello dedicato all'implementazione della logica di business. Si occupano di elaborare i dati e interagire con il livello di accesso agli stessi, senza dipendere direttamente dalle richieste HTTP. Questo livello intermedio garantisce una maggiore modularità e facilita il riutilizzo delle funzionalità tra diversi controller.
+  \item \textbf{Services}: costituiscono il livello di business logic, elaborando i dati e orchestrando le operazioni necessarie. Questo livello intermedio permette di mantenere separata la logica di dominio dall'accesso ai dati, garantendo maggiore modularità e riusabilità del codice.
 
-  \item \textbf{Repositories}: forniscono un’interfaccia per l’accesso ai dati, eseguendo operazioni di lettura e scrittura sul database. Questo livello è responsabile esclusivamente della gestione dei dati e dell'interazione con il database, mantenendo separata la logica applicativa dal livello di persistenza.
+  \item \textbf{Repositories}: forniscono un'interfaccia per l'accesso ai dati, eseguendo operazioni di lettura e scrittura sul database. Questo livello è responsabile esclusivamente della gestione dei dati.
+
+  \item Database: sebbene non sia parte integrante dell'architettura dei microservizi, rappresenta il livello di persistenza su cui vengono eseguite le operazioni di lettura e scrittura da parte dei Repository.
 \end{itemize}
+
+Questa suddivisione a livelli garantisce una chiara separazione delle responsabilità, migliorando la manutenibilità del codice e la scalabilità del sistema.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/microservice-architecture.pdf}
-  \caption{Architettura a livelli dei microservizi del backend}
+  \includegraphics[width=1\textwidth]{figures/microservice-architecture.png}
+  \caption{Diagramma di sequenza UML relativo all'architettura a livelli dei microservizi del backend.}
   \label{fig:microservice-architecture}
 \end{figure}
 
@@ -104,10 +108,7 @@ L'adozione di Prisma ha quindi reso la gestione del database più strutturata, s
 Il nuovo sistema adotta un database relazionale con tecnologia PostgreSQL, scelta dettata principalmente dalla necessità di garantire la compatibilità con i dati gestiti dal sistema legacy. Oltre a questo requisito, PostgreSQL è stato selezionato per le sue caratteristiche di affidabilità, scalabilità e performance, rendendolo una soluzione solida per applicazioni che devono gestire un elevato volume di dati e richieste concorrenti.
 
 \section{Funzionalità chiave}
-
 \subsection{Multiutenza e gestione degli utenti}
-
-\subsubsection{Introduzione alla multiutenza}
 Nel nuovo sistema, la multiutenza si riferisce alla possibilità per un'organizzazione di disporre di molteplici credenziali di accesso, consentendo a diversi utenti di accedere al pannello di configurazione del filtro per amministrarne le caratteristiche o monitorare le statistiche, in base al loro ruolo. Questo rappresenta un notevole miglioramento rispetto al sistema precedente, in cui ogni cliente disponeva di un singolo account con permessi di amministratore. Tale limitazione risultava problematica in particolar modo per le organizzazioni più strutturate, che necessitavano di un accesso distribuito tra più figure con differenti livelli di autorizzazione.
 
 \subsubsection{Modello attuale di gestione degli utenti}
