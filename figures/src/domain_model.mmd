@@ -1,0 +1,99 @@
+---
+config:
+  look: neo
+  theme: base
+  layout: dagre
+---
+```mermaid
+classDiagram
+direction TD
+    class Organization:::customStyle {
+        +string id
+        +int type
+        +string name
+        +List~Organization~ managedOrgs.              
+        +createUser(type)
+        +getOrganizationUsers()
+        +getManagedOrgs()
+    }
+    class User:::customStyle {
+        +string id
+        +string username
+        +string name
+        +Role role
+        +login()
+        +logout()
+    }
+    class License:::customStyle {
+        +string id
+        +string type
+        +datetime expiryDate
+        +isValid()
+        +renew()
+    }
+    class Report:::customStyle {
+        +string id
+        +datetime generatedAt
+        +JSON data
+        +generate()
+    }
+    class Protection:::customStyle {
+        +string id
+        +boolean shared
+        +List~ProtectionPolicy~ policies
+        +addPolicy()
+        +getPolicies()
+    }
+    class ProtectionPolicy:::customStyle {
+        +string id
+        +List~string~ rules
+        +ProtectionType type
+        +addRule()
+        +getRules()
+    }
+    class Network:::customStyle {
+        +string id
+        +string inetAddress
+        +NetworkType type
+        +List~Protection~ protections   
+        +addProtection()
+        +getProtections()
+    }
+    class ProtectionType:::customStyle {
+        <<enumerate>>
+        ThreatProtection
+        ContentFilter
+        ApplicationBlock
+        IPAddressBlock
+        SearchEnginesProtection
+        GeoBlock
+        AllowList
+        BlockList
+    }
+    class Role:::customStyle {
+        <<enumeration>>
+        SuperAdmin
+        Admin
+        ReadOnly
+        Policy
+        Editor
+    }
+    class NetworkType:::customStyle {
+        <<enumerate>>
+        Static
+        Dynamic
+        Remote
+    }
+    Organization "1" o-- "1..*" User
+    Organization "1" *-- "0..*" Network
+    Organization "1" --> "0..*" Protection : creation
+    Organization "0..*" o-- "1..*" License
+    Organization "1" o-- "0..*" Report
+    Network "0..*" --> "1..*" Protection
+    Network "1" --> "1" NetworkType
+    Protection "1" *-- "0..*" ProtectionPolicy
+    Protection "1..*" --o "0..*" Organization : usage
+    ProtectionPolicy "1" --> "1" ProtectionType
+    User "1" --> "1" Role
+    classDef customStyle fill:#FFF3E0, color:#000, stroke:#000, stroke-width:2px;
+```

@@ -1,0 +1,38 @@
+---
+config:
+  theme: neo
+---
+```mermaid
+sequenceDiagram
+  actor Agent as Client
+  box rgb(255,243,224) Backend microservice
+    participant Routes as Routes
+    participant Controllers as Controllers
+    participant Services as Services
+    participant Repositories as Repositories
+  end
+    Agent ->> Routes: Send HTTP request<br> with JWT token
+    Routes -) Routes: Validate JWT token
+  alt Valid JWT token
+    Routes ->>+ Controllers: Route request based on<br>HTTP method and URL path
+    Controllers -) Controllers: Validate input parameters
+    alt Valid parameters
+        Controllers ->>+ Services: Delegate request processing
+        Services -) Services: Execute business logic
+        Services ->>+ Repositories: Request data access<br> (read/write)
+        create participant Database as Database 
+        Repositories ->> Database: Execute data query
+        Database -) Database: Process query
+        destroy Database
+        Database -->> Repositories: Return query results
+        Repositories -->>- Services: Provide retrieved data
+        Services -) Services: Execute some<br>more business logic
+        Services -->>- Controllers: Return processed data
+        Controllers -->>- Agent: Return HTTP response with data
+    else Invalid parameters
+        Controllers -->> Agent: Return HTTP response with error
+    end
+  else Invalid JWT token
+    Routes -->> Agent: Return authentication error
+  end
+  ```
