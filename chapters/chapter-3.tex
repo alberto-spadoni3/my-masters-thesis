@@ -198,6 +198,14 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
     \begin{itemize}
       \item Il sistema deve permettere di creare, visualizzare ed esportare report personalizzati.
       \item I report devono poter coprire intervalli temporali più estesi rispetto al legacy, passando da un mese a 3, 6 o anche 12 mesi per singolo report.
+      \item Deve essere possibile pianificare l’invio automatico dei report via email, con frequenza settimanale o mensile.
+    \end{itemize}
+    \newpage
+  \item \textbf{API pubbliche}:
+    \begin{itemize}
+      \item Il sistema deve offrire un set di API pubbliche per la gestione delle configurazioni, consentendo agli utenti di integrare il filtro DNS in applicazioni personalizzate o di sviluppare un proprio client per la gestione delle configurazioni.
+      \item Le API devono supportare tutte le funzionalità disponibili tramite il pannello Web, inclusa la nuova gestione dei template.
+      \item Le API devono essere provviste di una documentazione chiara e completa, che descriva i metodi disponibili e i relativi parametri.
     \end{itemize}
 
   \item \textbf{Notifiche}:
@@ -215,6 +223,15 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
   \item \textbf{Audit log}:
     \begin{itemize}
       \item Il sistema deve registrare in un log dettagliato tutte le azioni eseguite dagli utenti, inclusi gli accessi al pannello e le modifiche alla configurazione del filtro.
+    \end{itemize}
+
+  \item \textbf{Supporto per il multilingua}:
+    \begin{itemize}
+      \item Il sistema deve supportare la localizzazione in diverse lingue, tra cui italiano, inglese e spagnolo.
+      \item Esso deve inoltre essere progettato per consentire l’aggiunta di nuove lingue in maniera rapida ed agevole.
+      \item La lingua di default deve essere impostata in base alla preferenza del browser dell’utente.
+      \item Le traduzioni devono coinvolgere tutti gli elementi dell’interfaccia grafica, inclusi i messaggi di errore e le notifiche.
+      \item Per quanto riguarda le API, l'unica lingua supportata sarà l'inglese.
     \end{itemize}
 \end{itemize}
 
@@ -248,8 +265,8 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
 
 Le scelte progettuali adottate per l'implementazione delle funzionalità sviluppate nel contesto di questa tesi verranno discusse nel capitolo successivo.
 
-\subsection{Analisi del dominio}\label{sec:domain-analysis}
-Per progettare correttamente il nuovo sistema, è stato necessario analizzare il dominio applicativo, partendo dalla struttura concettuale del sistema legacy per definire in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi fornisce una base strutturata per la modellazione dei dati e per l'implementazione delle funzionalità previste nel nuovo pannello di configurazione.
+\subsection{Modellazione del dominio}\label{sec:domain-analysis}
+Per progettare correttamente il nuovo sistema è stato necessario analizzare il dominio applicativo, partendo dalla struttura concettuale del sistema legacy, per definire in modo più chiaro le entità fondamentali e le loro relazioni. Questa analisi fornisce una base strutturata per la modellazione dei dati e per l'implementazione delle funzionalità previste nel nuovo pannello di configurazione.
 
 Attualmente, la modellazione è ancora in fase di sviluppo e la seguente descrizione rappresenta una versione parziale del sistema. In particolare, le entità \textbf{Protection}, \textbf{Network}, \textbf{License} e \textbf{Report} non sono state ancora completamente definite insieme al team aziendale. Tuttavia, si è scelto di includerle ugualmente per fornire un quadro più completo del dominio e delineare le aree che necessiteranno di ulteriori approfondimenti.
 %
