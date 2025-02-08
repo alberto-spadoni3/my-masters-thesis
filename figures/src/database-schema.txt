@@ -1,0 +1,207 @@
+@startuml
+' Define the direction of the diagram
+
+' Define classes
+entity Organization #fff3e0 {
+    UUID id PK
+    string name
+    ENUM organization_type // "1 Dealer", "2 ISP", "3 School", etc.
+    UUID parent_organization_id FK // Allows for child organizations (self-referential)
+}
+
+entity OrganizationPermission #fff3e0 {
+    UUID organization_id FK
+    UUID permission_id FK
+    PK (organization_id, permission_id)
+}
+
+entity RolePermission #fff3e0 {
+    UUID role_id FK
+    UUID permission_id FK
+    PK (role_id, permission_id)
+}
+
+entity Permission #fff3e0{
+    UUID id PK
+    string name UNIQUE // es: has_global_profiles, can_edit_users
+}
+
+entity User #fff3e0 {
+    UUID id PK
+    UUID organization_id FK
+    string email UNIQUE
+    string password_hash
+    int role_id FK
+    boolean email_verified // True if the user's email has been validated
+    string notification_email // Email address for notifications
+    timestamp created_at
+    timestamp updated_at
+}
+
+entity Role #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity Network #fff3e0 {
+    UUID id PK
+    UUID organization_id FK // The organization this network belongs to
+    ENUM type // (e.g., NetworkType with columns id, name, description).
+    inet address // public ip address or network subnet
+    timestamp last_query_time
+    string timezone
+    timestamp created_at
+    timestamp updated_at
+}
+
+entity Profile #fff3e0 {
+    UUID id PK
+    UUID organization_id FK // The organization this profile belongs to
+    string name
+    boolean is_limited // If true, only allowlist is enforced
+    boolean is_global // Whether the profile is global, inheritable by child organizations
+} 
+
+entity ProtectionSetting #fff3e0{
+    UUID profile_id
+    ENUM setting // google_safesearch, youtube_safesearch
+    PK (profile_id, setting)
+}
+
+entity ProfileCategory #fff3e0 {
+    UUID profile_id FK
+    UUID category_id FK
+    PRIMARY KEY(profile_id, category_id)
+}
+
+entity Category #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity MacroCategory #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity MacroCategoryCategory #fff3e0 {
+    UUID macrocategory_id FK
+    UUID category_id FK
+    PRIMARY KEY(macrocategory_id, category_id)
+}
+
+entity TemplateCategory #fff3e0 {
+    UUID id PK
+    string name // e.g., "School Template", "ISP Template"
+    ENUM type // e.g., "School", "ISP"
+}
+
+entity TemplateCategoryCategory #fff3e0 {
+    UUID template_category_id FK
+    UUID category_id FK
+    PRIMARY KEY(template_category_id, category_id)
+}
+
+entity ExceptionGroup #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity ProfileExceptionGroup #fff3e0 {
+    UUID profile_id FK
+    UUID exception_group_id FK
+    PRIMARY KEY(profile_id, exception_group_id)
+}
+
+entity Domain #fff3e0 {
+    UUID id PK
+    string domain_name UNIQUE
+}
+
+entity DomainExceptionGroup #fff3e0 {
+    UUID exception_group_id FK
+    UUID domain_id FK
+    ENUM type //  blocklist , allowlist
+    PRIMARY KEY(exception_group_id, domain_id)
+}
+
+entity NetworkProfilePort #fff3e0 {
+    UUID id PK
+    UUID network_id FK
+    UUID profile_id FK
+    int dns_port // Specific DNS port for the profile
+}
+
+
+entity DdnsUpdate #fff3e0 {
+    UUID id PK
+    UUID network_id FK
+    timestamp last_sync
+    string username UNIQUE
+    string password_hash
+}
+
+entity Country #fff3e0 {
+    UUID id PK
+    string country_code // e.g., "US", "IN"
+    string country_name // e.g., "United States", "India"
+}
+
+entity ProfileCountry #fff3e0 {
+    ?? for location o for geoblock?
+    UUID profile_id FK
+    UUID country_id FK
+    PRIMARY KEY(profile_id, country_id)
+}
+
+entity ProfileBlockedCategory #fff3e0 {
+    UUID id PK
+    UUID profile_id FK
+    UUID category_id FK
+}
+
+entity ProfileTimeBlockedCategory #fff3e0 {
+    UUID id PK
+    UUID profile_blocked_category_id
+    time from 
+    time to
+    ENUM days
+}
+
+entity ProfileBlockIp #fff3e0 {
+    UUID profile_id
+    UUID category_id
+    PK (profile_id, category_id)
+}
+
+' Define relationships
+Network "1" --|> DdnsUpdate : has
+Organization "1" -- "*" OrganizationPermission: has
+Role "1" -- "*" RolePermission: has
+Permission  "1" -- "*" OrganizationPermission
+Permission  "1" -- "*" RolePermission
+User "1" --|> Role : has
+Organization "1" -- "*" Network : owns networks
+Organization "1" -- "*" Profile : owns profiles
+Network "1" -- "*" NetworkProfilePort : uses profiles based on DNS port
+Profile "1" -- "*" NetworkProfilePort : assigned to networks via DNS port
+Profile "1" -- "*" ProfileCategory : has categories
+Profile "1" -- "*" ProtectionSetting : has setting
+Profile "1" -- "*" ProfileBlockIp : has blockIp on category
+Category "1" -- "*" ProfileCategory : is in profiles
+Profile "1" -- "*" ProfileExceptionGroup : has exception groups
+ExceptionGroup "1" -- "*" ProfileExceptionGroup : has profiles
+Domain "1" -- "*" DomainExceptionGroup : in exceptions
+ExceptionGroup "1" -- "*" DomainExceptionGroup : has domains
+User "1" -- "*" Network : can access networks
+User "*" -- "1" Organization : belongs to one organization
+MacroCategory "1" -- "*" MacroCategoryCategory : includes categories
+Category "1" -- "*" MacroCategoryCategory : is in macrocategories
+TemplateCategory "1" -- "*" TemplateCategoryCategory : includes categories
+Category "1" -- "*" TemplateCategoryCategory : is in template categories
+Country "1" -- "*" ProfileCountry : based in
+Profile "1" -- "*" ProfileCountry
+Profile "1" -- "*" ProfileBlockedCategory : can block categories
+ProfileBlockedCategory "1" -- "*" ProfileTimeBlockedCategory : has time constraint
+Category "1" -- "*" ProfileBlockedCategory : is blocked in profiles
+@enduml
