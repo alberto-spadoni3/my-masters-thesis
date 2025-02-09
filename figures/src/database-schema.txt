@@ -1,12 +1,14 @@
 @startuml
-' Define the direction of the diagram
+<style>
+    element { FontSize: 16; }
+</style>
 
 ' Define classes
 entity Organization #fff3e0 {
     UUID id PK
     string name
-    ENUM organization_type // "1 Dealer", "2 ISP", "3 School", etc.
-    UUID parent_organization_id FK // Allows for child organizations (self-referential)
+    ENUM organization_type
+    UUID parent_organization_id FK
 }
 
 entity OrganizationPermission #fff3e0 {
@@ -23,7 +25,7 @@ entity RolePermission #fff3e0 {
 
 entity Permission #fff3e0{
     UUID id PK
-    string name UNIQUE // es: has_global_profiles, can_edit_users
+    string name UNIQUE
 }
 
 entity User #fff3e0 {
@@ -32,8 +34,8 @@ entity User #fff3e0 {
     string email UNIQUE
     string password_hash
     int role_id FK
-    boolean email_verified // True if the user's email has been validated
-    string notification_email // Email address for notifications
+    boolean email_verified
+    string notification_email
     timestamp created_at
     timestamp updated_at
 }
@@ -45,9 +47,9 @@ entity Role #fff3e0 {
 
 entity Network #fff3e0 {
     UUID id PK
-    UUID organization_id FK // The organization this network belongs to
-    ENUM type // (e.g., NetworkType with columns id, name, description).
-    inet address // public ip address or network subnet
+    UUID organization_id FK
+    ENUM type
+    inet address
     timestamp last_query_time
     string timezone
     timestamp created_at
@@ -56,22 +58,22 @@ entity Network #fff3e0 {
 
 entity Profile #fff3e0 {
     UUID id PK
-    UUID organization_id FK // The organization this profile belongs to
+    UUID organization_id FK
     string name
-    boolean is_limited // If true, only allowlist is enforced
-    boolean is_global // Whether the profile is global, inheritable by child organizations
+    boolean is_limited
+    boolean is_global
 } 
 
 entity ProtectionSetting #fff3e0{
     UUID profile_id
-    ENUM setting // google_safesearch, youtube_safesearch
+    ENUM setting 
     PK (profile_id, setting)
 }
 
 entity ProfileCategory #fff3e0 {
     UUID profile_id FK
     UUID category_id FK
-    PRIMARY KEY(profile_id, category_id)
+    PK (profile_id, category_id)
 }
 
 entity Category #fff3e0 {
@@ -87,19 +89,19 @@ entity MacroCategory #fff3e0 {
 entity MacroCategoryCategory #fff3e0 {
     UUID macrocategory_id FK
     UUID category_id FK
-    PRIMARY KEY(macrocategory_id, category_id)
+    PK (macrocategory_id, category_id)
 }
 
 entity TemplateCategory #fff3e0 {
     UUID id PK
-    string name // e.g., "School Template", "ISP Template"
-    ENUM type // e.g., "School", "ISP"
+    string name 
+    ENUM type 
 }
 
 entity TemplateCategoryCategory #fff3e0 {
     UUID template_category_id FK
     UUID category_id FK
-    PRIMARY KEY(template_category_id, category_id)
+    PK (template_category_id, category_id)
 }
 
 entity ExceptionGroup #fff3e0 {
@@ -110,7 +112,7 @@ entity ExceptionGroup #fff3e0 {
 entity ProfileExceptionGroup #fff3e0 {
     UUID profile_id FK
     UUID exception_group_id FK
-    PRIMARY KEY(profile_id, exception_group_id)
+    PK (profile_id, exception_group_id)
 }
 
 entity Domain #fff3e0 {
@@ -121,15 +123,15 @@ entity Domain #fff3e0 {
 entity DomainExceptionGroup #fff3e0 {
     UUID exception_group_id FK
     UUID domain_id FK
-    ENUM type //  blocklist , allowlist
-    PRIMARY KEY(exception_group_id, domain_id)
+    ENUM type 
+    PK (exception_group_id, domain_id)
 }
 
 entity NetworkProfilePort #fff3e0 {
     UUID id PK
     UUID network_id FK
     UUID profile_id FK
-    int dns_port // Specific DNS port for the profile
+    int dns_port 
 }
 
 
@@ -143,15 +145,15 @@ entity DdnsUpdate #fff3e0 {
 
 entity Country #fff3e0 {
     UUID id PK
-    string country_code // e.g., "US", "IN"
-    string country_name // e.g., "United States", "India"
+    string country_code 
+    string country_name 
 }
 
 entity ProfileCountry #fff3e0 {
     ?? for location o for geoblock?
     UUID profile_id FK
     UUID country_id FK
-    PRIMARY KEY(profile_id, country_id)
+    PK (profile_id, country_id)
 }
 
 entity ProfileBlockedCategory #fff3e0 {
