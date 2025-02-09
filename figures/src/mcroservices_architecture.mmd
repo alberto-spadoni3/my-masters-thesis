@@ -2,7 +2,6 @@
 config:
   theme: neo
 ---
-```mermaid
 sequenceDiagram
   actor Agent as Client
   box rgb(255,243,224) Backend microservice
@@ -35,4 +34,3 @@ sequenceDiagram
   else Invalid JWT token
     Routes -->> Agent: Return authentication error
   end
-  ```
