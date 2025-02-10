@@ -10,9 +10,9 @@ sequenceDiagram
     participant Services as Services
     participant Repositories as Repositories
   end
-    Agent ->> Routes: Send HTTP request<br> with JWT token
-    Routes -) Routes: Validate JWT token
-  alt Valid JWT token
+    Agent ->> Routes: Send HTTP request<br> with authentication token
+    Routes -) Routes: Validate authentication token
+  alt Valid authentication token
     Routes ->>+ Controllers: Route request based on<br>HTTP method and URL path
     Controllers -) Controllers: Validate input parameters
     alt Valid parameters
@@ -31,6 +31,6 @@ sequenceDiagram
     else Invalid parameters
         Controllers -->> Agent: Return HTTP response with error
     end
-  else Invalid JWT token
+  else Invalid authentication token
     Routes -->> Agent: Return authentication error
   end
