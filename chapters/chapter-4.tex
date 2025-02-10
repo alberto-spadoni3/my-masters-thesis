@@ -114,7 +114,7 @@ Durante il login, il backend genera e restituisce due token, in accordo con JWT:
 Questa strategia non solo incrementa la sicurezza, evitando l’esposizione dei \textit{refresh token} nel codice lato client, ma semplifica anche la gestione per il frontend. Infatti, grazie all'uso dei cookie HTTP-only, il browser si occupa automaticamente dell'invio del \textit{refresh token} nelle richieste al backend, riducendo il rischio di furti di credenziali e migliorando la protezione complessiva del sistema.
 
 \subsubsection{Limitazioni e aspetti da migliorare}
-Per garantire una corretta gestione dell'autorizzazione, si è deciso di adottare un modello basato su Role-Based Access Control\footins\url{https://www.sciencedirect.com/science/article/abs/pii/S0167404803006096} (RBAC). Tuttavia, tale sistema non è ancora stato implementato nella sua completezza.
+Per garantire una corretta gestione dell'autorizzazione, si è deciso di adottare un modello basato su Role-Based Access Control\footnote{\url{https://www.sciencedirect.com/science/article/abs/pii/S0167404803006096}} (RBAC). Tuttavia, tale sistema non è ancora stato implementato nella sua completezza.
 
 Attualmente, sono previste solo due tipologie di utenti, Admin e ReadOnly, ma senza una distinzione effettiva nei permessi tra le due categorie. Gli utenti ReadOnly, infatti, possono eseguire le stesse operazioni degli Admin. Questa configurazione rappresenta una soluzione provvisoria, in attesa dell'introduzione di un sistema RBAC più strutturato. Una volta implementato, gli utenti ReadOnly saranno limitati esclusivamente alla visualizzazione di report e statistiche, senza la possibilità di apportare modifiche.
 
@@ -238,7 +238,15 @@ La migrazione delle organizzazioni e degli utenti rappresenta un punto cruciale,
 Nel nuovo sistema, invece, utenti e organizzazioni sono stati modellati come entità distinte. La migrazione dovrà quindi adattare i dati esistenti a questa nuova struttura, assicurando che ogni cliente del vecchio database venga convertito in una vera e propria organizzazione, con almeno un utente amministratore associato.
 
 In particolare, il primo passo del processo di migrazione prevede la creazione delle organizzazioni nel nuovo sistema. Ogni riga della tabella \texttt{admin} con \texttt{tipo = 1} dovrà essere trasformata in una entry della tabella \texttt{organizations} del nuovo database. Gli attributi identificativi dell’organizzazione, come il nome, dovranno essere trasferiti e adattati alla nuova struttura.
-\ref{ciao:noncisono}
+
+Per ricreare la gerarchia delle organizzazioni, sarà necessario analizzare il valore del campo \texttt{cloud\_idfornitore} della tabella \texttt{admin}. Questo campo, se valorizzato, contiene l’indirizzo email dell’organizzazione padre, ovvero del cliente che gestisce l’entità in questione. Se il campo risulta vuoto, significa che l'organizzazione non è subordinata ad altre ed è quindi posizionata al livello più alto della gerarchia, come nel caso di dealer o MSP.
+%
+Nel nuovo sistema, l'associazione tra organizzazioni non avviene più tramite email, ma attraverso l'UUID dell'organizzazione padre. Pertanto, nel processo di migrazione, sarà necessario risolvere queste relazioni traducendo il valore di \texttt{cloud\_idfornitore} nel corrispondente UUID dell'organizzazione padre. Questo passaggio dovrà essere eseguito in due fasi:
+\begin{enumerate}
+  \item Creare tutte le organizzazioni migrando i dati dalla tabella \texttt{admin}, senza impostare subito il campo \texttt{parent\_organization\_id}.
+  \item Dopo che tutte le organizzazioni sono state inserite nel nuovo database, aggiornare il campo \texttt{parent\_organization\_id} associando a ciascuna il corrispondente UUID dell'organizzazione padre, risolvendo la relazione tramite il valore presente in \texttt{cloud\_idfornitore}.
+\end{enumerate}
+Questa strategia garantisce che la gerarchia venga ricostruita correttamente senza incongruenze nella fase di migrazione.
 
 Successivamente, per ogni organizzazione migrata, dovrà essere creato un utente amministratore corrispondente nella tabella \texttt{users}. L’utente dovrà essere associato all’organizzazione di riferimento tramite una chiave esterna, garantendo così una chiara relazione tra le due entità. Poiché nel sistema legacy l'utente e l'organizzazione coincidevano, sarà necessario separare logicamente i dati, assicurandosi che il nuovo sistema mantenga coerenza e integrità.
 
