@@ -3,11 +3,23 @@
 \section{Piano di Sviluppo}
 Il processo di sviluppo del nuovo sistema si è basato sulla metodologia \textit{Agile SCRUM}, con cicli di sviluppo iterativi e incrementali della durata di due settimane (\textit{sprint}). Al termine di ogni sprint, si è tenuto un meeting di revisione con il \textit{project manager} (PM), il quale ha supervisionato lo stato di avanzamento del lavoro, analizzato le criticità emerse e verificato la conformità delle ore lavorate rispetto a quelle preventivate. Durante questi incontri, si sono definite le attività per lo sprint successivo, garantendo un flusso di sviluppo costante e ben organizzato.
 
-\subsection{Ambiente di sviluppo e infrastruttura}
-L'ambiente di sviluppo è stato configurato in modo da rispecchiare il più possibile l'ambiente di produzione. Per garantire test realistici, è stata creata una copia del database di produzione su cui eseguire le verifiche funzionali e prestazionali. L'infrastruttura di sviluppo e test è quindi coincidente, consentendo di minimizzare il rischio di errori legati a discrepanze tra ambienti.
+Il team di sviluppo è composto esclusivamente da \textit{Full Stack Developer}, senza una suddivisione rigida tra frontend e backend. Le attività di progettazione grafica non sono state gestite internamente, ma affidate a un designer esterno, incaricato del rinnovo della brand identity. Quindi, per quanto concerne la UI/UX, il team si è solo ocupato di implementare le nuove interfacce grafiche, seguendo le specifiche fornite dal designer.
 
-\subsection{Struttura della repository e modello di branching}
-L'intero codice del progetto è gestito tramite una \textit{monorepo}, ospitata su \textit{GitLab}. La scelta di adottare una monorepo è motivata dalla necessità di mantenere in un unico repository sia il frontend che tutti i microservizi che compongono il backend, semplificando la gestione delle dipendenze, la coerenza tra i moduli e l'esecuzione delle pipeline di \textit{CI/CD}.
+Per la gestione e il monitoraggio delle attività, è stato utilizzato lo strumento di project management \textit{ClickUp}\footnote{\url{https://clickup.com/}}, che ha permesso di tracciare i task, assegnare priorità e garantire un'organizzazione efficace del lavoro.
+
+Le attività svolte durante gli sprint hanno incluso lo sviluppo di nuove funzionalità, la risoluzione di bug, il refactoring del codice e l'ottimizzazione delle performance. Particolare attenzione è stata dedicata alla qualità del software, con l'integrazione di test automatici e revisioni periodiche del codice prima del rilascio delle feature.
+
+\subsection{Ambiente di sviluppo e infrastruttura}
+L'ambiente di sviluppo è stato configurato in modo da rispecchiare il più possibile l'ambiente di produzione, garantendo una maggiore affidabilità nei test e riducendo il rischio di anomalie legate a differenze infrastrutturali. Per ottenere questa uniformità, sono state adottate tecnologie che permettono di replicare fedelmente la configurazione di produzione.
+
+L'intero sistema di sviluppo è stato containerizzato tramite Docker, con i vari servizi orchestrati tramite Docker Compose. Questo permette di avviare l’ambiente di sviluppo in modo rapido e riproducibile su diverse macchine, riducendo problemi di configurazione tra membri del team. Inoltre, l'uso di \textit{Docker-in-Docker} nella pipeline \textit{CI/CD} consente di replicare l’ambiente di esecuzione anche nei job automatici di test e build.
+
+Per la gestione delle configurazioni, ogni microservizio utilizza un file \texttt{.env}, che contiene le variabili d’ambiente necessarie per la configurazione dinamica dello stesso, come le credenziali di accesso ai database e gli endpoint delle API. Durante l’esecuzione della pipeline CI/CD, questo file viene iniettato nei container, permettendo di mantenere un ambiente coerente tra sviluppo, test e produzione, senza la necessità di configurazioni separate per ciascun contesto.
+
+Per migliorare l'affidabilità dei test, è stata implementata una strategia di \textit{seeding} del database, che consente di popolare l’ambiente di test con dati coerenti ad ogni esecuzione, assicurando risultati riproducibili e verifiche affidabili.
+
+\subsection{Struttura della repository}
+L'intero codice del progetto è gestito tramite una \textit{monorepo}, ospitata su GitLab. La scelta di adottare una monorepo è motivata dalla necessità di mantenere in un unico repository sia il frontend che tutti i microservizi che compongono il backend, semplificando la gestione delle dipendenze, la coerenza tra i moduli e l'esecuzione delle pipeline di \textit{Continuous Integration/Continuous Deployment} (CI/CD).
 
 Per ottimizzare la gestione della monorepo, è stato utilizzato \texttt{Turborepo}\footnote{\url{https://turbo.build}}, un tool specificamente progettato per lo sviluppo di applicazioni in TypeScript. Turborepo consente di affrontare in modo efficiente il problema dei lunghi processi di compilazione, tipici delle monorepo con numerosi pacchetti e molteplici task (come compilazione, testing e linting). Il tool pianifica l'esecuzione dei task in modo ottimizzato, parallelizzandoli su tutti i core disponibili e implementando un avanzato sistema di caching. Questo permette di ridurre drasticamente i tempi di build successivi al primo, migliorando la produttività del team di sviluppo.
 
@@ -26,28 +38,38 @@ Per organizzare al meglio il lavoro di sviluppo del team, è stato adottato un m
   \item \textbf{Feature branches}: Per lo sviluppo di funzionalità specifiche, possono essere creati branch temporanei, indipendenti dai branch personali, in modo da favorire un'organizzazione più modulare del codice.
 \end{itemize}
 
-Questa strategia consente di mantenere un flusso di sviluppo ordinato, con chiara separazione tra il codice in produzione, il codice in fase di test e le modifiche in sviluppo. Inoltre, grazie all'integrazione con le pipeline \textit{CI/CD} di \textit{GitLab}, il sistema è in grado di eseguire automaticamente test e build per ogni \textit{push} e \textit{merge request}, garantendo un'elevata affidabilità prima della promozione del codice verso l'ambiente di produzione.
+Questa strategia consente di mantenere un flusso di sviluppo ordinato, con chiara separazione tra il codice in produzione, il codice in fase di test e le modifiche in sviluppo. Inoltre, grazie all'integrazione con le pipeline CI/CD di GitLab, il sistema è in grado di eseguire automaticamente test e build per ogni \textit{push} e \textit{merge request}, garantendo un'elevata affidabilità prima della promozione del codice verso l'ambiente di produzione.
 
-\subsection{Pipeline CI/CD}
-L'automazione del processo di sviluppo è stata realizzata attraverso una pipeline di \textit{Continuous Integration/Continuous Deployment} (CI/CD), integrata direttamente in \textit{GitLab}. Il flusso di lavoro della pipeline prevede le seguenti fasi:
+\subsubsection{Pipeline CI/CD}
+L'automazione del processo di sviluppo è stata realizzata attraverso una pipeline di \textit{CI/CD}, integrata direttamente in GitLab. La pipeline è suddivisa in più fasi, organizzate per garantire una validazione progressiva del codice prima del rilascio in staging.
+
+L'intero processo di build e test si basa su Docker-in-Docker\footnote{\url{https://www.docker.com/resources/docker-in-docker-containerized-ci-workflows-dockercon-2023}} (DinD), una soluzione che permette alla pipeline di eseguire e gestire container Docker all'interno di ambienti di esecuzione basati sulla stessa tecnologia. Questo approccio consente di costruire immagini Docker direttamente nei job della pipeline, riducendo la dipendenza da infrastrutture esterne e garantendo isolamento ed una maggiore coerenza tra gli ambienti di sviluppo, test e deploy.
+
+Il flusso di lavoro della pipeline prevede le seguenti fasi:
 \begin{enumerate}
-  \item \textbf{Build del codice}: Viene eseguita la compilazione dei vari moduli del progetto per verificare l'assenza di errori strutturali.
-  \item \textbf{Esecuzione dei test}: Tutti i pacchetti presenti nella monorepo sono sottoposti a test automatici. Il rilascio procede solo se tutti i test vengono superati con successo.
-  \item \textbf{Build per la produzione}: Se i test risultano superati, viene generata una build pronta per il deploy.
-  \item \textbf{Deploy sull'ambiente di staging}: Il codice viene infine rilasciato nell'ambiente di staging per ulteriori verifiche prima di un eventuale rilascio in produzione.
+  \item \textbf{Build dell'ambiente di sviluppo}: I servizi vengono compilati e avviati tramite \texttt{docker-compose}, con supporto alla parallelizzazione dei task e caching per ottimizzare i tempi di build.
+  \item \textbf{Esecuzione dei test}: Ogni microservizio è testato in container isolati. Viene eseguito il processo di seeding del database per simulare scenari reali e ottenere una copertura completa del codice.
+  \item \textbf{Build per la produzione}: Se i test risultano superati, viene generata una build ottimizzata per il rilascio, con tagging e push delle immagini Docker nel registry di GitLab.
+  \item \textbf{Deploy sull'ambiente di staging}: Il codice viene distribuito aggiornando i container in esecuzione e ripristinando il database con i dati necessari per il test pre-produzione.
 \end{enumerate}
+
+La pipeline utilizza strategie di caching avanzate per ridurre i tempi di esecuzione. I pacchetti \texttt{pnpm} e la cache di \texttt{Turborepo} vengono riutilizzati tra i job, evitando ricompilazioni non necessarie. Inoltre, il sistema di \textit{retry} assicura la ripetizione automatica dei job in caso di errori transitori, migliorando l'affidabilità del processo.
+
+Grazie a questa configurazione della pipeline è possibile garantire un flusso di sviluppo strutturato e sicuro, assicurando che solo codice stabile e testato venga promosso verso l'ambiente di staging e, successivamente, alla produzione.
 
 \subsection{Test e controllo qualità}
 Una componente fondamentale del piano di sviluppo è stata la verifica della qualità del codice e la sua copertura tramite test automatizzati. Il processo di testing ha seguito le seguenti linee guida:
 \begin{itemize}
   \item \textbf{Copertura al 100\%} del codice backend e frontend tramite test unitari e di integrazione.
-  \item Utilizzo di strumenti di analisi statica del codice come \textit{ESLint} e \textit{Prettier} per garantire standard di qualità e uniformità nella formattazione.
+  \item Per i test lato backend è stata utilizzata la libreria \texttt{Mocha}\footnote{\url{https://mochajs.org}}, che permette di eseguire test unitari e di integrazione in un ambiente controllato, verificando il corretto funzionamento delle API e della logica applicativa.
+  \item Per quelli lato frontend è stato invece adottato \texttt{Playwright}\footnote{\url{https://playwright.dev}}, uno strumento per il testing end-to-end che consente di simulare interazioni utente su più browser. Tuttavia, la copertura dei test frontend è ancora da ampliare per garantire una validazione più completa dell'interfaccia utente.
+  \item Utilizzo di strumenti di analisi statica del codice come \texttt{ESLint}\footnote{\url{https://eslint.org}} e \texttt{Prettier}\footnote{\url{https://prettier.io}} per garantire standard di qualità e uniformità nella formattazione.
   \item Verifica delle performance e dei comportamenti critici del sistema mediante test prestazionali.
 \end{itemize}
 
 \subsection{Approccio alla reingegnerizzazione}
-Come descritto nella \Cref{sez:reingegnerizzazione-approcci-fasi}, ogni modello di reingegnerizzazione presenta vantaggi e criticità differenti. Il processo adottato in questo contesto si pone a metà tra l'approccio \textit{Big Bang} e quello \textit{Evolutivo}. Lo sviluppo del nuovo sistema è già avviato e procede in modo incrementale, senza tuttavia una fase di coesistenza con il vecchio. Una volta completato, esso sostituirà integralmente il sistema precedente, fatta eccezione per alcune funzionalità che continueranno a essere gestite dal legacy senza necessità di retrocompatibilità.
+Come descritto nella \Cref{sez:reingegnerizzazione-approcci-fasi}, ogni modello di reingegnerizzazione presenta vantaggi e criticità differenti. Il processo adottato in questo contesto si pone a metà tra l'approccio ``Big Bang'' e quello ``Evolutivo''. Lo sviluppo del nuovo sistema è già avviato e procede in modo incrementale, senza tuttavia una fase di coesistenza con il vecchio. Una volta completato, esso sostituirà integralmente il sistema precedente, fatta eccezione per alcune funzionalità che continueranno a essere gestite dal legacy senza necessità di retrocompatibilità.
 
-La transizione avverrà in modo diretto, senza un rilascio graduale in produzione. Questo semplifica la migrazione, evitando la necessità di interfacce di compatibilità tra i due sistemi. Tuttavia, a differenza di un classico approccio \textit{Big Bang}, lo sviluppo non è stato affrontato come una riscrittura monolitica. Il nuovo sistema, infatti, è stato progettato fin dall'inizio con un'architettura a microservizi, organizzata sulla base delle funzionalità piuttosto che sulla replica della struttura esistente.
+La transizione avverrà in modo diretto, senza un rilascio graduale in produzione. Questo semplifica la migrazione, evitando la necessità di interfacce di compatibilità tra i due sistemi. Tuttavia, a differenza di un classico approccio ``Big Bang'', lo sviluppo non è stato affrontato come una riscrittura monolitica. Il nuovo sistema, infatti, è stato progettato fin dall'inizio con un'architettura a microservizi, organizzata sulla base delle funzionalità piuttosto che sulla replica della struttura esistente.
 
 Questo approccio ibrido permette di bilanciare i vantaggi dei due modelli. La sostituzione completa del vecchio sistema eliminerà la necessità di mantenere allineate due versioni in parallelo, riducendo la complessità operativa. Allo stesso tempo, l'architettura modulare migliorerà la manutenibilità e faciliterà l'integrazione di nuove tecnologie nel tempo. Questa fusione di metodologie garantirà una transizione più controllata, riducendo il rischio di regressioni e assicurando una maggiore stabilità per il sistema finale.
