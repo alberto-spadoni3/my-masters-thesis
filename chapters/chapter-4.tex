@@ -6,7 +6,8 @@ La progettazione del nuovo sistema punta a superare i limiti identificati nel le
 
 Il capitolo è strutturato come segue: dopo una descrizione dell’architettura generale del sistema, si approfondiranno le principali componenti e funzionalità chiave, come la multiutenza e la gestione degli errori. Infine, saranno discussi gli aspetti relativi al miglioramento del database e alle strategie messe in campo per garantire una corretta migrazione dei dati dal sistema legacy.
 
-\section{Architettura generale} Per la progettazione del nuovo sistema è stata adottata un'architettura a microservizi, caratterizzata da una separazione netta tra frontend e backend. Questa scelta è motivata dalla necessità di superare i limiti architetturali del sistema legacy, introducendo modularità e una chiara separazione delle responsabilità tra i vari componenti.
+\section{Architettura generale}
+Per la progettazione del nuovo sistema è stata adottata un'architettura a microservizi, caratterizzata da una separazione netta tra frontend e backend. Questa scelta è motivata dalla necessità di superare i limiti architetturali del sistema legacy, introducendo modularità e una chiara separazione delle responsabilità tra i vari componenti.
 
 Nel nuovo sistema, il frontend è rappresentato da un singolo microservizio dedicato alla logica di presentazione dei dati e all'interazione con l'utente. Il backend, invece, è stato suddiviso in molteplici microservizi indipendenti, ciascuno dedicato a un modulo o a una funzionalità specifica dell'applicativo. Questa scomposizione consente di ottenere una maggiore flessibilità, facilitando sia l'aggiunta di nuove funzionalità che la manutenzione del sistema.
 
@@ -22,7 +23,7 @@ Una rappresentazione schematica dell'architettura del sistema è riportata in \C
 \end{figure}
 
 \subsection{Frontend}
-Il frontend è stato progettato come una Single-Page Application\footnote{\url{https://link.springer.com/chapter/10.1007/978-1-4302-6674-7_1}} (SPA), scelta che consente di offrire agli utenti un'esperienza fluida ed un accesso rapido da qualsiasi browser, senza bisogno di installare nessun applicativo. Questo microservizio si occupa esclusivamente della logica di presentazione, implementando l'interfaccia grafica e gestendo l'interazione con gli utenti finali. Infatti, tutte le operazioni di elaborazione dei dati, come le computazioni o la gestione delle regole di business, sono demandate al backend.
+Il frontend è stato progettato come una Single-Page Application (SPA) \cite{Fink2014}, scelta che consente di offrire agli utenti un'esperienza fluida ed un accesso rapido da qualsiasi browser, senza bisogno di installare nessun applicativo. Questo microservizio si occupa esclusivamente della logica di presentazione, implementando l'interfaccia grafica e gestendo l'interazione con gli utenti finali. Infatti, tutte le operazioni di elaborazione dei dati, come le computazioni o la gestione delle regole di business, sono demandate al backend.
 
 L'architettura del frontend segue un approccio modulare, in cui ogni pagina e componente è organizzato secondo una struttura gerarchica. Ciò consente di mantenere l'architettura chiara e scalabile, facilitando l'estensione del sistema e la gestione delle singole sezioni dell'applicazione.
 
@@ -101,7 +102,11 @@ Dal punto di vista della programmazione, Prisma fornisce una libreria lato clien
 \subsubsection{Scelte tecnologiche del database}
 Il nuovo sistema adotta un database relazionale con tecnologia PostgreSQL, scelta dettata principalmente dalla necessità di garantire la compatibilità con i dati gestiti dal sistema legacy, che utilizza lo stesso DBMS. Oltre a questo requisito, PostgreSQL è stato selezionato per le sue caratteristiche di affidabilità, scalabilità e performance, rendendolo una soluzione solida per applicazioni che devono gestire un elevato volume di dati e richieste concorrenti.
 
-\section{Funzionalità chiave}
+\section{Aspetti funzionali del sistema}
+Il sistema in esame implementa diverse funzionalità fondamentali per garantire un'esperienza utente efficiente e una gestione strutturata delle operazioni. Tra queste, la multiutenza consente di amministrare utenti con permessi differenziati, assicurando un controllo granulare sull’accesso alle risorse. Parallelamente, la gestione degli errori è stata progettata per migliorare l'affidabilità del sistema, garantendo un trattamento coerente e strutturato delle anomalie sia lato frontend che backend.
+
+Le sezioni seguenti approfondiscono queste funzionalità, descrivendo il modello adottato, le soluzioni implementate e le possibili aree di miglioramento.
+
 \subsection{Multiutenza e gestione degli utenti}
 Nel nuovo sistema, la multiutenza si riferisce alla possibilità per un'organizzazione di disporre di molteplici credenziali di accesso, consentendo a diversi utenti di accedere al pannello di configurazione del filtro. Essi, hanno quindi la possibilità di amministrarne le caratteristiche o monitorare le statistiche, in base al loro ruolo. Questo rappresenta un notevole miglioramento rispetto al sistema precedente, in cui ogni cliente disponeva di un singolo account con permessi di amministratore. Tale limitazione risultava problematica in particolar modo per le organizzazioni più strutturate, che necessitavano di un accesso distribuito tra più figure con differenti livelli di autorizzazione.
 
