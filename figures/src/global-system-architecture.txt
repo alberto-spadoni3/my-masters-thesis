@@ -1,0 +1,99 @@
+@startuml
+skinparam component {
+    FontSize 18
+    backgroundColor #FFF3E0
+}
+
+skinparam node {
+    FontSize 21
+}
+
+skinparam package {
+    FontSize 20
+}
+
+skinparam database {
+    FontSize 20
+}
+
+skinparam folder {
+    FontSize 16
+}
+
+package "Frontend" {
+skinparam FontSize 12
+    [UI components] .. [routing]
+    [state management] .. [session management]
+    [state management] .. [UI components]
+    [error handling] .. [UI components]
+    [session management] .. [API client]
+}
+
+node "Backend" {
+    package "Auth" {
+        () "HTTP" as ahttp
+        ahttp - [authentication]
+        [authorization] .. [authentication]
+    }
+
+    package "Organization" {
+        () "HTTP" as ohttp
+        [organizations] - ohttp
+        [organizations] .. [users]
+    }
+
+    package "Report" {
+        () "HTTP" as rhttp
+        [reports] - rhttp
+    }
+    package "Protection" {
+        () "HTTP" as phttp
+        [protections] - phttp
+    }
+    package "Licencing" {
+        () "HTTP" as lhttp
+        [licences] - lhttp
+    }
+}
+
+database "PostgreSQL" {
+    folder "Organization table" {
+        [orgs data]
+    }
+    folder "User table" {
+        [users data]
+    }
+    folder "Protection table" {
+        [policies data]
+    }
+    folder "Report table" {
+        [stats data]
+    }
+}
+
+database "MySQL" {
+    folder "Licencing table" {
+        [licences data]
+    }
+}
+
+[API client] --> ahttp
+[API client] --> ohttp
+[API client] --> rhttp
+[API client] --> phttp
+[API client] --> lhttp
+
+[authentication] ..> [users data]
+[users] ..> [users data]
+
+[organizations] ..> [orgs data]
+
+[reports] --> ohttp
+[reports] ..> [stats data]
+
+[protections] --> ohttp
+[protections] ..> [policies data]
+
+[licences] --> ohttp
+[licences] ..> [licences data]
+@enduml
