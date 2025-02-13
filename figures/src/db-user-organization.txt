@@ -1,0 +1,49 @@
+@startuml
+entity Organization #fff3e0 {
+    UUID id PK
+    string name
+    ENUM organization_type
+    UUID parent_organization_id FK
+}
+
+entity OrganizationPermission #fff3e0 {
+    UUID organization_id FK
+    UUID permission_id FK
+    PK (organization_id, permission_id)
+}
+
+entity RolePermission #fff3e0 {
+    UUID role_id FK
+    UUID permission_id FK
+    PK (role_id, permission_id)
+}
+
+entity Permission #fff3e0{
+    UUID id PK
+    string name UNIQUE
+}
+
+entity User #fff3e0 {
+    UUID id PK
+    UUID organization_id FK
+    string email UNIQUE
+    string password_hash
+    int role_id FK
+    boolean email_verified
+    string notification_email
+    timestamp created_at
+    timestamp updated_at
+}
+
+entity Role #fff3e0 {
+    UUID id PK
+    string name
+}
+
+Organization "1" -- "*" OrganizationPermission: has
+Role "1" -- "*" RolePermission: has
+Permission  "1" -- "*" OrganizationPermission
+Permission  "1" -- "*" RolePermission
+User "1" --|> Role : has
+User "*" -- "1" Organization : belongs to one organization
+@enduml

@@ -1,0 +1,81 @@
+@startuml
+<style>
+    element { FontSize: 22; }
+</style>
+
+entity Profile #fff3e0 {
+    UUID id PK
+    UUID organization_id FK
+    string name
+    boolean is_limited
+    boolean is_global
+} 
+
+entity ProfileCategory #fff3e0 {
+    UUID profile_id FK
+    UUID category_id FK
+    PK (profile_id, category_id)
+}
+
+entity Category #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity MacroCategory #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity MacroCategoryCategory #fff3e0 {
+    UUID macrocategory_id FK
+    UUID category_id FK
+    PK (macrocategory_id, category_id)
+}
+
+entity TemplateCategory #fff3e0 {
+    UUID id PK
+    string name 
+    ENUM type 
+}
+
+entity TemplateCategoryCategory #fff3e0 {
+    UUID template_category_id FK
+    UUID category_id FK
+    PK (template_category_id, category_id)
+}
+
+entity ExceptionGroup #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity ProfileExceptionGroup #fff3e0 {
+    UUID profile_id FK
+    UUID exception_group_id FK
+    PK (profile_id, exception_group_id)
+}
+
+entity Domain #fff3e0 {
+    UUID id PK
+    string domain_name UNIQUE
+}
+
+entity DomainExceptionGroup #fff3e0 {
+    UUID exception_group_id FK
+    UUID domain_id FK
+    ENUM type 
+    PK (exception_group_id, domain_id)
+}
+
+Profile "1" -- "*" ProfileCategory : has categories
+Category "1" -- "*" ProfileCategory : is in profiles
+Profile "1" -- "*" ProfileExceptionGroup : has exception groups
+ExceptionGroup "1" -- "*" ProfileExceptionGroup : has profiles
+Domain "1" -- "*" DomainExceptionGroup : in exceptions
+ExceptionGroup "1" -- "*" DomainExceptionGroup : has domains
+MacroCategory "1" -- "*" MacroCategoryCategory : includes categories
+Category "1" -- "*" MacroCategoryCategory : is in macrocategories
+TemplateCategory "1" -- "*" TemplateCategoryCategory : includes categories
+Category "1" -- "*" TemplateCategoryCategory : is in template categories
+@enduml

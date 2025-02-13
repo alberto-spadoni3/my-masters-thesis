@@ -202,14 +202,7 @@ Il database del nuovo sistema è stato quasi completamente rinnovato come parte 
 L’assenza di vincoli legati alla retrocompatibilità ha permesso di riprogettare la base dati in accordo con l’analisi del dominio, affrontando e risolvendo le criticità presenti nella precedente modellazione. Questa libertà ha consentito di introdurre una struttura più coerente e scalabile, ottimizzando la gestione delle informazioni e predisponendo il sistema per l’integrazione di nuove funzionalità.
 
 \subsection{Struttura della base dati}
-La seguente analisi descrive l'architettura del nuovo database, mettendo in evidenza le principali differenze rispetto al sistema legacy. Le entità saranno presentate in gruppi tematici, organizzati in base alla loro funzione, fornendo una visione strutturata delle relazioni e delle caratteristiche di ciascuna componente del modello dati. In \Cref{fig:database-schema} è riportato lo schema concettuale del database, che rappresenta la struttura delle entità e delle relazioni principali.
-
-\begin{sidewaysfigure}
-  \centering
-  \includegraphics[width=1\textwidth]{figures/new_database_schema.pdf}
-  \caption{Diagramma ER relativo al database del nuovo sistema.}
-  \label{fig:database-schema}
-\end{sidewaysfigure}
+La seguente analisi descrive l'architettura del nuovo database, mettendo in evidenza le principali differenze rispetto al sistema legacy. Le entità saranno presentate in gruppi tematici, organizzati in base alla loro funzione, fornendo una visione strutturata delle relazioni e delle caratteristiche di ciascuna componente del modello dati.
 
 \subsubsection{Gestione delle organizzazioni, degli utenti e dei permessi}
 La gestione delle organizzazioni e degli utenti è centrale nel modello del database, in quanto permette di strutturare il sistema in modo scalabile e multi-tenant. Ogni organizzazione definisce un'unità amministrativa indipendente, all'interno della quale operano utenti con ruoli e permessi specifici.
@@ -223,11 +216,18 @@ Gli utenti nel sistema appartengono a una specifica organizzazione, stabilendo u
 Un aspetto critico del modello è la gestione dei ruoli e dei permessi, che determinano le operazioni che un utente può eseguire all’interno della propria organizzazione o di quelle subordinate. Il ruolo di ciascun utente viene interpretato direttamente dal backend del sistema e regola le azioni disponibili nell’applicazione, garantendo un controllo granulare sull’accesso alle funzionalità.
 
 \paragraph{Gestione dei permessi}
-Nel database vengono gestite due tipologie di permessi, che operano su livelli differenti:
+Nel database vengono gestite due tipologie di permessi, che operano su livelli differenti (\Cref{fig:organization-user-permissions}):
 \begin{itemize}
-  \item \textbf{Permessi di ruolo}: definiti staticamente all'interno del backend e assegnati in base alla tipologia dell’utente. Essi determinano le operazioni consentite all’interno del sistema, come la possibilità di apportare modifiche ai parametri del filtro o visualizzare determinate informazioni.
-  \item \textbf{Permessi di organizzazione}: memorizzati nel database ma gestiti dalla \textit{customer area}, un sistema esterno a quello in esame. Questi permessi sono definiti sulla base della licenza associata all'organizzazione e regolano le funzionalità accessibili per gli utenti al suo interno. Sebbene non siano amministrati direttamente dal backend, risultano fondamentali per il servizio di autorizzazione, che li utilizza per stabilire se un utente ha il diritto di eseguire una determinata operazione.
+  \item \textbf{RolePermission}: definiti staticamente all'interno del backend e assegnati in base alla tipologia dell’utente. Essi determinano le operazioni consentite all’interno del sistema, come la possibilità di apportare modifiche ai parametri del filtro o visualizzare determinate informazioni.
+  \item \textbf{OrganizationPermission}: memorizzati nel database ma gestiti dalla \textit{customer area}, un sistema esterno a quello in esame. Questi permessi sono definiti sulla base della licenza associata all'organizzazione e regolano le funzionalità accessibili per gli utenti al suo interno. Sebbene non siano amministrati direttamente dal backend, risultano fondamentali per il servizio di autorizzazione, che li utilizza per stabilire se un utente ha il diritto di eseguire una determinata operazione.
 \end{itemize}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{figures/db-user-organization.pdf}
+  \caption{Diagramma ER relativo alla gestione delle organizzazioni, degli utenti e dei permessi.}
+  \label{fig:organization-user-permissions}
+\end{figure}
 
 \subsubsection{Gestione delle reti e dei profili di protezione}
 Il modello di database adotta un approccio basato sui \emph{profili}, che rappresentano l’unico punto in cui vengono definite le policy di filtraggio. Le reti non contengono direttamente regole di protezione, ma si associano a uno o più profili per determinare quali configurazioni di sicurezza applicare.
@@ -252,9 +252,16 @@ La struttura del database prevede che per ogni opzione bloccata sia presente una
 Il database consente inoltre di definire i \emph{profili ristretti} attraverso un attributo dedicato, che indica se un profilo opera in modalità restrittiva. In questa configurazione, tutte le protezioni risultano attive di default, mentre l’accesso è consentito esclusivamente ai domini autorizzati. Sebbene l’informazione sia memorizzata nel database, la logica che governa il comportamento di questi profili è demandata al livello applicativo, che interpreta tale configurazione e applica le restrizioni di conseguenza.
 
 \paragraph{Associazione dei profili alle reti}
-L’assegnazione di un profilo a una rete avviene attraverso la coppia di server DNS utilizzata per le richieste. Questo meccanismo consente di determinare quale profilo debba essere applicato in base alla configurazione DNS impostata dall’amministratore, evitando così la necessità di separare fisicamente i dispositivi su reti diverse per applicare configurazioni differenti. Nel database, questo concetto è rappresentato dal termine \emph{porta}, una scelta terminologica che potrebbe apparire incoerente rispetto al suo significato tradizionale. Tuttavia, essa deriva da una versione precedente del sistema, in cui la selezione del profilo veniva effettivamente implementata sfruttando il numero di porta.
+L’assegnazione di un profilo a una rete avviene attraverso la coppia di server DNS utilizzata per le richieste. Questo meccanismo consente di determinare quale profilo debba essere applicato in base alla configurazione DNS impostata dall’amministratore, evitando così la necessità di separare fisicamente i dispositivi su reti diverse per applicare configurazioni differenti. Nel database, questo concetto è rappresentato dal termine \emph{porta} (\Cref{fig:network-profiles}), una scelta terminologica che potrebbe apparire incoerente rispetto al suo significato tradizionale. Tuttavia, essa deriva da una versione precedente del sistema, in cui la selezione del profilo veniva effettivamente implementata sfruttando il numero di porta.
 
 Questa modellazione permette quindi di gestire scenari avanzati in cui più profili possono coesistere sulla stessa rete, garantendo un elevato livello di flessibilità nella definizione delle policy di filtraggio e riducendo la necessità di configurazioni ridondanti.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{figures/db-network-profile.pdf}
+  \caption{Diagramma ER relativo alla gestione delle reti e dei profili di protezione.}
+  \label{fig:network-profiles}
+\end{figure}
 
 \subsubsection{Gestione delle categorie e delle eccezioni}
 Il nuovo database introduce una modellazione più strutturata delle categorie di contenuti e delle eccezioni, con l'obiettivo di migliorare la gestione delle configurazioni di filtraggio. Rispetto alla versione precedente, questa modellazione consente una maggiore flessibilità nella definizione delle policy, facilitando sia la gestione delle categorie predefinite sia la creazione di gruppi di eccezioni personalizzati.
@@ -272,15 +279,22 @@ L’utilizzo dei template permette di semplificare la gestione delle policy di f
 \paragraph{Gestione avanzata delle eccezioni}
 In questo contesto, una delle principali innovazioni rispetto al database precedente riguarda la gestione delle eccezioni. In passato, il sistema si basava esclusivamente su due liste distinte: una per i domini consentiti e una per i domini bloccati. Questo approccio era limitato, poiché ogni profilo doveva gestire separatamente le due liste, senza possibilità di organizzare le eccezioni in modo strutturato.
 
-Il nuovo database introduce il concetto di \emph{gruppi di eccezioni}, che rappresentano insiemi di domini personalizzati contenenti sia elementi bloccati sia consentiti. Ogni gruppo può essere associato a uno o più profili, permettendo così di riutilizzare la stessa configurazione su più contesti senza dover ridefinire manualmente le liste di riferimento. La modellazione delle eccezioni si basa su tre entità principali:
+Il nuovo database introduce il concetto di \emph{gruppi di eccezioni}, che rappresentano insiemi di domini personalizzati contenenti sia elementi bloccati sia consentiti. Ogni gruppo può essere associato a uno o più profili, permettendo così di riutilizzare la stessa configurazione su più contesti senza dover ridefinire manualmente le liste di riferimento. La modellazione delle eccezioni si basa su tre entità principali (\Cref{fig:categories-exceptions}):
 \begin{itemize}
-  \item \textbf{Gruppi di eccezioni}: rappresenta i gruppi di eccezioni, identificati da un nome.
-  \item \textbf{Associazione tra profili e gruppi di eccezioni}: definisce la relazione tra i profili e i gruppi di eccezioni, consentendo di applicare la stessa configurazione a più profili.
-  \item \textbf{Associazione tra domini e gruppi di eccezioni}: stabilisce l'associazione tra i domini e i gruppi di eccezioni, permettendo di definire quali appartengono a un gruppo specifico e se sono bloccati o consentiti.
-  \item \textbf{Nomi di dominio}: rappresenta la lista dei domini inseriti tra le eccezioni.
+  \item \textbf{ExceptionGroup}: rappresenta i gruppi di eccezioni, identificati da un nome.
+  \item \textbf{ProfileExceptionGroup}: definisce la relazione tra i profili e i gruppi di eccezioni, consentendo di applicare la stessa configurazione a più profili.
+  \item \textbf{DomainExceptionGroup}: stabilisce l'associazione tra i domini e i gruppi di eccezioni, permettendo di definire quali appartengono a un gruppo specifico e se sono bloccati o consentiti.
+  \item \textbf{Domain}: rappresenta la lista dei domini inseriti tra le eccezioni.
 \end{itemize}
 
 Questa modellazione consente di gestire le eccezioni in modo molto più flessibile, permettendo di definire configurazioni granulari e riutilizzabili. Un’organizzazione può, ad esempio, creare un gruppo di eccezioni che include sia domini consentiti sia domini bloccati e applicarlo a più profili senza dover replicare manualmente le stesse configurazioni. Inoltre, grazie alla presenza dei profili condivisi, anche i gruppi di eccezioni associati a questi ultimi vengono ereditati dalle organizzazioni subordinate. Questo meccanismo consente di mantenere una gestione centralizzata delle eccezioni, assicurando coerenza tra le configurazioni applicate ai diversi livelli della gerarchia organizzativa.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{figures/db-category-exceptions.pdf}
+  \caption{Diagramma ER relativo alla gestione delle categorie e delle eccezioni.}
+  \label{fig:categories-exceptions}
+\end{figure}
 
 \subsection{Linee guida per la migrazione dei dati}
 Il processo di migrazione dei dati rappresenta un'operazione critica nel passaggio dal sistema legacy alla nuova infrastruttura, poiché coinvolge informazioni essenziali per il funzionamento del filtro DNS e per l'esperienza degli utenti. Affinché la transizione avvenga in modo efficace, il nuovo sistema dovrà essere già popolato con tutti i dati esistenti prima della sua messa in produzione, evitando così discontinuità operative o perdita di informazioni.

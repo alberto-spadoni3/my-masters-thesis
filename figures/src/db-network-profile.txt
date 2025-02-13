@@ -1,0 +1,80 @@
+@startuml
+<style>
+    element { FontSize: 20; }
+</style>
+
+entity Network #fff3e0 {
+    UUID id PK
+    UUID organization_id FK
+    ENUM type
+    inet address
+    timestamp last_query_time
+    string timezone
+    timestamp created_at
+    timestamp updated_at
+}
+
+entity Organization #fff3e0 {
+    UUID id PK
+    string name
+    ENUM organization_type
+    UUID parent_organization_id FK
+}
+
+entity Profile #fff3e0 {
+    UUID id PK
+    UUID organization_id FK
+    string name
+    boolean is_limited
+    boolean is_global
+} 
+
+entity NetworkProfilePort #fff3e0 {
+    UUID id PK
+    UUID network_id FK
+    UUID profile_id FK
+    int dns_port 
+}
+
+
+entity DdnsUpdate #fff3e0 {
+    UUID id PK
+    UUID network_id FK
+    timestamp last_sync
+    string username UNIQUE
+    string password_hash
+}
+
+entity ProtectionSetting #fff3e0{
+    UUID profile_id
+    ENUM setting 
+    PK (profile_id, setting)
+}
+
+entity ProfileCategory #fff3e0 {
+    UUID profile_id FK
+    UUID category_id FK
+    PK (profile_id, category_id)
+}
+
+entity Category #fff3e0 {
+    UUID id PK
+    string name
+}
+
+entity ProfileBlockIp #fff3e0 {
+    UUID profile_id
+    UUID category_id
+    PK (profile_id, category_id)
+}
+
+Organization "1" -- "*" Network : owns networks
+Organization "1" -- "*" Profile : owns profiles
+Network "1" -- "*" NetworkProfilePort : uses profiles based on DNS port
+Profile "1" -- "*" NetworkProfilePort : assigned to networks via DNS port
+Network "1" --|> DdnsUpdate : has
+Profile "1" -- "*" ProfileCategory : has categories
+Profile "1" -- "*" ProtectionSetting : has setting
+Category "1" -- "*" ProfileCategory : is in profiles
+Profile "1" -- "*" ProfileBlockIp : has blockIp on category
+@enduml
