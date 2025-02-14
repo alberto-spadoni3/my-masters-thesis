@@ -5,36 +5,61 @@
 % LISTING CONFIGURATIONS
 %-----------------------------------------------------
 
-\crefname{lstlisting}{listing}{listing}	
+\crefname{lstlisting}{listing}{listing}
 \Crefname{lstlisting}{Listing}{Listing}
 \renewcommand\lstlistlistingname{List of Listings}
 
 \lstset{
-	showstringspaces=false,
-	basicstyle=\scriptsize\ttfamily,
-	commentstyle={\color{olive}},
-	identifierstyle=\color{black},
-	ndkeywordstyle={\color{blue}},
-	stringstyle={\color{magenta}},
-	emphstyle={},
-	keywordstyle={\color{blue}},
-	breaklines=true,
-	numbers=left,
-	numberstyle=\tiny\color{gray},
-	numbersep=10pt,
-	tabsize=2,
-	extendedchars=true,
-	frame=trBL,
-	frameround=fttt,
+  showstringspaces=false,
+  basicstyle=\scriptsize\ttfamily,
+  commentstyle={\color{olive}},
+  identifierstyle=\color{black},
+  ndkeywordstyle={\color{green}},
+  stringstyle={\color{magenta}},
+  emphstyle={\color{green}},
+  keywordstyle={\color{blue}},
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=10pt,
+  tabsize=2,
+  extendedchars=true,
+  frame=trBL,
+  frameround=fttt,
 }
 
-\lstdefinelanguage{Kotlin}{
-	comment=[l]{//},
-	emph={delegate, filter, first, firstOrNull, forEach, lazy, map, mapNotNull, println, return@},
-	keywords={abstract, actual, as, as?, break, by, class, companion, continue, data, do, dynamic, else, enum, expect, false, final, for, fun, get, if, import, in, interface, internal, is, null, object, override, package, private, public, return, set, super, suspend, this, throw, true, try, typealias, val, var, vararg, when, where, while},
-	morecomment=[s]{/*}{*/},
-	morestring=[b]",
-	morestring=[s]{"""*}{*"""},
-	ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String, Unit, it},
-	sensitive=true
+\definecolor{vscodeKeyword}{HTML}{4A90E2}   % Azzurro scuro per le keyword
+\definecolor{vscodeString}{HTML}{B06C49}    % Arancione scuro per le stringhe
+\definecolor{vscodeComment}{HTML}{5A8850}   % Verde scuro per i commenti
+\definecolor{vscodeFunction}{HTML}{C58600}  % Giallo scuro per funzioni/metodi
+\definecolor{vscodeType}{HTML}{3CAFA0}      % Turchese scuro per i tipi
+
+\lstdefinelanguage{TypeScript}{
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  keywords={
+    abstract, any, as, async, await, boolean, break, case, catch, class,
+    const, constructor, continue, debugger, declare, default, delete, do, else,
+    enum, export, extends, false, finally, for, from, function, get, if,
+    implements, import, in, instanceof, let, module, new, null, number, of,
+    package, private, protected, public, readonly, return, set, static, super,
+    switch, symbol, this, throw, true, try, type, typeof, undefined, var, void,
+    while, with, yield
+  },
+  ndkeywords={
+    @Component, @NgModule, @Injectable, @Input, @Output, console
+    Array, boolean, Date, Error, Function, JSON, Math, number, Object, RegExp, string, Promise, AppErrorPayload, K, ErrorDetailsMapping, AppError
+  },
+  emph={
+    map, filter, reduce, getStatusCodeFromErrorCode, log, toJSON, forEach, find, findIndex, includes, push, pop, shift, unshift, slice, splice, concat, join, split
+  },
+  sensitive=true,
+  % Impostazioni per i colori
+  keywordstyle=\color{vscodeKeyword}\bfseries,
+  ndkeywordstyle=\color{vscodeType}\bfseries,
+  emphstyle=\color{vscodeFunction},
+  commentstyle=\color{vscodeComment}\itshape,
+  stringstyle=\color{vscodeString}
 }
