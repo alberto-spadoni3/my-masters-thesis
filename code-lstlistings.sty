@@ -39,6 +39,7 @@
   morecomment=[s]{/*}{*/},
   morestring=[b]",
   morestring=[b]',
+  morestring=[b]`,
   keywords={
     abstract, any, as, async, await, boolean, break, case, catch, class,
     const, constructor, continue, debugger, declare, default, delete, do, else,
@@ -49,11 +50,12 @@
     while, with, yield
   },
   ndkeywords={
-    @Component, @NgModule, @Injectable, @Input, @Output, console
-    Array, boolean, Date, Error, Function, JSON, Math, number, Object, RegExp, string, Promise, AppErrorPayload, K, ErrorDetailsMapping, AppError
+    console, Array, boolean, String, Date, Error, Function, JSON, Math, number, Object, RegExp, string, Promise,
+    AppErrorPayload, K, ErrorDetailsMapping, AppError, Translator, InputError, ErrorOperation, ErrorEntity, TranslationValues
   },
   emph={
-    map, filter, reduce, getStatusCodeFromErrorCode, log, toJSON, forEach, find, findIndex, includes, push, pop, shift, unshift, slice, splice, concat, join, split
+    map, filter, log, forEach, find,, includes, push, pop, join,
+    getStatusCodeFromErrorCode, getValidationErrorMessage, useTranslations, toJSON
   },
   sensitive=true,
   % Impostazioni per i colori
