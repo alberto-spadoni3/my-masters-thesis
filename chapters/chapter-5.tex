@@ -164,3 +164,69 @@ In sintesi, \texttt{AppErrorPayload} rappresenta uno union type, in cui ogni mem
 \end{itemize}
 
 Questo design consente a \texttt{AppError} di gestire in modo robusto e tipizzato una serie di errori diversi, garantendo che ogni di essi abbia una struttura dati coerente e ben definita.
+
+\subsubsection{Gestione degli errori di validazione degli input}\label{sec:input-validation-errors}
+Nel backend, la validazione degli input ricevuti dalle API è affidata alla libreria \texttt{Zod}\footnote{\url{https://zod.dev}}, la quale fornisce un sistema di definizione di schemi e di verifica automatica della conformità dei dati. Quando un input non rispetta lo schema previsto, Zod genera un'eccezione di tipo \texttt{ZodError}, che contiene informazioni dettagliate sugli errori riscontrati. Tuttavia, questo errore non è direttamente utilizzabile per la comunicazione con il frontend, motivo per cui è necessario un processo di elaborazione che trasformi i dati forniti da Zod in un formato strutturato e coerente con il modello di gestione degli errori adottato nel sistema.
+
+A tale scopo, il backend intercetta l’errore lanciato da Zod e lo elabora per costruire un oggetto di tipo \texttt{InputError}. Questo oggetto contiene:
+\begin{itemize}
+  \item Il nome del campo che ha fallito la validazione.
+  \item Un insieme di dettagli strutturati che permettono di comprendere la natura dell'errore.
+\end{itemize}
+Questi dettagli includono il codice d'errore specifico di Zod (come ``\texttt{too\_small}'', ``\texttt{invalid\_string}'', ``\texttt{unrecognized\_keys}''), il valore atteso e quello effettivamente ricevuto, e altri parametri che variano a seconda del tipo di errore (come i limiti minimi e massimi nel caso di valori numerici o stringhe con vincoli di lunghezza). Ancora una volta l'obiettivo è quello di fornire un’informazione chiara e strutturata, che possa essere facilmente interpretata dal frontend per la generazione di messaggi d’errore dettagliati relativi agli input non validi.
+
+Il risultato di questa elaborazione viene quindi incluso nei \texttt{details} dell’errore con codice ``\texttt{validation.input\_error}'', accompagnato dall’entità coinvolta e dal tipo di operazione che ha generato la validazione fallita. In questo modo, il frontend, ricevendo un errore di questo tipo, è in grado di analizzare i dettagli forniti e costruire dinamicamente un messaggio specifico per ogni campo errato, mantenendo la piena compatibilità con il sistema di internazionalizzazione.
+
+\subsubsection{Conclusione}
+La gestione degli errori nel backend è stata strutturata in modo modulare e tipizzato, garantendo uniformità e scalabilità. L’uso dei \textit{generics} di TypeScript e della classe \texttt{AppError} ha permesso di standardizzare la rappresentazione delle anomalie, facilitando l’integrazione con il frontend.
+
+Grazie alla mappatura definita in \texttt{ErrorDetailsMapping}, ogni errore include informazioni specifiche e contestualizzate, assicurando una comunicazione chiara tra i livelli del sistema. Inoltre, la gestione degli errori di validazione tramite Zod permette di trasformare le anomalie sugli input in messaggi strutturati e facilmente interpretabili.
+
+Questa architettura garantisce che il backend restituisca risposte coerenti e prevedibili, semplificando la gestione degli errori lato frontend e migliorando la manutenibilità complessiva del sistema.
+
+\subsection{Gestione degli errori nel frontend}
+Nel frontend, il trattamento delle anomalie provenienti dal backend è stato progettato per garantire una comunicazione efficace e multilingua nei messaggi destinati all’utente. Gli errori restituiti dai vari microservizi non possono essere utilizzati direttamente per fornire un feedback comprensibile, poiché si limitano a rappresentare in modo schematico il problema, includendo solo informazioni strutturate e standardizzate. Per questo motivo, è necessario un sistema di interpretazione che analizzi le proprietà dell'oggetto errore e generi dinamicamente un messaggio esplicativo.
+
+L’obiettivo principale di questa strategia è mantenere separata la logica di gestione degli errori dalla costruzione del messaggio visualizzato. In questo modo, il frontend rimane indipendente dalla libreria adottata per la localizzazione dei testi. Questo risultato è ottenuto attraverso il tipo astratto \texttt{Translator}, che funge da callback generica per interagire con il sistema di traduzione scelto.
+
+\paragraph{Definizione e utilizzo di \texttt{Translator}}
+Per garantire un efficace supporto alla traduzione dei messaggi di errore, è stato definito il tipo \texttt{Translator}, il quale rappresenta una funzione che riceve una chiave testuale e un insieme opzionale di parametri, restituendo la stringa localizzata corrispondente. La sua definizione è mostrata nel \Cref{lst:translator}.
+
+Per facilitare l’utilizzo del sistema di traduzione nei componenti del frontend, evitando di dover importare ripetutamente la funzione \texttt{useTranslations} di \texttt{next-intl}, è stato realizzato un apposito hook denominato \texttt{useTranslator}. Questo hook consente di definire un prefisso opzionale per le chiavi di traduzione, promuovendo al contempo la separazione della logica di localizzazione da quella di gestione degli errori.
+%
+\lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{Translator}}, label={lst:translator}]{listings/useTranslator.ts}
+%
+Grazie a questa astrazione, ogni componente del frontend può ottenere facilmente un’istanza della funzione di traduzione senza dover interagire direttamente con i metodi di \texttt{next-intl}, migliorando la modularità e la manutenibilità del codice.
+
+\subsubsection{Costruzione dinamica dei messaggi di errore}
+Nel frontend, ogni volta che viene effettuata una chiamata HTTP al backend, se la risposta ricevuta ha un codice di stato HTTP diverso da \texttt{2XX}, il sistema sa che si è verificato un errore e attiva il meccanismo di generazione del messaggio corrispondente. Per fare ciò, viene analizzato l’oggetto di tipo \texttt{AppErrorPayload} che rappresenta il risultato dell'invocazione del metodo \texttt{toJSON()}, da parte del backend, su un'istanza di \texttt{AppError}.
+%
+Un primo livello di gestione è implementato attraverso il metodo \texttt{parseBackendError()}, che, sulla base del codice di stato HTTP ricevuto, invoca metodi specifici per la costruzione del messaggio di errore appropriato. In particolare, esso opera come segue:
+\begin{itemize}
+  \item Se lo stato HTTP è \texttt{400}, si tratta di un errore di validazione. In questo caso, il metodo estrae le informazioni dagli \texttt{inputErrors} e utilizza il metodo \texttt{getValidationErrorMessage()} per generare un messaggio contestualizzato.
+  \item Se lo stato HTTP è \texttt{409}, si tratta di un errore di conflitto, tipicamente legato a operazioni fallite su entità esistenti. In questo scenario, il metodo analizza il codice di errore, estraendo il nome dell’entità coinvolta e il tipo di errore. Successivamente, invoca metodi specifici come \texttt{getUserErrorMessage()}, che costruiscono il messaggio contestualizzato all'entità coinvolta.
+  \item Se lo stato HTTP è \texttt{500} o un altro valore non gestito, il metodo restituisce un messaggio generico di errore, indicando all’utente che si è verificato un problema imprevisto. Questo è l'unico caso in cui i messaggi d'errore vengono costruiti lato backend, in quanto non è possibile prevedere tutti i possibili scenari. Questi messaggi sono in lingua inglese e non vengono tradotti.
+\end{itemize}
+
+% \lstinputlisting[language=typescript, caption={Implementazione del metodo \texttt{parseBackendError}}, label={lst:parseBackendError}]{listings/parseErrors.ts}
+
+\subsubsection{Gestione degli errori relativi alle entità}
+Per ogni entità del sistema, come utenti e organizzazioni, gli errori vengono gestiti attraverso metodi dedicati che ne analizzano i dettagli e generano un messaggio leggibile dall’utente. Questa architettura modulare consente di costruire messaggi contestualizzati senza dover gestire manualmente ogni possibile errore all’interno di un’unica funzione centralizzata.
+
+Ogni metodo di gestione degli errori riceve in input tre elementi fondamentali: il tipo di errore riscontrato nei confronti dell'entità coinvolta, i dettagli forniti dal backend la funzione di traduzione \texttt{translator}. L'oggetto dei dettagli contiene informazioni specifiche per ogni errore, come l’identificativo dell’entità coinvolta o la causa del problema. Questi dati vengono utilizzati per personalizzare il messaggio, rendendolo più chiaro e comprensibile per l’utente finale.
+
+All’interno del processo di elaborazione, il valore dei dettagli dell’errore viene interpretato in base alla struttura prevista per la specifica entità, garantendo che i messaggi generati rispettino un formato coerente. Se l’errore riguarda, ad esempio, la creazione di un’entità e contiene una causa associata, questa viene tradotta dinamicamente in un testo comprensibile. O ancora, se l’errore è legato alla ricerca di un’entità non trovata, il messaggio generato include l’identificativo dell’oggetto cercato, fornendo all’utente un’indicazione chiara sul problema riscontrato.
+
+Questa strategia non solo semplifica la gestione degli errori, ma assicura anche una maggiore scalabilità. Nuovi errori possono essere aggiunti senza modificare la logica esistente, garantendo una gestione uniforme e strutturata delle anomalie per tutte le entità del sistema.
+
+\subsubsection{Gestione degli errori di validazione}
+Come descritto nella \Cref{sec:input-validation-errors}, gli errori di validazione degli input vengono strutturati in modo da fornire tutte le informazioni necessarie per costruire un messaggio dettagliato. Nel frontend, il metodo \texttt{getValidationErrorMessage()} si occupa di elaborare questi dati per generare una stringa comprensibile e localizzata da mostrare all’utente.
+%
+\lstinputlisting[language=typescript, caption={Metodo \texttt{getValidationErrorMessage}}, label={lst:getValidationErrorMessage}]{listings/validationMessage.ts}
+%
+Il metodo analizza gli errori ricevuti, associando ogni campo con i problemi segnalati dal backend. Per ciascuna anomalia, viene costruito un messaggio traducendo dinamicamente il codice d’errore di \texttt{Zod} (ad esempio, ``\texttt{too\_small}'' o ``\texttt{invalid\_string}'') e integrando informazioni come il valore atteso, quello ricevuto e altri dettagli rilevanti. Infine, i vari messaggi vengono concatenati in un'unica stringa strutturata, così da fornire un’indicazione chiara sui problemi riscontrati e facilitare la correzione dei dati inseriti.
+
+\subsubsection{Conclusione}
+Il sistema di gestione degli errori nel frontend è stato progettato per garantire scalabilità e supporto alla multilingua, mantenendo un chiaro disaccoppiamento tra la logica di interpretazione e la libreria di internazionalizzazione scelta. L’utilizzo di un tipo astratto come \texttt{Translator} ha permesso di rendere il codice modulare e facilmente adattabile a diverse soluzioni di traduzione, senza dover modificare la logica sottostante.
+
+Grazie a questa architettura, il frontend è in grado di convertire gli errori restituiti dal backend in messaggi informativi chiari e contestualizzati, migliorando l’esperienza utente e garantendo un’interazione fluida con il sistema.
