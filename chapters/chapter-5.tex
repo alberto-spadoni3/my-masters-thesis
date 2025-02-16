@@ -1,27 +1,31 @@
 \chapter{Implementazione}
 
+Questo capitolo fornisce una panoramica sul processo di sviluppo del nuovo sistema, evidenziando gli aspetti tecnici più rilevanti per il valore di questa tesi. In particolare, verrà approfondita la gestione degli errori, analizzando le soluzioni adottate sia nel backend che nel frontend. Questo approfondimento estende quanto discusso nella \Cref{sec:error-management}, che si è limitata alla fase di progettazione.
+
 \section{Piano di Sviluppo}
-Il processo di sviluppo del nuovo sistema si è basato sulla metodologia \textit{Agile SCRUM}, con cicli di sviluppo iterativi e incrementali della durata di due settimane (\textit{sprint}). Al termine di ogni sprint, si è tenuto un meeting di revisione con il \textit{project manager} (PM), il quale ha supervisionato lo stato di avanzamento del lavoro, analizzato le criticità emerse e verificato la conformità delle ore lavorate rispetto a quelle preventivate. Durante questi incontri, si sono definite le attività per lo sprint successivo, garantendo un flusso di sviluppo costante e ben organizzato.
+Lo sviluppo del nuovo sistema è stato condotto seguendo la metodologia Agile \textit{SCRUM}\footnote{\url{https://scrumguides.org/scrum-guide.html}}, che prevede un'organizzazione del lavoro in cicli iterativi e incrementali della durata di due settimane (\textit{sprint}). Questo approccio ha permesso di suddividere il progetto in incrementi funzionali rilasciabili progressivamente, favorendo una maggiore flessibilità nei confronti dei requisiti emergenti e un continuo miglioramento del prodotto.
 
-Il team di sviluppo è composto esclusivamente da \textit{Full Stack Developer}, senza una suddivisione rigida tra frontend e backend. Le attività di progettazione grafica non sono state gestite internamente, ma affidate a un designer esterno, incaricato del rinnovo della brand identity. Quindi, per quanto concerne la UI/UX, il team si è solo ocupato di implementare le nuove interfacce grafiche, seguendo le specifiche fornite dal designer.
+Al termine di ogni sprint, si è tenuto un meeting di revisione con il \textit{Project Manager} (PM), durante il quale sono state analizzate le criticità emerse, verificata la conformità delle ore lavorate rispetto a quelle preventivate e pianificate le attività per lo sprint successivo. Questo processo ha garantito un flusso di sviluppo costante e ben organizzato, consentendo al team di intervenire tempestivamente su eventuali problematiche e di mantenere un'elevata qualità del codice.
 
-Per la gestione e il monitoraggio delle attività, è stato utilizzato lo strumento di project management \textit{ClickUp}\footnote{\url{https://clickup.com/}}, che ha permesso di tracciare i task, assegnare priorità e garantire un'organizzazione efficace del lavoro.
+Il team di sviluppo è composto esclusivamente da \textit{Full Stack Developer}, senza una suddivisione rigida tra frontend e backend. Le attività di progettazione grafica non sono state gestite internamente, ma affidate a un designer esterno incaricato del rinnovo della brand identity. Di conseguenza, per quanto riguarda la UI/UX, il team si è occupato esclusivamente dell'implementazione delle nuove interfacce grafiche, attenendosi alle specifiche fornite dal designer e garantendo la corretta integrazione delle soluzioni proposte all'interno del sistema.
+
+Per la gestione e il monitoraggio delle attività, è stato utilizzato lo strumento di project management \textit{ClickUp}\footnote{\url{https://clickup.com}}, che ha permesso di tracciare i task, assegnare priorità e garantire un'organizzazione efficace del lavoro.
 
 Le attività svolte durante gli sprint hanno incluso lo sviluppo di nuove funzionalità, la risoluzione di bug, il refactoring del codice e l'ottimizzazione delle performance. Particolare attenzione è stata dedicata alla qualità del software, con l'integrazione di test automatici e revisioni periodiche del codice prima del rilascio delle feature.
 
 \subsection{Ambiente di sviluppo e infrastruttura}
 L'ambiente di sviluppo è stato configurato in modo da rispecchiare il più possibile l'ambiente di produzione, garantendo una maggiore affidabilità nei test e riducendo il rischio di anomalie legate a differenze infrastrutturali. Per ottenere questa uniformità, sono state adottate tecnologie che permettono di replicare fedelmente la configurazione di produzione.
 
-L'intero sistema di sviluppo è stato containerizzato tramite Docker, con i vari servizi orchestrati tramite Docker Compose. Questo permette di avviare l’ambiente di sviluppo in modo rapido e riproducibile su diverse macchine, riducendo problemi di configurazione tra membri del team. Inoltre, l'uso di \textit{Docker-in-Docker} nella pipeline \textit{CI/CD} consente di replicare l’ambiente di esecuzione anche nei job automatici di test e build.
+L'intero sistema di sviluppo è stato \textit{containerizzato}\footnote{Il termine ``containerizzare'' si riferisce al processo di incapsulamento di un'applicazione e delle sue dipendenze all'interno di un container, ovvero un'unità standardizzata di software che garantisce che l'applicazione possa essere eseguita in modo coerente in qualsiasi ambiente. (\url{https://www.docker.com/resources/what-container})} tramite \textit{Docker}, con i vari servizi orchestrati da \textit{Docker Compose}. Questo permette di avviare l’ambiente di sviluppo in modo rapido e riproducibile su diverse macchine, riducendo problemi di configurazione tra membri del team. Inoltre, l'uso di \textit{Docker-in-Docker} nella pipeline \textit{Continuous Integration/Continuous Deployment} (CI/CD) consente di replicare l’ambiente di esecuzione anche nei \textit{job} automatici di test e build.
 
 Per la gestione delle configurazioni, ogni microservizio utilizza un file \texttt{.env}, che contiene le variabili d’ambiente necessarie per la configurazione dinamica dello stesso, come le credenziali di accesso ai database e gli endpoint delle API. Durante l’esecuzione della pipeline CI/CD, questo file viene iniettato nei container, permettendo di mantenere un ambiente coerente tra sviluppo, test e produzione, senza la necessità di configurazioni separate per ciascun contesto.
 
 Per migliorare l'affidabilità dei test, è stata implementata una strategia di \textit{seeding} del database, che consente di popolare l’ambiente di test con dati coerenti ad ogni esecuzione, assicurando risultati riproducibili e verifiche affidabili.
 
 \subsection{Struttura della repository}
-L'intero codice del progetto è gestito tramite una \textit{monorepo}, ospitata su GitLab. La scelta di adottare una monorepo è motivata dalla necessità di mantenere in un unico repository sia il frontend che tutti i microservizi che compongono il backend, semplificando la gestione delle dipendenze, la coerenza tra i moduli e l'esecuzione delle pipeline di \textit{Continuous Integration/Continuous Deployment} (CI/CD).
+L'intero codice del progetto è gestito tramite una \textit{monorepo} ospitata su \textit{GitLab}. La scelta di adottare una monorepo è motivata dalla necessità di mantenere in un unico repository sia il frontend che tutti i microservizi del backend, semplificando la gestione delle dipendenze, la coerenza tra i moduli e l'esecuzione delle pipeline di CI/CD.
 
-Per ottimizzare la gestione della monorepo, è stato utilizzato \texttt{Turborepo}\footnote{\url{https://turbo.build}}, un tool specificamente progettato per lo sviluppo di applicazioni in TypeScript. Turborepo consente di affrontare in modo efficiente il problema dei lunghi processi di compilazione, tipici delle monorepo con numerosi pacchetti e molteplici task (come compilazione, testing e linting). Il tool pianifica l'esecuzione dei task in modo ottimizzato, parallelizzandoli su tutti i core disponibili e implementando un avanzato sistema di caching. Questo permette di ridurre drasticamente i tempi di build successivi al primo, migliorando la produttività del team di sviluppo.
+Per ottimizzare la gestione della monorepo, è stato utilizzato \texttt{Turborepo}\footnote{\url{https://turbo.build}}, un tool specificamente progettato per lo sviluppo di applicazioni in TypeScript. Questo strumento consente di affrontare in modo efficiente il problema dei lunghi processi di compilazione, tipici delle monorepo con numerosi pacchetti e molteplici task (come compilazione, testing e linting). Il tool pianifica l'esecuzione dei task in modo ottimizzato, parallelizzandoli su tutti i core disponibili e implementando un avanzato sistema di caching. Questo permette di ridurre drasticamente i tempi di build successivi al primo, migliorando la produttività del team di sviluppo.
 
 L'organizzazione della monorepo sfrutta la funzionalità \textit{workspace} di \texttt{pnpm}, suddividendo i pacchetti in due macro-categorie:
 \begin{itemize}
@@ -37,81 +41,79 @@ Per organizzare al meglio il lavoro di sviluppo del team, è stato adottato un m
   \item \textbf{Branch personali}: Ogni sviluppatore lavora principalmente su un branch personale, denominato con il proprio cognome, per eseguire i commit delle proprie modifiche prima di unire il codice nei branch condivisi.
   \item \textbf{Feature branches}: Per lo sviluppo di funzionalità specifiche, possono essere creati branch temporanei, indipendenti dai branch personali, in modo da favorire un'organizzazione più modulare del codice.
 \end{itemize}
-
-Questa strategia consente di mantenere un flusso di sviluppo ordinato, con chiara separazione tra il codice in produzione, il codice in fase di test e le modifiche in sviluppo. Inoltre, grazie all'integrazione con le pipeline CI/CD di GitLab, il sistema è in grado di eseguire automaticamente test e build per ogni \textit{push} e \textit{merge request}, garantendo un'elevata affidabilità prima della promozione del codice verso l'ambiente di produzione.
+%
+Questa strategia consente di mantenere un flusso di sviluppo ordinato, con una chiara separazione tra il codice in produzione, il codice in fase di test e le modifiche in sviluppo. Inoltre, grazie all'integrazione con le pipeline CI/CD di GitLab, il sistema è in grado di eseguire automaticamente test e build per ogni \textit{push} e \textit{merge request}, garantendo un'elevata affidabilità prima della promozione del codice verso l'ambiente di produzione.
 
 \subsubsection{Pipeline CI/CD}
 L'automazione del processo di sviluppo è stata realizzata attraverso una pipeline di \textit{CI/CD}, integrata direttamente in GitLab. La pipeline è suddivisa in più fasi, organizzate per garantire una validazione progressiva del codice prima del rilascio in staging.
 
 L'intero processo di build e test si basa su Docker-in-Docker\footnote{\url{https://www.docker.com/resources/docker-in-docker-containerized-ci-workflows-dockercon-2023}} (DinD), una soluzione che permette alla pipeline di eseguire e gestire container Docker all'interno di ambienti di esecuzione basati sulla stessa tecnologia. Questo approccio consente di costruire immagini Docker direttamente nei job della pipeline, riducendo la dipendenza da infrastrutture esterne e garantendo isolamento ed una maggiore coerenza tra gli ambienti di sviluppo, test e deploy.
-
+%
 Il flusso di lavoro della pipeline prevede le seguenti fasi:
 \begin{enumerate}
-  \item \textbf{Build dell'ambiente di sviluppo}: I servizi vengono compilati e avviati tramite \texttt{docker-compose}, con supporto alla parallelizzazione dei task e caching per ottimizzare i tempi di build.
+  \item \textbf{Build dell'ambiente di sviluppo}: I servizi vengono compilati e avviati tramite il comando \texttt{docker-compose}, con supporto alla parallelizzazione dei task e caching per ottimizzare i tempi di build.
   \item \textbf{Esecuzione dei test}: Ogni microservizio è testato in container isolati. Viene eseguito il processo di seeding del database per simulare scenari reali e ottenere una copertura completa del codice.
   \item \textbf{Build per la produzione}: Se i test risultano superati, viene generata una build ottimizzata per il rilascio, con tagging e push delle immagini Docker nel registry di GitLab.
   \item \textbf{Deploy sull'ambiente di staging}: Il codice viene distribuito aggiornando i container in esecuzione e ripristinando il database con i dati necessari per il test pre-produzione.
 \end{enumerate}
 
-La pipeline utilizza strategie di caching avanzate per ridurre i tempi di esecuzione. I pacchetti \texttt{pnpm} e la cache di \texttt{Turborepo} vengono riutilizzati tra i job, evitando ricompilazioni non necessarie. Inoltre, il sistema di \textit{retry} assicura la ripetizione automatica dei job in caso di errori transitori, migliorando l'affidabilità del processo.
+La pipeline utilizza strategie di caching avanzate per ridurre i tempi di esecuzione. I pacchetti gestiti da \texttt{pnpm} e la cache di \texttt{Turborepo} vengono riutilizzati tra i job, evitando ricompilazioni non necessarie. Inoltre, il sistema di \textit{retry} proprio della pipeline, assicura la ripetizione automatica dei job in caso di errori transitori, migliorando l'affidabilità del processo.
 
-Grazie a questa configurazione della pipeline è possibile garantire un flusso di sviluppo strutturato e sicuro, assicurando che solo codice stabile e testato venga promosso verso l'ambiente di staging e, successivamente, alla produzione.
+Grazie a questa configurazione è possibile garantire un flusso di sviluppo strutturato e sicuro, assicurando che solo codice stabile e testato venga promosso verso l'ambiente di staging e, successivamente, verso quello di produzione.
 
 \subsection{Test e controllo qualità}
-Una componente fondamentale del piano di sviluppo è stata la verifica della qualità del codice e la sua copertura tramite test automatizzati. Il processo di testing ha seguito le seguenti linee guida:
+La verifica della qualità del codice e la copertura tramite test automatizzati hanno rappresentato un aspetto fondamentale del piano di sviluppo. Il processo di testing è stato strutturato seguendo queste linee guida:
+
 \begin{itemize}
-  \item \textbf{Copertura al 100\%} del codice backend e frontend tramite test unitari e di integrazione.
-  \item Per i test lato backend è stata utilizzata la libreria \texttt{Mocha}\footnote{\url{https://mochajs.org}}, che permette di eseguire test unitari e di integrazione in un ambiente controllato, verificando il corretto funzionamento delle API e della logica applicativa.
-  \item Per quelli lato frontend è stato invece adottato \texttt{Playwright}\footnote{\url{https://playwright.dev}}, uno strumento per il testing end-to-end che consente di simulare interazioni utente su più browser. Tuttavia, la copertura dei test frontend è ancora da ampliare per garantire una validazione più completa dell'interfaccia utente.
-  \item Utilizzo di strumenti di analisi statica del codice come \texttt{ESLint}\footnote{\url{https://eslint.org}} e \texttt{Prettier}\footnote{\url{https://prettier.io}} per garantire standard di qualità e uniformità nella formattazione.
-  \item Verifica delle performance e dei comportamenti critici del sistema mediante test prestazionali.
+  \item Garantire una copertura del 100\% del codice sorgente dell'intero sistema, attraverso test unitari e di integrazione.
+  \item Per il backend, è stata utilizzata la libreria \texttt{Mocha}\footnote{\url{https://mochajs.org}}, che consente di eseguire test unitari e di integrazione in un ambiente controllato, verificando il corretto funzionamento delle API e della logica applicativa.
+  \item Per il frontend, è stato adottato \texttt{Playwright}\footnote{\url{https://playwright.dev}}, uno strumento per il testing end-to-end che permette di simulare interazioni utente su diversi browser.
+  \item Mantenere standard elevati di qualità del codice attraverso strumenti di analisi statica come \texttt{ESLint}\footnote{\url{https://eslint.org}} e \texttt{Prettier}\footnote{\url{https://prettier.io}}, utilizzati per il controllo della formattazione e il rispetto delle best practice di sviluppo.
+  \item Valutare le performance e il comportamento del sistema in scenari critici mediante test prestazionali.
 \end{itemize}
 
 \subsection{Approccio alla reingegnerizzazione}
-Come descritto nella \Cref{sec:reingegnerizzazione-approcci-fasi}, ogni modello di reingegnerizzazione presenta vantaggi e criticità differenti. Il processo adottato in questo contesto si pone a metà tra l'approccio ``Big Bang'' e quello ``Evolutivo''. Lo sviluppo del nuovo sistema è già avviato e procede in modo incrementale, senza tuttavia una fase di coesistenza con il vecchio. Una volta completato, esso sostituirà integralmente il sistema precedente, fatta eccezione per alcune funzionalità che continueranno a essere gestite dal legacy senza necessità di retrocompatibilità.
+Come descritto nella \Cref{sec:reingegnerizzazione-approcci-fasi}, ogni modello di reingegnerizzazione presenta vantaggi e criticità differenti. Il processo adottato per los viluppo del nuovo sistema si pone a metà tra l'approccio ``Big Bang'' e quello ``Evolutivo''. in quanto procede in modo incrementale, senza tuttavia una fase di coesistenza con il vecchio. Una volta completato, esso sostituirà integralmente il sistema precedente, fatta eccezione per alcune funzionalità che continueranno a essere gestite dal legacy senza necessità di retrocompatibilità.
 
 La transizione avverrà in modo diretto, senza un rilascio graduale in produzione. Questo semplifica la migrazione, evitando la necessità di interfacce di compatibilità tra i due sistemi. Tuttavia, a differenza di un classico approccio ``Big Bang'', lo sviluppo non è stato affrontato come una riscrittura monolitica. Il nuovo sistema, infatti, è stato progettato fin dall'inizio con un'architettura a microservizi, organizzata sulla base delle funzionalità piuttosto che sulla replica della struttura esistente.
 
-Questo approccio ibrido permette di bilanciare i vantaggi dei due modelli. La sostituzione completa del vecchio sistema eliminerà la necessità di mantenere allineate due versioni in parallelo, riducendo la complessità operativa. Allo stesso tempo, l'architettura modulare migliorerà la manutenibilità e faciliterà l'integrazione di nuove tecnologie nel tempo. Questa fusione di metodologie garantirà una transizione più controllata, riducendo il rischio di regressioni e assicurando una maggiore stabilità per il sistema finale.
+Questo approccio ibrido permette di bilanciare i vantaggi dei due modelli. La sostituzione completa del vecchio sistema elimina la necessità di mantenere allineate due versioni in parallelo, riducendo la complessità operativa. Allo stesso tempo, l'architettura modulare migliora la manutenibilità e facilita l'integrazione di nuove tecnologie nel tempo. Questa fusione di metodologie garantisce una transizione più controllata, riducendo il rischio di regressioni e assicurando una maggiore stabilità per il sistema finale.
 
 \section{Implementazione della gestione degli errori}
-La gestione degli errori rappresenta un aspetto cruciale dell’implementazione del nuovo sistema, garantendo uniformità e coerenza tra backend e frontend. Come descritto nella \Cref{sec:error-management} del capitolo precedente, il design della gestione degli errori è stato strutturato attorno a un modello tipizzato e scalabile, che consente di categorizzare le anomalie in base alla loro natura e al contesto in cui si verificano. In questa sezione verrà illustrata l'implementazione di questo modello, partendo dalla struttura del backend e analizzando successivamente il meccanismo di gestione degli errori nel frontend
+La gestione degli errori rappresenta un aspetto cruciale dell’implementazione del nuovo sistema, garantendo uniformità e coerenza tra backend e frontend. Come descritto nella \Cref{sec:error-management} del capitolo precedente, il design della gestione degli errori è stato strutturato attorno a un modello tipizzato e scalabile, che consente di categorizzare le anomalie in base alla loro natura e al contesto in cui si verificano. In questa sezione verranno discussi gli aspetti salienti relativi all'implementazione di questo modello, partendo dalla struttura del backend e analizzando successivamente il meccanismo in funzione del frontend.
 
 \subsection{Gestione degli errori nel backend}
-Nel backend, la gestione degli errori è stata implementata attraverso una struttura tipizzata e centralizzata, che garantisce una rappresentazione coerente delle anomalie e facilita la comunicazione con il frontend. Il sistema si basa su una gerarchia di classi che categorizzano le diverse tipologie di errore, sfruttando appieno il sistema di tipi di TypeScript per garantire sicurezza e scalabilità. In questa sezione si analizzeranno nel dettaglio le componenti principali dell’implementazione, tra cui la classe base \texttt{AppError}, il tipo \texttt{AppErrorPayload} e il meccanismo di mappatura degli errori tramite \texttt{ErrorDetailsMapping}.
+Nel backend, la gestione degli errori è stata implementata attraverso una struttura tipizzata e centralizzata, che garantisce una rappresentazione coerente delle anomalie e facilita la comunicazione con il frontend. Il sistema si basa su una gerarchia di classi che categorizzano le diverse tipologie di errore, sfruttando appieno il sistema di tipi di TypeScript per garantire sicurezza e scalabilità. In questa sezione si analizzeranno nel dettaglio le componenti principali dell’implementazione, tra cui il meccanismo di mappatura degli errori tramite \texttt{ErrorDetailsMapping}, la classe base \texttt{AppError} e il tipo \texttt{AppErrorPayload}.
 
 \subsubsection{Struttura di \texttt{ErrorDetailsMapping}}
-Un elemento cardine nella gestione degli errori in questo contesto è la struttura \texttt{ErrorDetailsMapping}, che definisce un sistema di mappatura tra i codici d'errore e le informazioni aggiuntive associate a ciascuno di essi. Questa mappatura consente di tipizzare in modo rigoroso le eccezioni all'interno del sistema, garantendo coerenza tra backend e frontend.
+Un elemento centrale nella gestione degli errori è rappresentato dalla struttura \texttt{ErrorDetailsMapping}, che definisce una mappatura tra i codici d’errore e le informazioni associate a ciascuno di essi. Questo meccanismo consente di tipizzare in modo rigoroso le eccezioni, garantendo una gestione strutturata e uniforme tra backend e frontend.
 
-Il tipo \texttt{ErrorDetailsMapping} è stato implementato utilizzando il concetto di \textit{Discriminated union} \footnote{\url{https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#discriminated-unions}}, una tecnica avanzata di TypeScript che permette di creare un'unione di tipi distinti, ciascuno caratterizzato da un identificatore univoco. Questo approccio consente di associare a ogni codice d'errore una specifica struttura dati, evitando il rischio di assegnare dettagli incoerenti o incompleti a una determinata tipologia di errore.
+Il tipo \texttt{ErrorDetailsMapping} è stato realizzato utilizzando il concetto di \textit{Discriminated Union}\footnote{\url{https://www.typescriptlang.org/docs/handbook/2/narrowing.html\#discriminated-unions}}, una tecnica avanzata di TypeScript che consente di associare a ogni codice d’errore una struttura dati ben definita. Questo approccio elimina il rischio di assegnare dettagli incoerenti o incompleti, assicurando che ogni errore sia rappresentato in modo chiaro e prevedibile.
+%
+Di seguito è riportata una porzione di codice relativa al tipo \texttt{ErrorDetailsMapping}:
 
-Di seguito è riportata una porzione della definizione di \texttt{ErrorDetailsMapping}:
+\lstinputlisting[language=typescript, caption={Porzione di \texttt{ErrorDetailsMapping}}, label={lst:errorDetailsMapping}]{listings/errorDetails.ts}
+%
+La mappatura degli errori è organizzata in categorie, ciascuna identificata da un prefisso che segue una convenzione precisa. Ad esempio, gli errori di validazione degli input sono contrassegnati dal prefisso ``\texttt{validation}'', mentre quelli relativi alla gestione delle entità utilizzano prefissi come ``\texttt{user}'' o ``\texttt{organization}''. Questa scelta non è casuale: i prefissi sono stati definiti in modo da rispecchiare la struttura delle cartelle nel frontend, che organizza i file di traduzione per le stringhe di testo presenti nell’applicazione. In questo modo, la corrispondenza tra i codici di errore del backend e le chiavi di traduzione nel frontend è diretta e immediata.
 
-\lstinputlisting[
-  language=typescript,
-  caption={Porzione di \texttt{ErrorDetailsMapping}},
-label={lst:errorDetailsMapping}]{listings/errorDetails.ts}
-
-La mappatura è organizzata in diverse categorie di errori, ciascuna caratterizzata da una stringa identificativa che segue una convenzione specifica. Ad esempio, gli errori relativi alla validazione degli input sono contrassegnati dal prefisso ``\texttt{validation}'', mentre quelli legati alla gestione delle entità utente utilizzano prefissi come ``\texttt{user}''. Questo schema permette di mantenere un'organizzazione chiara e prevedibile all'interno del codice. Da notare che questi prefissi sono stati scelti in modo da rispecchiare la struttura delle cartelle che usa il frontend per organizzare i file relativi alle traduzioni di tutte le strinche di testo presenti nell'applicazione.
-
-Ogni chiave di \texttt{ErrorDetailsMapping} è associata a un oggetto che definisce i dettagli dell’errore corrispondente. Ad esempio, il codice ``\texttt{user.not\_found}'' è mappato su un oggetto che contiene un solo campo, \texttt{userId}, il quale rappresenta l'identificativo dell'utente che non è stato trovato. Al contrario, errori più complessi, come quelli relativi alla creazione di un utente, includono un campo \texttt{cause} che specifica la motivazione dell'errore. Tale campo è stato anch'esso definito come tipo, sfruttando gli \textit{Union Types}\footnote{\url{https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#union-types}} di TypeScript su tipi letterali.
-
-Per rendere la gestione degli errori più espressiva e facilmente interpretabile, la definizione dei dettagli di alcuni errori si basa su una gerarchia di tipi, che sfrutta le unioni di stringhe per categorizzare le cause in modo strutturato. Ad esempio, nel caso di un errore durante la creazione di un'entità, la causa può essere una violazione di unicità o un problema di vincolo di chiave esterna nel database. La seguente definizione mostra come tali categorie di errore siano tipizzate:
+Ogni chiave in \texttt{ErrorDetailsMapping} è associata a un oggetto che rappresenta i dettagli dell’errore corrispondente. La struttura di questi dettagli varia in base al tipo di errore: alcuni codici, come ``\texttt{user.not\_found}'', sono associati a un semplice oggetto contenente un identificativo, ad esempio il campo \texttt{userId}, che indica l’utente non trovato. Altri errori, invece, richiedono una descrizione più articolata del problema.
+%
+Un esempio di questa maggiore complessità si trova negli errori relativi alla creazione di un'entità, come ``\texttt{user.create\_failed}''. In questo caso, l’oggetto associato include un campo \texttt{cause}, che fornisce una rappresentazione schematica della causa del fallimento. Questo campo non è un semplice identificativo, ma può assumere valori differenti a seconda della natura dell’errore. La sua definizione è basata sugli \textit{Union Types}\footnote{\url{https://www.typescriptlang.org/docs/handbook/2/everyday-types.html\#union-types}} di Typescript, ovvero un’unione di tipi che permettono di distinguere tra cause generali, come ``\texttt{already\_exists}'', e problemi più specifici legati al database, come violazioni di unicità o vincoli di chiave esterna.
+%
+La seguente definizione mostra come queste categorie di errore sono tipizzate:
 
 \lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{cause} per operazioni di creazione}, label={lst:createErrorCause}]{listings/errorTypes.ts}
-
-Questa strategia permette di mantenere un elevato livello di tipizzazione e controllo statico sugli errori generati dal backend. Ogni valore di \texttt{CreateErrorCause} è riconducibile a una stringa specifica che rappresenta la causa esatta dell'errore, evitando di dover gestire messaggi arbitrari e favorendo una comunicazione chiara tra backend e frontend.
-
-Un ulteriore vantaggio di questa struttura è la sua leggibilità. I codici di errore e le relative cause sono stati definiti in modo schematico per essere facilmente convertibili in una stringa leggibile da un umano, permettendo così al frontend di tradurli in messaggi comprensibili per l'utente finale. Questo meccanismo consente di centralizzare la gestione delle stringhe di errore senza doverle definire manualmente nel backend, migliorando la manutenibilità e la scalabilità del sistema.
-
-L'utilizzo di una \textit{Discriminated Union} in questo contesto è particolarmente vantaggioso perché consente di sfruttare il controllo statico dei tipi offerto da TypeScript. In particolare, questa struttura garantisce che:
+%
+Questo approccio offre un controllo statico rigoroso sugli errori generati dal backend, assicurando che ogni valore di \texttt{CreateErrorCause} sia riconducibile a una stringa predefinita che rappresenta la causa esatta dell’errore. Ciò evita l’uso di messaggi arbitrari e favorisce una comunicazione strutturata tra backend e frontend.
+%
+Un ulteriore vantaggio di questa struttura è la sua leggibilità. I codici di errore e le relative cause sono stati progettati per essere facilmente convertibili in stringhe comprensibili, consentendo al frontend di generare messaggi chiari per l’utente finale. Questo meccanismo centralizza la gestione delle stringhe di errore, riducendo la necessità di definizioni ridondanti e migliorando la manutenibilità del sistema.
+%
+L’adozione delle discriminated unions garantisce inoltre che:
 \begin{itemize}
-  \item Ogni codice d’errore sia sempre associato ai dati corretti, evitando ambiguità nella gestione delle eccezioni.
-  \item Il frontend possa interpretare correttamente le informazioni restituite dal backend senza necessità di controlli manuali sul tipo dei dati.
-  \item L’aggiunta di nuove tipologie di errore sia semplice e non impatti le funzionalità esistenti, rendendo il sistema facilmente estendibile.
+  \item Ogni codice d’errore sia associato ai dati corretti, evitando ambiguità.
+  \item Il frontend possa interpretare le informazioni senza controlli manuali sui tipi.
+  \item L’aggiunta di nuovi errori sia semplice e non impatti il codice esistente.
 \end{itemize}
-
-In sintesi, la struttura \texttt{ErrorDetailsMapping} rappresenta il punto di riferimento per la gestione tipizzata degli errori nel sistema, fornendo un modello scalabile, sicuro e coerente per il trattamento delle anomalie.
 
 \subsubsection{Classe \texttt{AppError}}
 La gestione degli errori nel backend si basa anche su una classe astratta denominata \texttt{AppError}, che funge da base per la definizione di tutte le eccezioni applicative. Questa classe fornisce un modello coerente per la rappresentazione degli errori, assicurando che ogni anomalia venga espressa attraverso un formato strutturato e facilmente interpretabile dal sistema. L'obiettivo principale è quello di centralizzare la gestione degli errori, evitando soluzioni dispersive e garantendo una chiara separazione tra la logica applicativa e il trattamento delle anomalie.
@@ -123,28 +125,25 @@ Per garantire la massima flessibilità e sicurezza dei tipi, la classe \texttt{A
 \paragraph{Definizione del tipo generico per \texttt{AppError}}
 Un elemento fondamentale dell'implementazione della classe \texttt{AppError} è l'uso della keyword \texttt{keyof}\footnote{\url{https://www.typescriptlang.org/docs/handbook/2/keyof-types.html}} durante la definizione del tipo generico \texttt{K}. Questo costrutto di TypeScript, visionabile a riga 2 del \Cref{lst:appError}, consente di ottenere un'unione di stringhe che rappresentano tutti i possibili codici d'errore previsti nel sistema. In altre parole, \texttt{keyof ErrorDetailsMapping} genera dinamicamente un insieme di stringhe che corrispondono esattamente ai nomi delle chiavi definite in \texttt{ErrorDetailsMapping}.
 %
-Consideriamo, ad esempio, la seguente struttura tipizzata di errori:
+Consideriamo, ad esempio, il seguente sottoinsieme di codici di errori:
 \begin{lstlisting}[language=typescript, caption={Esempio di unione di stringhe generate da \texttt{keyof}}]
   "validation.input_error" | "internal.database_error" | "user.create_failed"
 \end{lstlisting}
 %
-Grazie a questo meccanismo, il parametro generico \texttt{K} della classe \texttt{AppError} è automaticamente limitato ai valori validi definiti in \texttt{ErrorDetailsMapping}. In questo modo, qualsiasi istanza della classe d'errore può essere creata solo con un codice conforme alle specifiche del sistema, evitando l'utilizzo di stringhe arbitrarie che potrebbero causare errori di inconsistenza.
+Grazie a questo meccanismo, il parametro generico \texttt{K} della classe \texttt{AppError} è automaticamente limitato ai valori definiti in \texttt{ErrorDetailsMapping}. In questo modo, qualsiasi istanza della classe d'errore può essere creata solo con un codice conforme alle specifiche del sistema, evitando l'utilizzo di stringhe arbitrarie che potrebbero causare errori di inconsistenza.
 
 \paragraph{Vincolo sul tipo dei dettagli dell’errore}
 Oltre a garantire che il codice di errore appartenga a un insieme predefinito, il tipo generico \texttt{K} consente anche di vincolare il formato dei dettagli associati all’errore. Ogni codice d’errore definito in \texttt{ErrorDetailsMapping} è associato a un oggetto contenente informazioni specifiche per quel particolare tipo di anomalia. La classe \texttt{AppError} assicura che il campo \texttt{details} rispetti esattamente la struttura prevista per il codice d’errore selezionato.
 %
-Ad esempio, se si crea un'istanza di errore per rappresentare un utente non trovato, TypeScript garantirà che i dettagli contengano esclusivamente le proprietà previste per quel tipo di errore. Il codice nel \Cref{lst:appErrorUsage} mostra un caso d’uso concreto:
+Ad esempio, se si crea un'istanza di errore per rappresentare un utente non trovato, TypeScript garantirà che i dettagli contengano esclusivamente le proprietà previste per quel tipo di errore. Il codice qui sotto mostra un caso d’uso concreto:
 
 \lstinputlisting[language=typescript, caption={Esempio di utilizzo della classe \texttt{AppError}}, label={lst:appErrorUsage}]{listings/appErrorUsage.ts}
 %
 In questo caso, il codice dell'errore è limitato alla stringa ``\texttt{user.not\_found}'', e i dettagli sono strutturati esattamente come specificato in \texttt{ErrorDetailsMapping}. Se si tentasse di fornire un oggetto dettagli con proprietà non conformi, TypeScript genererebbe un errore a tempo di compilazione, impedendo di introdurre inconsistenze nel sistema.
 
-Questa strategia, combinata con il sistema di tipi di TypeScript, permette di mantenere una gestione degli errori robusta, sicura e facilmente estendibile. Nuovi codici d’errore possono essere aggiunti semplicemente aggiornando \texttt{ErrorDetailsMapping}, senza dover modificare la logica esistente o introdurre controlli manuali.
-
 \paragraph{Definizione del tipo \texttt{AppErrorPayload}}
-Un altro elemento centrale di \texttt{AppError} è il metodo \texttt{toJSON()}, il quale ha il compito di serializzare l’errore in un formato compatibile con la comunicazione tra backend e frontend. Questo metodo restituisce un oggetto che segue la struttura imposta dal tipo \texttt{AppErrorPayload}, definito nel \Cref{lst:appErrorPayload}.
+Un altro elemento centrale di \texttt{AppError} è il metodo \texttt{toJSON()}, il quale ha il compito di serializzare l’errore in un formato compatibile con la comunicazione tra backend e frontend. Questo metodo restituisce un oggetto che segue la struttura imposta dal tipo \texttt{AppErrorPayload}, di seguito definito:
 
-\newpage
 \lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{AppErrorPayload}}, label={lst:appErrorPayload}]{listings/appErrorPayload.ts}
 La sintassi utilizzata in questa definizione sfrutta alcune funzionalità avanzate di TypeScript:
 \begin{itemize}
@@ -156,7 +155,7 @@ La sintassi utilizzata in questa definizione sfrutta alcune funzionalità avanza
 
   \item \textbf{Indexed Access Types}: L'intera mappatura è poi indicizzata con \texttt{[keyof ErrorDetailsMapping]} a linea 6. Questa operazione estrae, dall'oggetto mappato, una unione di tutti i tipi generati per ogni chiave. In altre parole, il risultato finale è una unione dei tipi object definiti per ciascuna chiave in \texttt{ErrorDetailsMapping}.
 \end{itemize}
-
+%
 In sintesi, \texttt{AppErrorPayload} rappresenta uno union type, in cui ogni membro dell'unione è un oggetto con due proprietà:
 \begin{itemize}
   \item \texttt{code}, il quale contiene un identificativo dell'errore,
@@ -166,67 +165,69 @@ In sintesi, \texttt{AppErrorPayload} rappresenta uno union type, in cui ogni mem
 Questo design consente a \texttt{AppError} di gestire in modo robusto e tipizzato una serie di errori diversi, garantendo che ogni di essi abbia una struttura dati coerente e ben definita.
 
 \subsubsection{Gestione degli errori di validazione degli input}\label{sec:input-validation-errors}
-Nel backend, la validazione degli input ricevuti dalle API è affidata alla libreria \texttt{Zod}\footnote{\url{https://zod.dev}}, la quale fornisce un sistema di definizione di schemi e di verifica automatica della conformità dei dati. Quando un input non rispetta lo schema previsto, Zod genera un'eccezione di tipo \texttt{ZodError}, che contiene informazioni dettagliate sugli errori riscontrati. Tuttavia, questo errore non è direttamente utilizzabile per la comunicazione con il frontend, motivo per cui è necessario un processo di elaborazione che trasformi i dati forniti da Zod in un formato strutturato e coerente con il modello di gestione degli errori adottato nel sistema.
+Nel backend, la validazione degli input ricevuti dalle API è affidata alla libreria \texttt{Zod}\footnote{\url{https://zod.dev}}, la quale fornisce un sistema di definizione di schemi e di verifica automatica della conformità dei dati. Quando un input non rispetta lo schema previsto, Zod genera un'eccezione di tipo \texttt{ZodError}, che contiene informazioni dettagliate sugli errori riscontrati. Tuttavia, questo errore non è direttamente utilizzabile per la comunicazione con il frontend, motivo per cui è necessario un processo di elaborazione che trasformi i dati forniti da Zod in un formato strutturato e coerente con il modello di gestione degli errori che si sta discutendo.
 
 A tale scopo, il backend intercetta l’errore lanciato da Zod e lo elabora per costruire un oggetto di tipo \texttt{InputError}. Questo oggetto contiene:
 \begin{itemize}
   \item Il nome del campo che ha fallito la validazione.
   \item Un insieme di dettagli strutturati che permettono di comprendere la natura dell'errore.
 \end{itemize}
-Questi dettagli includono il codice d'errore specifico di Zod (come ``\texttt{too\_small}'', ``\texttt{invalid\_string}'', ``\texttt{unrecognized\_keys}''), il valore atteso e quello effettivamente ricevuto, e altri parametri che variano a seconda del tipo di errore (come i limiti minimi e massimi nel caso di valori numerici o stringhe con vincoli di lunghezza). Ancora una volta l'obiettivo è quello di fornire un’informazione chiara e strutturata, che possa essere facilmente interpretata dal frontend per la generazione di messaggi d’errore dettagliati relativi agli input non validi.
+Questi dettagli includono il codice d'errore specifico di Zod (come ``\texttt{too\_small}'', ``\texttt{invalid\_string}'', ``\texttt{unrecognized\_keys}'', ecc.), il valore atteso e quello effettivamente ricevuto, e altri parametri che variano a seconda del tipo di errore (come i limiti minimi e massimi nel caso di valori numerici o stringhe con vincoli di lunghezza). Ancora una volta l'obiettivo è quello di fornire un’informazione chiara e strutturata, che possa essere facilmente interpretata dal frontend per la generazione di messaggi d’errore dettagliati relativi agli input non validi.
 
 Il risultato di questa elaborazione viene quindi incluso nei \texttt{details} dell’errore con codice ``\texttt{validation.input\_error}'', accompagnato dall’entità coinvolta e dal tipo di operazione che ha generato la validazione fallita. In questo modo, il frontend, ricevendo un errore di questo tipo, è in grado di analizzare i dettagli forniti e costruire dinamicamente un messaggio specifico per ogni campo errato, mantenendo la piena compatibilità con il sistema di internazionalizzazione.
 
-\subsubsection{Conclusione}
+\subsubsection{Considerazioni finali}
 La gestione degli errori nel backend è stata strutturata in modo modulare e tipizzato, garantendo uniformità e scalabilità. L’uso dei \textit{generics} di TypeScript e della classe \texttt{AppError} ha permesso di standardizzare la rappresentazione delle anomalie, facilitando l’integrazione con il frontend.
-
+%
 Grazie alla mappatura definita in \texttt{ErrorDetailsMapping}, ogni errore include informazioni specifiche e contestualizzate, assicurando una comunicazione chiara tra i livelli del sistema. Inoltre, la gestione degli errori di validazione tramite Zod permette di trasformare le anomalie sugli input in messaggi strutturati e facilmente interpretabili.
 
 Questa architettura garantisce che il backend restituisca risposte coerenti e prevedibili, semplificando la gestione degli errori lato frontend e migliorando la manutenibilità complessiva del sistema.
 
 \subsection{Gestione degli errori nel frontend}
-Nel frontend, il trattamento delle anomalie provenienti dal backend è stato progettato per garantire una comunicazione efficace e multilingua nei messaggi destinati all’utente. Gli errori restituiti dai vari microservizi non possono essere utilizzati direttamente per fornire un feedback comprensibile, poiché si limitano a rappresentare in modo schematico il problema, includendo solo informazioni strutturate e standardizzate. Per questo motivo, è necessario un sistema di interpretazione che analizzi le proprietà dell'oggetto errore e generi dinamicamente un messaggio esplicativo.
+Nel frontend, la gestione delle anomalie provenienti dal backend è stato progettato per garantire una comunicazione efficace e multilingua nei messaggi destinati all’utente. Gli errori restituiti dai vari microservizi, come è già ben noto, non possono essere utilizzati direttamente per fornire un feedback comprensibile, poiché si limitano a rappresentare il problema in modo schematico. Per questo motivo, è necessario un sistema di interpretazione che analizzi le proprietà dell'oggetto errore e generi dinamicamente un messaggio esplicativo.
 
-L’obiettivo principale di questa strategia è mantenere separata la logica di gestione degli errori dalla costruzione del messaggio visualizzato. In questo modo, il frontend rimane indipendente dalla libreria adottata per la localizzazione dei testi. Questo risultato è ottenuto attraverso il tipo astratto \texttt{Translator}, che funge da callback generica per interagire con il sistema di traduzione scelto.
+% L’obiettivo principale di questa strategia è mantenere separata la logica di gestione degli errori dalla costruzione del messaggio visualizzato. In questo modo, il frontend rimane indipendente dalla libreria adottata per la localizzazione dei testi. Questo risultato è ottenuto attraverso il tipo astratto \texttt{Translator}, che funge da callback generica per interagire con il sistema di traduzione scelto.
 
 \paragraph{Definizione e utilizzo di \texttt{Translator}}
-Per garantire un efficace supporto alla traduzione dei messaggi di errore, è stato definito il tipo \texttt{Translator}, il quale rappresenta una funzione che riceve una chiave testuale e un insieme opzionale di parametri, restituendo la stringa localizzata corrispondente. La sua definizione è mostrata nel \Cref{lst:translator}.
+Per garantire un efficace supporto alla traduzione dei messaggi di errore, è stato definito il tipo \texttt{Translator}, che rappresenta una funzione generica in grado di convertire una chiave testuale e un insieme opzionale di parametri in una stringa localizzata. Questa astrazione consente di mantenere il sistema di gestione degli errori indipendente dalla libreria specifica utilizzata per la multilingua, rendendolo più flessibile ed estensibile. La definizione di \texttt{Translator} è riportata nel \Cref{lst:translator}.
 
-Per facilitare l’utilizzo del sistema di traduzione nei componenti del frontend, evitando di dover importare ripetutamente la funzione \texttt{useTranslations} di \texttt{next-intl}, è stato realizzato un apposito hook denominato \texttt{useTranslator}. Questo hook consente di definire un prefisso opzionale per le chiavi di traduzione, promuovendo al contempo la separazione della logica di localizzazione da quella di gestione degli errori.
-%
-\lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{Translator}}, label={lst:translator}]{listings/useTranslator.ts}
-%
-Grazie a questa astrazione, ogni componente del frontend può ottenere facilmente un’istanza della funzione di traduzione senza dover interagire direttamente con i metodi di \texttt{next-intl}, migliorando la modularità e la manutenibilità del codice.
+Per integrare questo meccanismo nei componenti del frontend, è stato realizzato un apposito hook, \texttt{useTranslator}, che fornisce un'interfaccia uniforme per la traduzione dei messaggi, senza vincolare il codice a una particolare implementazione. Questo hook consente inoltre di specificare un prefisso per le chiavi di traduzione, facilitando l'organizzazione e la gestione delle stringhe localizzate.
+
+\lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{Translator} e dell'hook \texttt{useTranslator}}, label={lst:translator}]{listings/useTranslator.ts}
+
+Grazie a questa astrazione, ogni componente del frontend può ottenere facilmente un’istanza della funzione di traduzione senza dipendere direttamente da una libreria specifica. Questo approccio migliora la modularità e la manutenibilità del codice, permettendo di sostituire o aggiornare il sistema di internazionalizzazione senza modificare la logica di gestione degli errori.
 
 \subsubsection{Costruzione dinamica dei messaggi di errore}
-Nel frontend, ogni volta che viene effettuata una chiamata HTTP al backend, se la risposta ricevuta ha un codice di stato HTTP diverso da \texttt{2XX}, il sistema sa che si è verificato un errore e attiva il meccanismo di generazione del messaggio corrispondente. Per fare ciò, viene analizzato l’oggetto di tipo \texttt{AppErrorPayload} che rappresenta il risultato dell'invocazione del metodo \texttt{toJSON()}, da parte del backend, su un'istanza di \texttt{AppError}.
+Nel frontend, ogni volta che viene effettuata una chiamata HTTP al backend, se la risposta ricevuta ha un codice di stato HTTP diverso da \texttt{2XX}, il sistema sa che si è verificato un errore e attiva il meccanismo di generazione del messaggio corrispondente. Per fare ciò, viene analizzato l’oggetto di tipo \texttt{AppErrorPayload} che rappresenta il risultato dell'invocazione di \texttt{toJSON()} da parte del backend, su un'istanza di \texttt{AppError}.
 %
 Un primo livello di gestione è implementato attraverso il metodo \texttt{parseBackendError()}, che, sulla base del codice di stato HTTP ricevuto, invoca metodi specifici per la costruzione del messaggio di errore appropriato. In particolare, esso opera come segue:
 \begin{itemize}
-  \item Se lo stato HTTP è \texttt{400}, si tratta di un errore di validazione. In questo caso, il metodo estrae le informazioni dagli \texttt{inputErrors} e utilizza il metodo \texttt{getValidationErrorMessage()} per generare un messaggio contestualizzato.
-  \item Se lo stato HTTP è \texttt{409}, si tratta di un errore di conflitto, tipicamente legato a operazioni fallite su entità esistenti. In questo scenario, il metodo analizza il codice di errore, estraendo il nome dell’entità coinvolta e il tipo di errore. Successivamente, invoca metodi specifici come \texttt{getUserErrorMessage()}, che costruiscono il messaggio contestualizzato all'entità coinvolta.
+  \item Se lo stato HTTP è \texttt{400}, si tratta di un errore di validazione. In questo caso, il metodo estrae i dettagli dell'errore dalla risposta del backend e, se il codice restituito è ``\texttt{validation.input\_error}'', accede alla proprietà \texttt{inputErrors} all'interno dei \texttt{details}. Questo array contiene l’elenco dei campi che non hanno superato la validazione e le relative anomalie. Successivamente, il metodo \texttt{getValidationErrorMessage()} elabora queste informazioni per generare un messaggio chiaro e contestualizzato per l’utente.
+  \item Se lo stato HTTP è \texttt{409}, si tratta di un errore di conflitto, tipicamente legato a operazioni fallite su entità esistenti. In questo scenario, il metodo analizza il codice del problema, estraendo il nome dell’entità coinvolta e il tipo di errore. Successivamente, invoca metodi specifici come \texttt{getUserErrorMessage()}, che costruiscono il messaggio contestualizzato all'entità coinvolta.
   \item Se lo stato HTTP è \texttt{500} o un altro valore non gestito, il metodo restituisce un messaggio generico di errore, indicando all’utente che si è verificato un problema imprevisto. Questo è l'unico caso in cui i messaggi d'errore vengono costruiti lato backend, in quanto non è possibile prevedere tutti i possibili scenari. Questi messaggi sono in lingua inglese e non vengono tradotti.
 \end{itemize}
 
 % \lstinputlisting[language=typescript, caption={Implementazione del metodo \texttt{parseBackendError}}, label={lst:parseBackendError}]{listings/parseErrors.ts}
 
 \subsubsection{Gestione degli errori relativi alle entità}
-Per ogni entità del sistema, come utenti e organizzazioni, gli errori vengono gestiti attraverso metodi dedicati che ne analizzano i dettagli e generano un messaggio leggibile dall’utente. Questa architettura modulare consente di costruire messaggi contestualizzati senza dover gestire manualmente ogni possibile errore all’interno di un’unica funzione centralizzata.
+Nel frontend, la generazione dei messaggi di errore per le diverse entità del sistema, come utenti e organizzazioni, avviene attraverso metodi specifici per ciascuna di esse. Ogni entità ha infatti caratteristiche e dettagli di errore peculiari, che richiedono un'elaborazione dedicata per costruire un messaggio chiaro e informativo per l'utente.
 
-Ogni metodo di gestione degli errori riceve in input tre elementi fondamentali: il tipo di errore riscontrato nei confronti dell'entità coinvolta, i dettagli forniti dal backend la funzione di traduzione \texttt{translator}. L'oggetto dei dettagli contiene informazioni specifiche per ogni errore, come l’identificativo dell’entità coinvolta o la causa del problema. Questi dati vengono utilizzati per personalizzare il messaggio, rendendolo più chiaro e comprensibile per l’utente finale.
+Ogni metodo di gestione degli errori riceve tre parametri principali: il tipo di errore associato all'entità coinvolta, i dettagli forniti dal backend e la funzione di traduzione. I dettagli dell’errore contengono informazioni strutturate, come l’identificativo dell’entità o la causa specifica del problema. Sulla base di questi dati, il metodo elabora dinamicamente il messaggio da restituire.
 
-All’interno del processo di elaborazione, il valore dei dettagli dell’errore viene interpretato in base alla struttura prevista per la specifica entità, garantendo che i messaggi generati rispettino un formato coerente. Se l’errore riguarda, ad esempio, la creazione di un’entità e contiene una causa associata, questa viene tradotta dinamicamente in un testo comprensibile. O ancora, se l’errore è legato alla ricerca di un’entità non trovata, il messaggio generato include l’identificativo dell’oggetto cercato, fornendo all’utente un’indicazione chiara sul problema riscontrato.
+A seconda del tipo di errore, il messaggio viene costruito in modi diversi. Ad esempio, per un errore di creazione, la funzione di gestione verifica se la causa è una violazione di unicità o un problema di integrità referenziale e genera un messaggio che spiega all’utente il motivo del fallimento. In caso di un’entità non trovata, il messaggio include l’identificativo cercato, offrendo un'indicazione chiara sulla natura del problema. Se invece l’errore è legato a una modifica o eliminazione non riuscita, il messaggio può evidenziare l’operazione specifica che non è stata eseguita con successo.
 
-Questa strategia non solo semplifica la gestione degli errori, ma assicura anche una maggiore scalabilità. Nuovi errori possono essere aggiunti senza modificare la logica esistente, garantendo una gestione uniforme e strutturata delle anomalie per tutte le entità del sistema.
+Questa suddivisione in metodi specifici per ogni entità permette di mantenere il codice organizzato e facilmente estendibile. Nuovi tipi di errore possono essere aggiunti senza modificare la logica generale, assicurando che il sistema di gestione delle anomalie rimanga flessibile e scalabile.
 
 \subsubsection{Gestione degli errori di validazione}
 Come descritto nella \Cref{sec:input-validation-errors}, gli errori di validazione degli input vengono strutturati in modo da fornire tutte le informazioni necessarie per costruire un messaggio dettagliato. Nel frontend, il metodo \texttt{getValidationErrorMessage()} si occupa di elaborare questi dati per generare una stringa comprensibile e localizzata da mostrare all’utente.
 %
-\lstinputlisting[language=typescript, caption={Metodo \texttt{getValidationErrorMessage}}, label={lst:getValidationErrorMessage}]{listings/validationMessage.ts}
+\lstinputlisting[language=typescript, caption={Metodo \texttt{getValidationErrorMessage()}}, label={lst:getValidationErrorMessage}]{listings/validationMessage.ts}
 %
-Il metodo analizza gli errori ricevuti, associando ogni campo con i problemi segnalati dal backend. Per ciascuna anomalia, viene costruito un messaggio traducendo dinamicamente il codice d’errore di \texttt{Zod} (ad esempio, ``\texttt{too\_small}'' o ``\texttt{invalid\_string}'') e integrando informazioni come il valore atteso, quello ricevuto e altri dettagli rilevanti. Infine, i vari messaggi vengono concatenati in un'unica stringa strutturata, così da fornire un’indicazione chiara sui problemi riscontrati e facilitare la correzione dei dati inseriti.
+Il metodo analizza gli errori ricevuti, associando ogni campo con i problemi segnalati dal backend. Per ciascuna anomalia, viene costruito un messaggio traducendo dinamicamente il codice d’errore di Zod (ad esempio, ``\texttt{too\_small}'' o ``\texttt{invalid\_string}'') e integrando informazioni come il valore atteso, quello ricevuto e altri dettagli rilevanti. Infine, i vari messaggi vengono concatenati in un'unica stringa strutturata, così da fornire un’indicazione chiara sui problemi riscontrati e facilitare la correzione dei dati inseriti.
 
-\subsubsection{Conclusione}
-Il sistema di gestione degli errori nel frontend è stato progettato per garantire scalabilità e supporto alla multilingua, mantenendo un chiaro disaccoppiamento tra la logica di interpretazione e la libreria di internazionalizzazione scelta. L’utilizzo di un tipo astratto come \texttt{Translator} ha permesso di rendere il codice modulare e facilmente adattabile a diverse soluzioni di traduzione, senza dover modificare la logica sottostante.
+\subsubsection{Considerazioni finali}
+Il sistema di gestione degli errori nel frontend è stato progettato per garantire scalabilità, modularità e supporto alla multilingua. Una delle sue caratteristiche principali è la separazione tra la logica di interpretazione degli errori e la libreria di internazionalizzazione utilizzata, resa possibile dall’uso del tipo astratto \texttt{Translator}. Questo approccio consente di adattare facilmente il sistema a diverse soluzioni di traduzione, senza influire sulla logica di elaborazione degli errori.
 
-Grazie a questa architettura, il frontend è in grado di convertire gli errori restituiti dal backend in messaggi informativi chiari e contestualizzati, migliorando l’esperienza utente e garantendo un’interazione fluida con il sistema.
+Oltre a questa astrazione, il frontend gestisce gli errori attraverso metodi dedicati che costruiscono dinamicamente i messaggi sulla base del tipo di errore ricevuto. Gli errori di validazione vengono elaborati per restituire un feedback dettagliato sui campi non conformi, mentre quelli relativi alle entità, come utenti e organizzazioni, vengono interpretati in base alla loro specificità, includendo informazioni rilevanti per l’utente finale.
+
+Grazie a questa architettura, il frontend è in grado di convertire gli errori restituiti dal backend in messaggi informativi chiari e contestualizzati, migliorando l’esperienza utente e garantendo un’interazione fluida con il sistema. La modularità del sistema facilita inoltre l’estensione della gestione degli errori, permettendo di integrare nuovi casi senza modificare la logica esistente.
