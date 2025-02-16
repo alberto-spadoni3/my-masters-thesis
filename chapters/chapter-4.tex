@@ -57,27 +57,27 @@ I microservizi appena discussi adottano un'architettura uniforme, basata sull'es
 
 \begin{itemize}
   \item \textbf{Routes}: rappresenta il punto di ingresso delle richieste HTTP. Questo livello si occupa di applicare eventuali middleware, come quello per la gestione dell'autenticazione, e di indirizzare le richieste verso il controller appropriato, in base al metodo HTTP e al percorso richiesto.
-  
+
   \item \textbf{Controllers}: ricevono le richieste dai Routes, validano i parametri in ingresso e delegano l'elaborazione ai servizi applicativi. Una volta ottenuto il risultato, i controller generano la risposta HTTP da restituire al client.
-  
+
   \item \textbf{Services}: costituiscono il livello di business logic, elaborando i dati e orchestrando le operazioni necessarie. Questo livello intermedio permette di mantenere separata la logica di dominio dall'accesso ai dati, garantendo maggiore modularità e riusabilità del codice.
-  
+
   \item \textbf{Repositories}: forniscono un'interfaccia per l'accesso ai dati, eseguendo operazioni di lettura e scrittura sul database. Questo livello è responsabile esclusivamente della gestione dei dati.
-  
+
   \item \textit{Database}: sebbene non sia parte integrante dell'architettura dei microservizi, rappresenta il livello di persistenza su cui vengono eseguite le operazioni di lettura e scrittura da parte dei Repository.
 \end{itemize}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/microservice-architecture.pdf}
-  \caption{Visione schematica relativa all'architettura a livelli dei microservizi del backend.}
+  \caption{Visione schematica relativa all'architettura a livelli dei microservizi.}
   \label{fig:microservice-architecture}
 \end{figure}
 
 Questa suddivisione in livelli garantisce una chiara separazione delle responsabilità, migliorando la manutenibilità e la scalabilità del sistema. Inoltre, consente di evolvere il backend in modo strutturato, rendendo più semplice l'aggiunta di nuove funzionalità o modifiche alle logiche applicative senza impattare gli altri componenti.
 
 \subsection{Interazione tra i componenti}
-La comunicazione tra i vari componenti del sistema avviene principalmente attraverso API HTTP, che permettono al frontend e ai microservizi del backend di interagire in modo modulare e scalabile. In \Cref{fig:system-interactions} è raffigurata la struttura generale del sistema, evidenziando i flussi di comunicazione tra frontend, backend e database, nonché le interazioni tra i microservizi interni.
+La comunicazione tra i componenti del sistema avviene principalmente tramite chiamate HTTP verso un'API, permettendo al frontend e ai microservizi del backend di interagire in maniera modulare ed efficiente. In \Cref{fig:system-interactions} è rappresentata la struttura generale del sistema, evidenziando i flussi di comunicazione tra frontend, backend e database, oltre alle interazioni tra i microservizi del backend.
 
 \begin{figure}
   \centering
@@ -87,37 +87,37 @@ La comunicazione tra i vari componenti del sistema avviene principalmente attrav
 \end{figure}
 
 \subsubsection{Componenti e interazioni del frontend}
-Sebbene il frontend sia concepito come un singolo microservizio, al suo interno è organizzato in più moduli funzionali, ognuno con un ruolo specifico. Tra questi:
+Sebbene il frontend sia implementato come un unico microservizio, al suo interno è suddiviso in moduli funzionali che si occupano di gestire aspetti specifici dell’interfaccia utente e della comunicazione con il backend. Tra i principali:
 \begin{itemize}
-    \item \textbf{Routing e navigazione}: gestisce la transizione tra le diverse viste dell'applicazione.
-    \item \textbf{Gestore dello stato}: mantiene e sincronizza le informazioni condivise tra i componenti.
-    \item \textbf{Gestore della sessione e autenticazione}: protegge le aree riservate dell’applicazione e gestisce l’accesso degli utenti.
-    \item \textbf{Client API}: invia richieste ai microservizi del backend e ne elabora le risposte.
-    \item \textbf{Gestore degli errori}: intercetta e interpreta gli errori provenienti dal backend, fornendo feedback all’utente.
+  \item \textbf{Routing e navigazione}: gestisce il passaggio tra le diverse viste dell'applicazione.
+  \item \textbf{Gestione dello stato}: mantiene e sincronizza le informazioni tra i componenti per garantire coerenza nei dati.
+  \item \textbf{Autenticazione e sessione}: protegge le sezioni riservate e gestisce l’accesso degli utenti.
+  \item \textbf{Client API}: funge da intermediario tra il frontend e il backend, inviando richieste e processando le risposte.
+  \item \textbf{Gestione degli errori}: intercetta eventuali problemi nelle comunicazioni con il backend e fornisce all'utente un feedback chiaro.
 \end{itemize}
 
-L’interazione con il backend avviene esclusivamente tramite chiamate API REST, con cui il frontend delega l’elaborazione dei dati e la logica applicativa ai microservizi dedicati.
+Il frontend interagisce con il backend esclusivamente tramite chiamate API REST, delegando a esso l'elaborazione dei dati e la logica applicativa.
 
 \subsubsection{Interazioni del backend}
-I microservizi del backend espongono API REST che consentono sia la comunicazione con il frontend sia lo scambio di informazioni tra i vari servizi interni. Le principali interazioni si articolano in:
+I microservizi del backend comunicano tra loro e con il frontend esponendo API REST. Ogni servizio è progettato per gestire una specifica funzionalità e può interagire con gli altri quando necessario. Le principali interazioni avvengono secondo due modalità:
 \begin{itemize}
-    \item \textbf{Frontend-backend}: il frontend interroga i microservizi per ottenere dati o eseguire operazioni, ricevendo in risposta le informazioni necessarie per aggiornare l'interfaccia utente.
-    \item \textbf{Interazioni interne tra microservizi}: i servizi comunicano tra loro tramite API per operazioni che coinvolgono più moduli, come la gestione di utenti, organizzazioni o policy di protezione.
+  \item \textbf{Comunicazione frontend-backend}: il frontend invia richieste ai microservizi per ottenere dati o eseguire operazioni, ricevendo le informazioni necessarie per aggiornare l'interfaccia utente.
+  \item \textbf{Interazioni tra microservizi}: i servizi si scambiano dati tramite API REST per operazioni che coinvolgono più moduli, come la gestione degli utenti, delle organizzazioni o delle policy di protezione.
 \end{itemize}
 
-Questa struttura consente di mantenere ogni microservizio autonomo e responsabile di un dominio specifico, ottimizzando la gestione delle risorse e migliorando l'efficienza complessiva del sistema.
+Questo modello garantisce che ogni microservizio operi in modo indipendente, riducendo le dipendenze dirette e migliorando la scalabilità e l'efficienza complessiva del sistema.
 
 \subsubsection{Interazione con i database}
 Il backend sfrutta due database distinti per la gestione della persistenza dei dati:
 \begin{itemize}
-    \item \textbf{PostgreSQL}: utilizzato per la maggior parte delle operazioni, inclusa la gestione di utenti, organizzazioni, report, autenticazione e policy di protezione.
-    \item \textbf{MySQL}: impiegato esclusivamente per la gestione delle licenze, in quanto derivante dal sistema legacy. Il pannello customer area utilizza questo database per archiviare e gestire le licenze dei clienti.
+  \item \textbf{PostgreSQL}: utilizzato per la maggior parte delle operazioni, inclusa la gestione di utenti, organizzazioni, report, autenticazione e policy di protezione.
+  \item \textbf{MySQL}: impiegato esclusivamente per la gestione delle licenze, in quanto derivante dal sistema legacy. Il pannello customer area utilizza questo database per archiviare e gestire le licenze dei clienti.
 \end{itemize}
 
 \subsubsection{Interazione tra i livelli interni del backend}
 Come già menzionato, ogni microservizio del backend segue un'architettura a livelli ben definita, composta da \textit{Routes}, \textit{Controllers}, \textit{Services} e \textit{Repositories}. Tuttavia, non è stato ancora approfondito il modo in cui questi livelli interagiscono tra loro e come questa struttura influenzi il funzionamento complessivo del sistema.
 
-L'organizzazione a livelli permette di mantenere una chiara separazione delle responsabilità, semplificando la manutenzione e l'estensibilità del software. La Figura \ref{fig:microservice-internal-interactions} illustra il flusso di interazione tra questi componenti, evidenziando il percorso di una richiesta all'interno del sistema, dal momento in cui viene ricevuta fino alla gestione dei dati nel livello di persistenza.
+L'organizzazione a livelli permette di mantenere una chiara separazione delle responsabilità, semplificando la manutenzione e l'estensibilità del software. La \Cref{fig:microservice-internal-interactions} illustra il flusso di interazione tra questi componenti, evidenziando il percorso di una richiesta all'interno del sistema, dal momento in cui viene ricevuta fino alla gestione dei dati nel livello di persistenza.
 
 \begin{figure}
   \centering
@@ -125,6 +125,16 @@ L'organizzazione a livelli permette di mantenere una chiara separazione delle re
   \caption{Diagramma di sequenza UML che illustra l'interazione tra i livelli dell'architettura interna del backend.}
   \label{fig:microservice-internal-interactions}
 \end{figure}
+
+Il processo inizia quando un client invia una richiesta HTTP al backend, includendo eventualmente un token di autenticazione. Il primo livello che intercetta la richiesta è quello delle \textit{Routes}, che ha il compito di validare il token e determinare il controller appropriato in base al metodo HTTP e al percorso della richiesta. Se il token di autenticazione non è valido, il sistema risponde immediatamente con un errore.
+%
+Una volta validata l'autenticazione, la richiesta viene inoltrata al livello dei \textit{Controllers}, che ha la responsabilità di verificare la correttezza dei parametri in ingresso. Se i parametri risultano non validi, viene generata una risposta di errore senza procedere oltre. In caso contrario, il controller delega l'elaborazione della richiesta al livello \textit{Services}.
+%
+I servizi rappresentano il cuore della logica di business del sistema. Qui vengono eseguite le operazioni necessarie per soddisfare la richiesta, che possono includere accessi ai dati. Se è necessario recuperare o modificare informazioni persistenti, il servizio delega l'operazione al livello dei \textit{Repositories}.
+%
+Il livello dei repository è responsabile della comunicazione diretta con il database. Esso esegue le query richieste e restituisce i risultati al servizio chiamante. Quest'ultimo può applicare ulteriori elaborazioni ai dati ricevuti prima di restituirli al controller.
+%
+Infine, il controller invia la risposta direttamente al client, restituendo i dati elaborati o, in caso di errore, un messaggio appropriato. Questo flusso strutturato garantisce un'elevata modularità del backend, facilitando l'estensione del sistema e migliorando la gestione degli errori e della sicurezza.
 
 \subsection{Scelte tecnologiche}
 Le tecnologie utilizzate per l'implementazione del nuovo sistema erano già state definite prima dell'inizio del presente contributo di tesi. Tuttavia, la loro adozione può essere motivata sulla base di considerazioni tecniche e di opportunità.
@@ -157,7 +167,7 @@ Il sistema in esame implementa diverse funzionalità fondamentali per garantire 
 
 Le sezioni seguenti approfondiscono queste funzionalità, descrivendo il modello adottato, le soluzioni implementate e le possibili aree di miglioramento.
 
-\subsection{Multiutenza e gestione degli utenti}
+\subsection{Multitenancy e gestione degli utenti}
 Nel nuovo sistema, la multiutenza si riferisce alla possibilità per un'organizzazione di disporre di molteplici credenziali di accesso, consentendo a diversi utenti di accedere al pannello di configurazione del filtro. Essi, hanno quindi la possibilità di amministrarne le caratteristiche o monitorare le statistiche, in base al loro ruolo. Questo rappresenta un notevole miglioramento rispetto al sistema precedente, in cui ogni cliente disponeva di un singolo account con permessi di amministratore. Tale limitazione risultava problematica in particolar modo per le organizzazioni più strutturate, che necessitavano di un accesso distribuito tra più figure con differenti livelli di autorizzazione.
 
 \subsubsection{Modello attuale di gestione degli utenti}
