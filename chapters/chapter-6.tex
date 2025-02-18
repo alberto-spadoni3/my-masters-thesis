@@ -64,3 +64,37 @@ Il design di questa funzionalità rientra in un più ampio processo di rimodella
 Per quanto la riprogettazione del database sia stata completata principalmente a livello di schema concettuale, alcune componenti essenziali risultano già integrate nel sistema. In particolare, le nuove tabelle dedicate alla gestione degli utenti e delle organizzazioni sono già operative e costituiscono la base su cui si fonda il meccanismo di multiutenza. Queste modifiche hanno consentito di superare i vincoli del vecchio modello, che non era stato concepito per supportare una gestione avanzata degli accessi e delle gerarchie organizzative.
 
 L’adozione del nuovo schema dati non solo migliora la struttura e la leggibilità del database, ma assicura anche una maggiore coerenza e manutenibilità, agevolando l’implementazione futura di altre funzionalità chiave. Inoltre, grazie al suo design modulare e scalabile, il database può adattarsi con facilità a nuove esigenze, garantendo flessibilità operativa e una gestione più efficiente dei dati.
+
+\section{Miglioramenti pianificati}
+Malgrado il nuovo sistema abbia già introdotto numerosi miglioramenti rispetto alla versione legacy, vi sono ancora diverse aree che necessitano di completamento, così come altre funzionalità che devono essere introdotte ex novo per garantire un'esperienza più sicura, scalabile e conforme alle esigenze operative previste. Tutti i punti trattati in questa sezione rappresentano miglioramenti già pianificati o previsti nella roadmap di sviluppo e verranno implementati nelle fasi successive rispetto a questa tesi.
+
+\subsection{Gestione avanzata dei permessi e autenticazione}
+L’attuale implementazione della multiutenza consente la creazione e la gestione di account con differenti ruoli, tuttavia, il controllo degli accessi richiede ulteriori sviluppi. In particolare, è prevista l’integrazione di un sistema \textit{Role-Based Access Control} per la gestione dei ruoli utente, combinato con un livello di autorizzazione che regoli i permessi legati all’organizzazione di appartenenza e alle licenze attive.
+
+Per garantire un sistema di permessi strutturato ed efficace, sarà necessaria un’analisi approfondita per individuare tutte le operazioni da regolamentare e codificarle in una tabella del database. Successivamente, il sistema dovrà essere integrato a tutti i livelli della piattaforma, assicurando un controllo uniforme sugli endpoint dell’API e sulle rotte del frontend.
+
+In aggiunta, per migliorare ulteriormente la sicurezza e conformarsi agli standard più recenti, è prevista l’implementazione di un sistema di autenticazione multifattore (MFA). Questo elemento è particolarmente richiesto dai clienti operanti in settori sensibili, dove la protezione degli accessi rappresenta un requisito imprescindibile.
+
+\subsection{Integrazione della brand identity nel frontend}
+Attualmente, il frontend del sistema è stato progettato con un approccio funzionale, senza un’integrazione effettiva della nuova brand identity aziendale. È già previsto che, nelle prossime fasi, venga incorporato il contributo del designer incaricato del rinnovo dell’immagine aziendale, assicurando così un'interfaccia coerente con il design system aziendale. Sebbene questo aspetto non influisca direttamente sulle funzionalità, è fondamentale per l’accettazione del prodotto da parte degli utenti finali, che devono percepirlo come un sistema moderno, affidabile e il linea con l’immagine aziendale.
+
+\subsection{Implementazione della nuova struttura del database}
+La rimodellazione del database è stata completata a livello concettuale, ma la sua implementazione effettiva è ancora in fase iniziale. Ad oggi, solo le tabelle relative alla gestione della multiutenza sono operative, mentre il resto della struttura non è stato ancora tradotto in un’implementazione concreta all’interno di un database di test.
+
+Un altro aspetto chiave previsto nella roadmap è la definizione di una procedura di migrazione dei dati dal vecchio sistema alla nuova base dati. Questo processo permetterà di validare le nuove strutture, assicurando la loro coerenza e integrità sin dalle prime fasi dello sviluppo, consentendo al contempo di continuare il lavoro sulla versione migliorata del database.
+
+\subsection{Aumento della copertura dei test}
+Attualmente, l’infrastruttura di testing del frontend è stata predisposta e resa operativa, ma non dispone ancora di specifiche definite per garantire una copertura adeguata. Tuttavia, la \textit{coverage} al 100\% del codice sorgente rappresenta un requisito fondamentale per garantire la stabilità e l’affidabilità del sistema in quanto contribuisce a individuare e correggere eventuali anomalie prima del rilascio in produzione
+
+Per soddisfare questo requisito, è necessario incrementare la copertura dei test automatizzati, con particolare attenzione ai componenti critici dell’interfaccia utente. Questo aspetto è già stato pianificato e verrà affrontato nelle prossime iterazioni dello sviluppo, al fine di consolidare la qualità del software e ridurre il rischio di regressioni.
+
+\subsection{Implementazione delle funzionalità chiave}
+Oltre ai miglioramenti tecnici e architetturali già discussi, il completamento della prima release del sistema richiede l’integrazione di alcune macrofunzionalità fondamentali per garantirne la piena operatività. In particolare, il sistema dovrà includere:
+\begin{itemize}
+  \item \textbf{Gestione della protezione}: interfacce e strumenti dedicati alla configurazione delle policy di filtraggio e sicurezza, con un'efficace integrazione dei profili condivisi.
+  \item \textbf{Generazione e visualizzazione avanzata dei report}: estensione del modulo di reporting per offrire un’analisi più dettagliata rispetto ai dati attualmente disponibili nella dashboard panoramica, così come la possibilità di esportare i report in formati standard.
+  \item \textbf{Analisi del traffico in tempo reale}: strumenti per il monitoraggio live delle richieste DNS, utili per una gestione più dinamica della sicurezza di rete. Dovrà essere inclusa una funzione di ricerca avanzata per filtrare e analizzare i dati in tempo reale.
+  \item \textbf{Gestione degli Endpoint remoti}: integrazione del sistema con i dispositivi mobili dotati di \textit{ClientShield}, per consentirne la configurazione e il monitoraggio da remoto.
+\end{itemize}
+
+Attualmente, l’unico modulo già presente riguarda la visualizzazione di alcuni report nella dashboard panoramica, sebbene in forma ancora sommaria e non esaustiva. Tuttavia, poiché il nuovo sistema è destinato a sostituire integralmente il precedente, esso dovrà necessariamente integrare fin dalla prima release tutte le macrofunzionalità operative nella versione legacy, garantendo continuità nell’erogazione dei servizi e nelle capacità di gestione della protezione e del traffico DNS. L’implementazione di questi moduli non rappresenta dunque un semplice miglioramento, ma un requisito imprescindibile per assicurare una transizione senza compromessi tra il vecchio e il nuovo sistema.
