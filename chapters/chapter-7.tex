@@ -1,0 +1,45 @@
+\chapter{Conclusione}
+
+Il presente lavoro ha avuto come obiettivo la reingegnerizzazione del pannello di configurazione di un sistema legacy per il filtraggio DNS, progettando e implementando un'infrastruttura moderna e scalabile in grado di superare le limitazioni della versione precedente. Il progetto si è focalizzato sull’analisi e la riprogettazione dell’architettura, gettando le basi per una transizione completa verso un sistema più efficiente e flessibile. Questo capitolo riepiloga i principali risultati ottenuti, le sfide affrontate e gli sviluppi futuri previsti per il completamento e l’evoluzione del sistema.
+
+\section{Sintesi del lavoro svolto e lezioni apprese}
+Lo sviluppo di un sistema software segue tipicamente un processo articolato in più fasi, tra cui la raccolta dei requisiti, l’analisi e progettazione, l’implementazione e il collaudo. La presente tesi è intervenuta dopo la fase di raccolta dei requisiti, concentrandosi sull'analisi e la progettazione di un sottoinsieme di caratteristiche chiave della nuova piattaforma, nonché sulla loro prima implementazione. L’obiettivo principale è stato quello di costruire una base solida su cui fondare l’evoluzione del sistema, risolvendo le principali criticità della versione legacy e introducendo soluzioni volte a migliorare scalabilità, sicurezza e manutenibilità.
+%
+In particolare, le milestone principali raggiunte includono:
+
+\begin{itemize}
+  \item \textbf{Multiutenza e gestione degli accessi}: una delle caratteristiche chiave del nuovo sistema rispetto al legacy è la possibilità di supportare un modello multiutente, permettendo la gestione di account con permessi differenziati. Attualmente, il sistema di autenticazione è stato implementato con successo e consente un accesso sicuro alla piattaforma. Tuttavia, il livello di autorizzazione, essenziale per regolare con precisione i permessi di ciascun utente in base al ruolo e all’organizzazione di appartenenza, è ancora in fase di definizione. La sua integrazione futura consentirà di sfruttare appieno il potenziale della multiutenza, offrendo una gestione più strutturata degli accessi e migliorando la sicurezza del sistema.
+
+  \item \textbf{Dashboard panoramica per MSP}: l’introduzione di una dashboard dedicata ai Managed Service Provider ha reso possibile una visione aggregata delle attività dei clienti, migliorando il controllo e la gestione della protezione DNS. Questo strumento fornisce ai MSP dati centralizzati e statistiche dettagliate, semplificando il monitoraggio delle configurazioni e delle minacce bloccate. Oltre a migliorare l’esperienza degli amministratori, questa funzionalità posiziona strategicamente il prodotto in un mercato più orientato al settore enterprise, che rappresenta uno degli obiettivi primari dell’azienda in termini di crescita e competitività.
+
+  \item \textbf{Nuova architettura del database}: la rimodellazione della base dati ha consentito di superare le rigidità della vecchia struttura, garantendo maggiore coerenza e supporto nativo alle nuove funzionalità. Oltre a risolvere le limitazioni del database legacy, la nuova architettura è stata progettata seguendo le migliori pratiche nel disegno concettuale delle strutture dati. Sono stati adottati nomi significativi per le entità, così come tipi di dato più coerenti e precisi, il tutto per evitare ambiguità e migliorare l'integrità del database. Inoltre, la suddivisione delle tabelle è stata ottimizzata per garantire un'organizzazione più chiara e una gestione più efficiente delle relazioni tra i dati, ponendo le basi per un sistema scalabile e facilmente estendibile.
+
+  \item \textbf{Gestione avanzata e strutturata degli errori}: è stato sviluppato un sistema innovativo per la gestione degli errori, progettato per essere scalabile, facilmente integrabile tra frontend e backend e compatibile con la gestione multilingua. Questo sistema è pervasivo, operando a tutti i livelli del backend del sistema, dalla validazione degli input nelle API alla gestione delle eccezioni interne e degli errori a livello di database. La sua implementazione sfrutta la tipizzazione avanzata del linguaggio di programmazione utilizzato, garantendo un controllo rigoroso e una maggiore robustezza nel trattamento degli errori. Inoltre, l’approccio scelto lo rende poco invasivo dal punto di vista implementativo, permettendo agli sviluppatori di utilizzarlo in modo efficace senza introdurre complessità eccessive nel codice esistente. Questo aspetto ha rappresentato uno dei contributi più significativi apportati al progetto, migliorando la manutenibilità e l'affidabilità dell’intero sistema.
+\end{itemize}
+
+Durante lo sviluppo del sistema sono emerse diverse criticità, che hanno richiesto un'analisi approfondita e un approccio metodologico mirato. Tra le principali difficoltà affrontate vi sono:
+
+\begin{itemize}
+  \item \textbf{Apprendimento di nuove tecnologie}: la realizzazione del nuovo sistema ha richiesto l’utilizzo di strumenti e paradigmi non presenti nella versione legacy, rendendo necessaria un'iniziale fase di formazione e consolidamento delle conoscenze.
+  \item \textbf{Rimodellazione del database}: la definizione di una nuova architettura dati ha richiesto un'attenta analisi delle tabelle esistenti e dei flussi informativi, con l'obiettivo di consolidare i dati e garantire una transizione strutturata.
+  \item \textbf{Strutturazione avanzata degli errori}: la principale difficoltà è stata quella di ideare un meccanismo che fosse al contempo semplice ma efficace, in grado di strutturare gli errori in modo uniforme, garantendo compatibilità tra frontend e backend e supporto alla multilingua.
+\end{itemize}
+
+Dall’esperienza maturata in questo progetto sono emerse alcune scelte architetturali particolarmente efficaci, che si sono rivelate strategiche per la solidità del nuovo sistema:
+
+\begin{itemize}
+  \item \textbf{Rinnovo del database fin dalle prime fasi di sviluppo}: questo approccio ha garantito la costruzione di un sistema privo delle inefficienze della versione legacy, con una base dati progettata su misura per supportare le nuove funzionalità senza compromessi.
+  \item \textbf{Adozione di un'architettura a microservizi}: questa scelta ha permesso di garantire modularità, scalabilità (anche geografica) e una più semplice manutenzione del sistema, rendendolo adattabile alle esigenze future.
+\end{itemize}
+
+\section{Evoluzioni e prospettive future}
+Il lavoro svolto finora rappresenta solo il primo passo verso la realizzazione di un sistema completo e pienamente operativo. Per garantire una transizione efficace e una piena sostituzione del sistema legacy, sono previsti ulteriori sviluppi nelle prossime fasi del progetto. Tra le principali evoluzioni future si evidenziano:
+
+\begin{itemize}
+  \item \textbf{Gestione avanzata della multiutenza}: l’introduzione di un sistema di delega dei permessi e configurazioni personalizzate per MSP e Dealer consentirà una gestione più granulare degli accessi e delle operazioni eseguibili dagli utenti.
+  \item \textbf{Integrazione con servizi esterni}: un passo importante per migliorare le capacità del sistema sarà l'integrazione con provider esterni, sul modello di soluzioni adottate da competitor come DNSFilter.
+  \item \textbf{Implementazione di un sistema di autenticazione centralizzato}: la possibilità di autenticarsi una sola volta per accedere a tutti i servizi aziendali migliorerà l'esperienza utente e rafforzerà la sicurezza del sistema.
+  \item \textbf{Allineamento della specifica API con le effettive rotte backend}: un sistema per garantire la coerenza tra API documentation e funzionalità implementate faciliterà lo sviluppo e la manutenzione del sistema.
+\end{itemize}
+
+L’insieme di questi sviluppi contribuirà a rendere il nuovo sistema una piattaforma completa, performante e in grado di adattarsi alle esigenze operative degli utenti finali, assicurando al contempo maggiore sicurezza e scalabilità. La roadmap futura punta non solo a colmare le funzionalità mancanti, ma anche a rendere il sistema più competitivo e innovativo rispetto alle soluzioni attuali presenti sul mercato.
