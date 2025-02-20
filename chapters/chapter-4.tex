@@ -22,14 +22,14 @@ Una rappresentazione schematica dell'architettura del sistema è riportata in \C
   \label{fig:system-architecture}
 \end{figure}
 
-\subsection{Frontend}
+\subsection{Struttura del Frontend}
 Il frontend è stato progettato come una Single-Page Application (SPA) \cite{Fink2014}, scelta che consente di offrire agli utenti un'esperienza fluida ed un accesso rapido da qualsiasi browser, senza bisogno di installare nessun applicativo. Questo microservizio si occupa esclusivamente della logica di presentazione, implementando l'interfaccia grafica e gestendo l'interazione con gli utenti finali. Infatti, tutte le operazioni di elaborazione dei dati, come le computazioni o la gestione delle regole di business, sono demandate al backend.
 
 L'architettura del frontend segue un approccio modulare, in cui ogni pagina e componente è organizzato secondo una struttura gerarchica. Ciò consente di mantenere l'architettura chiara e scalabile, facilitando l'estensione del sistema e la gestione delle singole sezioni dell'applicazione.
 
 Per garantire un design coerente e accelerare lo sviluppo dell'interfaccia, è stato adottato un template grafico altamente personalizzabile. Questo approccio ha consentito di ridurre i tempi di progettazione dell’interfaccia grafica, mantenendo al contempo la flessibilità necessaria per adattare l’aspetto grafico alle esigenze specifiche del progetto.
 
-\subsection{Backend}
+\subsection{Struttura del Backend}
 Come già accennato, il backend non è stato concepito come un unico servizio monolitico, ma si è optato per una suddivisione in più microservizi, ciascuno responsabile di una specifica funzionalità o modulo del sistema. La definizione di questi microservizi è stata guidata dall'analisi del dominio (\Cref{sec:domain-analysis}), individuando le principali entità e le loro responsabilità all'interno dell'architettura complessiva. Questo approccio ha permesso di modellare il backend in modo coerente con le esigenze del sistema, garantendo una chiara separazione delle responsabilità e facilitando l'evoluzione futura della piattaforma.
 
 Di seguito, vengono descritti i principali microservizi di cui il backend è composto:
