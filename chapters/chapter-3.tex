@@ -12,6 +12,17 @@ Infine, la parte finale del capitolo sarà dedicata all'analisi del dominio appl
 \section{Introduzione al sistema esistente}
 Il sistema legacy qui esaminato rappresenta un pannello Web utilizzato dall'azienda \textit{FlashStart Group srl}\footnote{\url{https://flashstart.com}} per la gestione e la configurazione del suo filtro DNS. L’analisi di questo sistema, effettuata nell’ambito di un tirocinio in preparazione della presente tesi, si basa sulle osservazioni dirette fatte durante lo sviluppo del nuovo sistema, dato che la documentazione del legacy risulta pressoché assente.
 
+Come illustrato in \Cref{fig:flashstart-legacy}, il pannello legacy offre una dashboard che riporta statistiche sulle richieste DNS processate, suddivise tra richieste bloccate, consentite e non risolte, con grafici relativi alle categorie più filtrate e ai servizi più bloccati. L’interfaccia presenta un'organizzazione a schede, con una barra superiore per la selezione del cliente e dei profili associati.
+%
+Nonostante le funzionalità offerte, il design risulta datato e poco curato dal punto di vista estetico, con un layout che non trasmette immediatamente la professionalità del prodotto e non valorizza l’esperienza utente.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{figures/old-home.png}
+  \caption{Schermata principale del pannello Web legacy di FlashStart.}
+  \label{fig:flashstart-legacy}
+\end{figure}
+
 \subsubsection{Terminologia e definizioni}
 Da qui in avanti verranno utilizzate alcune terminologie specifiche che descrivono concetti e funzionalità del sistema legacy. Pertanto, prima di proseguire con la sua analisi, è opportuno fornire una breve spiegazione di questi termini, utilizzati dall'azienda per rappresentare concetti chiave del dominio applicativo.
 
