@@ -334,10 +334,10 @@ Successivamente, per ogni organizzazione migrata, dovrà essere creato un utente
 \subsubsection{Migrazione dei profili di configurazione}
 La migrazione dei profili di configurazione rappresenta una delle operazioni più complesse, poiché il nuovo sistema ha introdotto il concetto di profili condivisi, modificando radicalmente la struttura e le modalità di associazione delle configurazioni di filtraggio.
 
-Nel sistema legacy, i profili erano identificati tramite un codice profilo e associati ai clienti attraverso la tabella \texttt{admin}, con un legame statico e univoco. Questo significava che ogni profilo apparteneva esclusivamente a un singolo cliente, senza possibilità di essere condiviso tra più entità. Nel nuovo sistema, invece, i profili non sono più legati a una singola istanza del vecchio database, ma vengono associati direttamente alle organizzazioni, con la possibilità di essere riutilizzati dalle organizzazioni subordinate.
+Nel sistema legacy, i profili erano identificati tramite un \textit{codice profilo} e associati ai clienti attraverso la tabella \texttt{admin}, con un legame statico e univoco. Questo significava che ogni profilo apparteneva esclusivamente a un singolo cliente, senza possibilità di essere condiviso tra più entità. Nel nuovo sistema, invece, i profili non sono più legati a una singola istanza del vecchio database, ma vengono associati direttamente alle organizzazioni, con la possibilità di essere riutilizzati dalle organizzazioni subordinate.
 
 Sebbene sia teoricamente possibile effettuare un'analisi per identificare i potenziali profili da trasformare in condivisi, questa operazione risulta particolarmente complessa. Nel database legacy, infatti, non esiste un'informazione chiara e diretta che indichi se un profilo sia utilizzato da più clienti. Questo rende difficile stabilire automaticamente quali profili potrebbero essere condivisi senza introdurre ambiguità o errori nella migrazione.
-
+%
 Per garantire una transizione coerente, si può quindi procedere migrando tutti i profili esistenti e impostandoli inizialmente come non condivisibili, riproducendo fedelmente la configurazione che gli utenti avevano nel vecchio sistema. Una volta completata la migrazione, saranno gli stessi amministratori ad avere la possibilità di convertire i profili tradizionali in condivisi e riutilizzarli per più sottoclienti, sfruttando le nuove funzionalità del sistema.
 
 \subsubsection{Migrazione delle categorie di blocco e delle eccezioni}
