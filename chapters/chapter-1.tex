@@ -1,1 +1,27 @@
 \chapter{Introduzione}
+
+La presente tesi nasce dall’esperienza di tirocinio svolta presso un’azienda specializzata nello sviluppo di soluzioni per il filtraggio DNS. Durante tale esperienza, è stato possibile contribuire alle prime fasi di reingegnerizzazione di un pannello Web per la configurazione di un filtro DNS. Questo pannello, concepito per offrire funzionalità di gestione e controllo dei domini da filtrare, presentava tuttavia limiti strutturali e tecnologici che ne ostacolavano la manutenibilità e l’estendibilità. L’esigenza di modernizzare l’architettura, migliorare l’esperienza utente e garantire maggiore sicurezza è nata anche dalla volontà di posizionare l’azienda in un mercato più orientato alle medie-grandi organizzazioni, così da favorirne la crescita e consolidarne il ruolo come punto di riferimento a livello globale nel settore del filtraggio DNS.
+
+Il presente lavoro si inserisce in questo contesto, con l’obiettivo di progettare e sviluppare una nuova versione del pannello di configurazione del filtro DNS aziendale, adottando un’architettura moderna basata su microservizi. Questo approccio mira a garantire maggiore efficienza, sicurezza e manutenibilità rispetto alla versione precedente, superando le rigidità del legacy e introducendo nuove funzionalità essenziali.
+
+Scopo dell’elaborato è fornire una visione organica del processo di reingegnerizzazione svolto, illustrando le motivazioni alla base della necessità di aggiornare il pannello, i principali obiettivi progettuali e i risultati raggiunti nelle prime fasi di sviluppo.
+
+Il contesto teorico di riferimento comprende sia il Domain Name System (DNS), con le sue logiche di funzionamento e la sua importanza nella gestione del traffico in rete, sia le metodologie di reingegnerizzazione software, che offrono linee guida per affrontare in modo sistematico la modernizzazione di soluzioni esistenti.
+
+Dal punto di vista metodologico, il progetto ha richiesto un'attenta fase di analisi, seguita dalla definizione di un’architettura più flessibile e scalabile, fino all’implementazione di un primo set di funzionalità.
+
+Durante lo sviluppo, sono state affrontate diverse sfide, tra cui la transizione da un’architettura monolitica a una basata su microservizi, la riprogettazione della base dati e la creazione di un sistema avanzato di gestione degli errori, in grado di operare in modo strutturato e pervasivo su tutti i livelli del sistema.
+
+\section{Struttura dell'elaborato}
+L'elaborato è suddiviso nei seguenti capitoli, ciascuno dedicato a un aspetto specifico del progetto:
+
+\begin{itemize}
+  \item \textbf{Capitolo 2: Background} – Introduce il funzionamento del DNS e il filtraggio DNS, oltre alle metodologie di reingegnerizzazione software.
+  \item \textbf{Capitolo 3: Analisi} – Esamina il sistema legacy, evidenziandone l’architettura, le tecnologie adottate e le limitazioni riscontrate. Inoltre, introduce i requisiti del nuovo sistema e la modellazione del dominio.
+  \item \textbf{Capitolo 4: Design} – Presenta la nuova architettura proposta, sia lato frontend che backend, illustrando le interazioni tra i componenti e le principali scelte tecnologiche adottate.
+  \item \textbf{Capitolo 5: Implementazione} – Descrive il processo di sviluppo del nuovo sistema, soffermandosi sull’infrastruttura, sull’organizzazione della repository e sull'implementazione del sistema di gestione degli errori.
+  \item \textbf{Capitolo 6: Valutazione} – Analizza i requisiti soddisfatti e le funzionalità implementate, confrontandole con gli obiettivi iniziali. Inoltre, discute i miglioramenti pianificati e gli aspetti ancora da sviluppare.
+  \item \textbf{Capitolo 7: Conclusione} – Riassume il lavoro svolto, evidenziando le principali lezioni apprese e proponendo possibili sviluppi futuri del sistema.
+\end{itemize}
+
+Grazie a questa suddivisione, l’elaborato mira a fornire una panoramica completa del percorso di reingegnerizzazione del pannello di configurazione, dall’analisi dei requisiti iniziali fino alle valutazioni finali e ai suggerimenti per successivi sviluppi. L’obiettivo ultimo è offrire un contributo concreto alla modernizzazione del software, ponendo le basi per futuri interventi di mantenimento e potenziamento del sistema.
