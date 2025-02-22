@@ -8,11 +8,6 @@ Sin dall'inizio, era stato previsto che la presente tesi non avrebbe portato all
 \subsection{Elementi progettati e implementati}
 Tra i requisiti soddisfatti, alcuni non si limitano alla fase di progettazione ma sono già stati concretamente implementati, costituendo il nucleo della prima versione del sistema. Questi elementi forniscono un primo miglioramento rispetto al legacy e rappresentano una base solida per l’evoluzione futura del progetto. Di seguito vengono analizzate le funzionalità già operative, evidenziandone l'impatto e le garanzie offerte.
 
-\subsubsection{Gestione della multiutenza}
-Uno dei principali requisiti che ha motivato la realizzazione del nuovo sistema è stato l’introduzione della multiutenza. Questo requisito, fatta eccezione per il sistema di autorizzazione, è stato ampiamente soddisfatto. Attualmente, il nuovo sistema consente di gestire più credenziali di accesso per una singola organizzazione, permettendo agli utenti autorizzati di accedere al pannello e visualizzare la dashboard. Inoltre, sono già state implementate le operazioni di creazione, modifica ed eliminazione degli utenti. Questo posiziona il nuovo sistema in una posizione di vantaggio rispetto al precedente, nel quale la gestione degli utenti era più limitata.
-
-Dal punto di vista delle garanzie offerte, il controllo degli accessi non è ancora stato implementato, ma la struttura del sistema è predisposta per integrarlo in futuro con meccanismi flessibili e granulari. Inoltre, la sicurezza relativa alle credenziali di accesso è stata significativamente migliorata rispetto al legacy, grazie all’utilizzo dell'algoritmo di hashing avanzato \texttt{bcrypt}. Quest’ultimo consente non solo di rendere le password crittograficamente più sicure, ma permette anche di incrementare il costo computazionale dell’hashing, rendendolo scalabile nel tempo e aumentando la resistenza ad attacchi di forza bruta.
-
 \subsubsection{Dashboard panoramica per MSP e Dealer}
 Un'altra funzionalità significativa già implementata è la dashboard panoramica, progettata specificamente per MSP e Dealer. Nel sistema legacy, questi utenti non disponevano di una visione aggregata ed efficace dei clienti sotto la loro gestione. Il nuovo sistema, invece, include una schermata con statistiche e grafici che permettono di ottenere una panoramica dettagliata delle attività gestite. In particolare, la dashboard mostra le seguenti informazioni:
 
@@ -33,6 +28,44 @@ Un'altra funzionalità significativa già implementata è la dashboard panoramic
 Oltre a offrire una panoramica complessiva, la dashboard consente di visualizzare statistiche e report specifici per ciascun cliente gestito dall’MSP o dal Dealer. È infatti possibile selezionare un cliente dalla lista e ottenere un quadro dettagliato delle sue attività. Questa funzionalità risulta particolarmente utile per monitorare eventuali anomalie o problemi specifici di un singolo cliente.
 
 Al momento, la dashboard è ancora in una fase iniziale e non è possibile esprimere garanzie sulla qualità dell'aggregazione dei dati, che verrà affinata con le iterazioni successive dello sviluppo.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{figures/new-dashboard.png}
+  \caption{Schermata del nuovo sistema che rappresenta la dashboard MSP.}
+  \label{fig:dashboard-msp}
+\end{figure}
+
+\paragraph{Struttura e layout della dashboard}
+Dal punto di vista dell’interfaccia utente, come si può vedere in \Cref{fig:dashboard-msp}, la dashboard è stata progettata con una struttura chiara e organizzata per garantire un’esperienza di navigazione fluida. Il menu di navigazione, posizionato nella parte sinistra dello schermo, è sempre visibile indipendentemente dalla pagina in cui ci si trova. Nei dispositivi con display ridotto, come gli smartphone, il menu rimane nascosto per ottimizzare lo spazio e può essere aperto su richiesta dall’utente.
+
+Nella parte superiore dell’interfaccia, ovvero nell’header, sono presenti diversi elementi chiave:
+\begin{itemize}
+  \item \textbf{Il logo dell'azienda}, posizionato a sinistra.
+  \item \textbf{Il selettore del cliente}: consente agli MSP di filtrare i report per un cliente specifico, oppure di lasciare l’opzione predefinita per visualizzare la panoramica aggregata di tutti i clienti gestiti.
+  \item \textbf{Il selettore del tema}, situato sulla destra, che permette di passare dalla modalità scura a quella chiara.
+  \item \textbf{L’area utente autenticato}, da cui è possibile accedere alle impostazioni del profilo e alla funzione di logout.
+\end{itemize}
+
+In futuro, nell’header verrà integrata una sezione notifiche, accessibile tramite un’icona che indicherà la presenza di nuovi avvisi e permetterà di visualizzarli all’interno di un pannello dedicato.
+
+Infine, il corpo centrale della dashboard ospita i grafici e le statistiche descritte in precedenza, fornendo un’analisi dettagliata del traffico DNS e della sicurezza del sistema. L’interfaccia è stata progettata per garantire flessibilità, con un layout adattivo che ottimizza la visualizzazione su schermi di diverse dimensioni.
+
+\subsubsection{Gestione della multiutenza}
+Uno dei principali requisiti che ha motivato la realizzazione del nuovo sistema è stato l’introduzione della multiutenza. Questo requisito, fatta eccezione per il sistema di autorizzazione, è stato ampiamente soddisfatto. Attualmente, il nuovo sistema consente di gestire più credenziali di accesso per una singola organizzazione, permettendo agli utenti autorizzati di accedere al pannello e visualizzare la dashboard. Inoltre, sono già state implementate le operazioni di creazione, modifica ed eliminazione degli utenti. Questo rappresenta un significativo miglioramento rispetto al sistema precedente, nel quale la gestione degli account era estremamente limitata.
+
+Dal punto di vista delle garanzie offerte, il controllo degli accessi non è ancora stato implementato, ma la struttura del sistema è predisposta per integrarlo in futuro con meccanismi flessibili e granulari. Inoltre, la sicurezza relativa alle credenziali di accesso è stata significativamente migliorata rispetto al legacy, grazie all’utilizzo dell'algoritmo di hashing avanzato \texttt{bcrypt}. Quest’ultimo consente non solo di rendere le password crittograficamente più sicure, ma permette anche di incrementare il costo computazionale dell’hashing, rendendolo scalabile nel tempo e aumentando la resistenza ad attacchi di forza bruta.
+
+Per la gestione della multiutenza, il sistema fornisce un’interfaccia dedicata che consente di creare, modificare ed eliminare utenti, nonché di assegnare loro un ruolo specifico all’interno dell’organizzazione. Questa funzionalità pone le basi per l’integrazione futura di un sistema avanzato di controllo degli accessi basato su ruoli e permessi granulari.
+
+Nella \Cref{fig:user-management} è mostrata la sezione relativa alla gestione degli utenti, con le form per l'inserimento, la modifica e la rimozione degli account utente:
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{figures/new-user-panel.png}
+  \caption{Schermata del nuovo sistema per la gestione degli utenti.}
+  \label{fig:user-management}
+\end{figure}
 
 \subsubsection{Supporto multilingua}
 Un ulteriore requisito già soddisfatto è il supporto multilingua. Il frontend del nuovo sistema supporta attualmente due lingue, italiano e inglese. Sebbene possa sembrare un dettaglio secondario, questa funzionalità è fondamentale per un prodotto destinato a un mercato internazionale, in cui gli utenti parlano lingue diverse. Inoltre, l’architettura progettata consente di aggiungere nuove lingue in modo semplice, senza necessità di modifiche al codice sorgente, ma solo integrando nuovi file di traduzione.
