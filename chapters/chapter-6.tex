@@ -1,22 +1,22 @@
 \chapter{Valutazione}
 
-L'obiettivo del presente capitolo è discutere i risultati finora ottenuti, in particolare sulla base dei requisiti già soddisfatti e delle migliorie introdotte dal nuovo sistema rispetto alla versione legacy. Poiché il sistema è ancora in fase di sviluppo, non è possibile fornire una valutazione complessiva, effettuare un confronto esaustivo con il vecchio sistema, né presentare risultati di test prestazionali e di usabilità. Tuttavia, è possibile analizzare le funzionalità già implementate e progettate, valutandone il contributo rispetto agli obiettivi iniziali e identificando le garanzie che il nuovo sistema è già in grado di fornire.
+L'obiettivo del presente capitolo è discutere i risultati finora ottenuti, in particolare sulla base dei requisiti già soddisfatti e delle migliorie introdotte dal nuovo sistema rispetto alla versione legacy. Poiché il sistema è ancora in fase di sviluppo, non è possibile fornire una valutazione complessiva, effettuare un confronto esaustivo con il vecchio sistema, né presentare risultati di test prestazionali e di usabilità. Tuttavia, è possibile analizzare le funzionalità già progettate ed implementate, valutandone il contributo rispetto agli obiettivi iniziali e identificando le garanzie che il nuovo sistema è già in grado di fornire.
 
 \section{Requisiti soddisfatti}
-Sin dall'inizio, era stato previsto che la presente tesi non avrebbe portato alla realizzazione completa del sistema, ma avrebbe riguardato principalmente le fasi fondamentali di analisi e progettazione, accompagnate dall'implementazione di una prima versione funzionale. Nonostante ciò, è possibile tracciare un bilancio dei requisiti già soddisfatti, i quali evidenziano le potenzialità del nuovo sistema rispetto al precedente. A tal fine, i requisiti verranno suddivisi in due categorie: quelli già soddisfatti sia dal punto di vista progettuale che implementativo e quelli attualmente soddisfatti solo dal punto di vista progettuale.
+Sin dall'inizio era stato stabilito che questa tesi non avrebbe condotto alla realizzazione completa del sistema, ma si sarebbe concentrata principalmente sulle fondamentali fasi di analisi e progettazione, includendo anche l'implementazione di una prima versione funzionale. Nonostante ciò, è possibile tracciare un bilancio dei requisiti già soddisfatti, i quali evidenziano le potenzialità del nuovo sistema rispetto al precedente. A tal fine, i requisiti verranno suddivisi in due categorie: quelli già soddisfatti sia dal punto di vista progettuale che implementativo e quelli attualmente soddisfatti solo dal punto di vista progettuale.
 
 \subsection{Elementi progettati e implementati}
 Tra i requisiti soddisfatti, alcuni non si limitano alla fase di progettazione ma sono già stati concretamente implementati, costituendo il nucleo della prima versione del sistema. Questi elementi forniscono un primo miglioramento rispetto al legacy e rappresentano una base solida per l’evoluzione futura del progetto. Di seguito vengono analizzate le funzionalità già operative, evidenziandone l'impatto e le garanzie offerte.
 
 \subsubsection{Dashboard panoramica per MSP e Dealer}
-La prima funzionalità significativa già implementata è la dashboard panoramica, progettata specificamente per MSP e Dealer. Nel sistema legacy, questi utenti non disponevano di una visione aggregata ed efficace dei clienti sotto la loro gestione. Il nuovo sistema, invece, include una schermata con statistiche e grafici che permettono di ottenere una panoramica dettagliata delle attività gestite. In particolare, la dashboard mostra le seguenti informazioni:
+La prima funzionalità significativa già implementata è la dashboard panoramica, progettata specificamente per MSP e Dealer. Nel sistema legacy, questi utenti non disponevano di una visione aggregata ed efficace dei clienti sotto la loro gestione. Il nuovo sistema, invece, include una schermata con statistiche e grafici che permettono di ottenere una panoramica dettagliata delle attività del filtro DNS. In particolare, la dashboard mostra le seguenti informazioni:
 
 \begin{itemize}
-  \item Nella parte superiore, vengono presentate statistiche di base relative alle richieste elaborate dal filtro DNS. Tra queste: il numero totale di richieste ricevute, il numero di minacce bloccate, il numero di categorie e indirizzi IP bloccati, il numero di categorie consentite, il numero di richieste DNS non risolte (NXDOMAIN) e, infine, il numero di richieste che hanno forzato l’utilizzo della SafeSearch su motori di ricerca e YouTube. Questi dati offrono un quadro generale sul funzionamento del sistema e sull'efficacia del filtraggio.
+  \item Nella parte superiore, vengono presentate statistiche di base relative alle richieste elaborate dal filtro. Tra queste: il numero totale di richieste ricevute, il numero di minacce bloccate, il numero di categorie e indirizzi IP bloccati, il numero di categorie consentite, il numero di richieste DNS non risolte (NXDOMAIN) e, infine, il numero di richieste che hanno forzato l’utilizzo della SafeSearch sui motori di ricerca e YouTube. Questi dati offrono un quadro generale sul funzionamento del sistema e sull'efficacia del filtraggio.
 
   \item Nella parte centrale, sono presenti grafici per monitorare l’andamento delle richieste DNS. In particolare, vi è:
     \begin{itemize}
-      \item Un grafico a barre che mostra le cinque categorie più bloccate.
+      \item Un grafico a barre che mostra le cinque categorie più bloccate;
       \item Un grafico a torta che rappresenta la distribuzione percentuale delle richieste DNS in base alla loro tipologia (richieste bloccate, richieste consentite, blocchi per IP, domini non risolti).
     \end{itemize}
 
@@ -37,12 +37,12 @@ Al momento, la dashboard è ancora in una fase iniziale e non è possibile espri
 \end{figure}
 
 \paragraph{Struttura e layout della dashboard}
-Dal punto di vista dell’interfaccia utente, come si può vedere in \Cref{fig:dashboard-msp}, la dashboard è stata progettata con una struttura chiara e organizzata per garantire un’esperienza di navigazione fluida. Il menu di navigazione, posizionato nella parte sinistra dello schermo, è sempre visibile indipendentemente dalla pagina in cui ci si trova. Nei dispositivi con display ridotto, come gli smartphone, il menu rimane nascosto per ottimizzare lo spazio e può essere aperto su richiesta dall’utente.
+Dal punto di vista dell’interfaccia utente, come si può vedere in \Cref{fig:dashboard-msp}, la dashboard è stata progettata con una struttura chiara e organizzata per garantire un’esperienza di navigazione fluida. Il menu di navigazione, posizionato nella parte sinistra dello schermo, è sempre visibile indipendentemente dalla pagina in cui ci si trova. Nei dispositivi aventi un display ridotto, come gli smartphone, il menu rimane nascosto per ottimizzare lo spazio e può essere aperto su richiesta dall’utente.
 
 Nella parte superiore dell’interfaccia sono presenti diversi elementi chiave:
 \begin{itemize}
   \item \textbf{Il logo dell'azienda}, posizionato a sinistra.
-  \item \textbf{Il selettore del cliente}, che consente agli MSP di filtrare i report per un cliente specifico, oppure di lasciare l’opzione predefinita per visualizzare la panoramica aggregata di tutti i clienti gestiti.
+  \item \textbf{Il selettore del cliente}, che consente agli MSP di filtrare i report per un cliente specifico, oppure di lasciare l’opzione predefinita per visualizzare la panoramica di tutti i clienti gestiti.
   \item \textbf{Il selettore del tema}, situato sulla destra, che permette di passare dalla modalità scura a quella chiara.
   \item \textbf{L’area utente autenticato}, da cui è possibile accedere alle impostazioni del profilo e alla funzione di logout.
 \end{itemize}
@@ -52,15 +52,15 @@ In futuro, nell’header verrà integrata una sezione notifiche, accessibile tra
 Infine, il corpo centrale della dashboard ospita i grafici e le statistiche descritte in precedenza, fornendo un’analisi dettagliata del traffico DNS e della sicurezza del sistema. L’interfaccia è stata progettata per garantire flessibilità, con un layout adattivo che ottimizza la visualizzazione su schermi di diverse dimensioni.
 
 \subsubsection{Gestione della multiutenza}
-La necessità di introdurre un sistema multiutenza ha costituito uno dei principali requisiti per il nuovo pannello. Rispetto al precedente, in cui la gestione degli account risultava assai limitata, la nuova implementazione permette ora di associare più credenziali di accesso a una singola organizzazione e di abilitare operazioni di creazione, modifica ed eliminazione degli utenti. Questa flessibilità si traduce in un notevole progresso rispetto al passato, consentendo a più persone, con diversi ruoli, di accedere alla dashboard e monitorare le informazioni di loro competenza.
+La necessità di introdurre un sistema che supportasse la multiutenza ha costituito uno dei principali requisiti per il nuovo pannello. Rispetto al precedente, in cui la gestione degli account risultava assai limitata, la nuova implementazione permette ora di associare più credenziali di accesso a una singola organizzazione e di abilitare operazioni di creazione, modifica ed eliminazione degli utenti. Questa flessibilità si traduce in un notevole progresso rispetto al passato, consentendo a più persone, con diversi ruoli, di accedere alla dashboard e monitorare le informazioni di loro competenza.
 
 Un ulteriore aspetto riguarda la futura integrazione del controllo degli accessi: sebbene tale meccanismo non sia ancora stato sviluppato, l’architettura del sistema è stata progettata per accogliere in modo agevole e graduale soluzioni di autorizzazione avanzate, basate su ruoli e permessi granulari. In questo modo, sarà possibile estendere ulteriormente la sicurezza e la modularità del pannello.
 
 Sul fronte della protezione delle credenziali di accesso, è stato adottato l’algoritmo di hashing \texttt{bcrypt}. Quest’ultimo offre non solo una maggiore sicurezza contro attacchi di forza bruta, ma consente anche di aumentare il costo computazionale dell’hashing nel tempo, adeguandone la resistenza alla continua crescita della potenza di calcolo. In questo modo, il sistema può mantenere un elevato livello di protezione delle password anche sul lungo termine.
 
-Per consentire una gestione semplice e immediata della multiutenza, è stata sviluppata un’apposita interfaccia che permette di inserire, aggiornare o rimuovere gli account, oltre che di assegnare ad ogni utente un ruolo specifico all’interno dell’organizzazione. Tale funzionalità costituisce le fondamenta su cui verrà costruito in futuro il sistema di controllo degli accessi più sofisticato, in grado di differenziare i privilegi sulle singole risorse applicative.
+Per consentire una gestione semplice e immediata della multiutenza, è stata sviluppata un’apposita interfaccia che permette di inserire, aggiornare o rimuovere gli account, oltre che di assegnare ad ogni utente un ruolo specifico all’interno dell’organizzazione. Tale funzionalità costituisce le fondamenta su cui verrà costruito in futuro un sistema di controllo degli accessi più sofisticato, in grado di differenziare i privilegi sulle singole risorse applicative.
 
-Nella \Cref{fig:user-management} viene mostrata la schermata dedicata alla gestione degli utenti, in cui è possibile osservare le form per l’inserimento, la modifica e l’eliminazione degli account:
+Nella \Cref{fig:user-management} viene mostrata la schermata dedicata alla gestione degli utenti, in cui è possibile osservare le form per l’inserimento, la modifica e l’eliminazione degli account.
 
 \begin{figure}
   \centering
@@ -73,7 +73,7 @@ Nella \Cref{fig:user-management} viene mostrata la schermata dedicata alla gesti
 Un ulteriore requisito già soddisfatto è il supporto multilingua. Il frontend del nuovo sistema, infatti, possiede già il supporto completo alle lingue italiano e inglese. Sebbene possa sembrare un dettaglio secondario, questa funzionalità è fondamentale per un prodotto destinato a un mercato internazionale, in cui gli utenti parlano lingue diverse. Inoltre, l’architettura progettata consente di aggiungere nuove lingue in modo semplice, senza necessità di modifiche al codice sorgente, ma solo integrando nuovi file di traduzione.
 
 \subsubsection{Gestione avanzata degli errori}
-Un altro elemento progettato e implementato nel nuovo sistema è la gestione avanzata degli errori, che introduce una strategia scalabile e strutturata per il trattamento delle anomalie sia lato backend che frontend.
+Un altro elemento progettato e implementato è la gestione avanzata degli errori, che introduce una strategia scalabile e strutturata per il trattamento delle anomalie sia lato backend che frontend.
 %
 Questa architettura garantisce diversi vantaggi:
 \begin{itemize}
@@ -89,12 +89,14 @@ Rispetto al sistema legacy, che gestiva gli errori in modo frammentato e poco st
 In aggiunta alle funzionalità già realizzate, si evidenzia l’esistenza di alcuni aspetti che, sebbene non ancora sviluppati in maniera operativa, risultano già completamente definiti dal punto di vista progettuale. Nonostante la loro efficacia pratica non sia al momento valutabile, è comunque possibile analizzare il potenziale e il valore aggiunto che tali elementi apporteranno rispetto al sistema legacy.
 
 \subsubsection{Gestione dei profili condivisi}
-Uno degli elementi più significativi in questa categoria è l’introduzione dei profili condivisi. Questa novità consente di creare profili di protezione condivisibili tra più organizzazioni all'interno della stessa gerarchia. Essi possono essere visti come template di protezione, utili soprattutto per gli MSP, che potranno così offrire configurazioni standardizzate e omogenee ai loro clienti. Un altro vantaggio di questa funzionalità è la semplificazione della gestione della protezione: eventuali modifiche a un profilo condiviso vengono automaticamente propagate a tutte le organizzazioni che lo utilizzano. Questo rappresenta un miglioramento significativo rispetto al vecchio sistema, dove le configurazioni erano gestite separatamente per ogni organizzazione, con difficoltà nella loro manutenzione e uniformità.
+Uno degli elementi più significativi in questa categoria è l’introduzione dei profili condivisi. Questa novità consente di creare profili di protezione condivisibili tra più organizzazioni all'interno della stessa gerarchia. Essi possono essere visti come template di protezione, utili soprattutto per gli MSP e per i Dealer, che potranno così offrire configurazioni standardizzate e omogenee ai loro clienti.
+
+Un altro vantaggio di questa funzionalità è la semplificazione della gestione della protezione: eventuali modifiche a un profilo condiviso vengono automaticamente propagate a tutte le organizzazioni che lo utilizzano. Questo rappresenta un miglioramento significativo rispetto al vecchio sistema, dove le configurazioni erano gestite separatamente per ogni organizzazione, con difficoltà nella loro manutenzione e uniformità.
 
 L’introduzione dei profili condivisi permette inoltre al sistema di allinearsi con i competitor, alcuni dei quali già dispongono di questa funzionalità. Benché tale caratteristica non sia ancora implementata, la sua progettazione dettagliata consente di avere una chiara roadmap per la sua realizzazione e integrazione futura.
 
 \subsubsection{Riprogettazione del database}
-Il design della funzionalità appena descritta rientra in un più ampio processo di rimodellazione del database, che garantisce maggiore scalabilità e coerenza dei dati. Inoltre, la nuova struttura permette l’implementazione di funzionalità avanzate che il vecchio sistema, per sua natura, non poteva supportare. Questa revisione assicura che il sistema possa evolversi senza le limitazioni strutturali della versione legacy, rendendolo più flessibile, scalabile e adatto alle esigenze future.
+Il design della funzionalità appena descritta rientra in un più ampio processo di rimodellazione del database, che garantisce maggiore scalabilità e coerenza dei dati. Inoltre, la nuova struttura permette l’implementazione di funzionalità avanzate che il vecchio database, per sua natura, non poteva supportare. Questa revisione assicura che il sistema possa evolversi senza le limitazioni strutturali della versione legacy, rendendolo più flessibile, scalabile e adatto alle esigenze future.
 
 Per quanto la riprogettazione del database sia stata completata principalmente a livello di schema concettuale, alcune componenti essenziali risultano già integrate nel sistema. In particolare, le nuove tabelle dedicate alla gestione degli utenti e delle organizzazioni sono già operative e costituiscono la base su cui si fonda il meccanismo di multiutenza. Queste modifiche hanno consentito di superare i vincoli del vecchio modello, che non era stato concepito per supportare una gestione avanzata degli accessi e delle gerarchie organizzative.
 
@@ -119,9 +121,9 @@ Come è già stato evidenziato, la riorganizzazione del database risulta già de
 Un elemento cruciale nella roadmap è la definizione di un processo di migrazione dei dati dal sistema legacy alla nuova base dati. Tale passaggio consentirà di validare fin da subito la coerenza e l’integrità delle nuove tabelle, garantendo al contempo la prosecuzione dello sviluppo sulla versione migliorata del database.
 
 \subsection{Aumento della copertura dei test}
-Attualmente, l’infrastruttura di testing del frontend è stata predisposta e resa operativa, ma non dispone ancora di specifiche definite per garantire una copertura adeguata. Tuttavia, la \textit{coverage} al 100\% del codice sorgente rappresenta un requisito fondamentale per garantire la stabilità e l’affidabilità del sistema in quanto contribuisce a individuare e correggere eventuali anomalie prima del rilascio in produzione
-
-Per soddisfare questo requisito, è necessario incrementare la copertura dei test automatizzati, con particolare attenzione ai componenti critici dell’interfaccia utente. Questo aspetto è già stato pianificato e verrà affrontato nelle prossime iterazioni dello sviluppo, al fine di consolidare la qualità del software e ridurre il rischio di regressioni.
+Attualmente, l’infrastruttura di testing del frontend è stata predisposta e resa operativa, ma non dispone ancora di specifiche definite per garantire una copertura adeguata. Tuttavia, la \textit{coverage} al 100\% del codice sorgente rappresenta un requisito fondamentale per garantire la stabilità e l’affidabilità del sistema, in quanto contribuisce a individuare e correggere eventuali anomalie prima del rilascio in produzione.
+%
+Per soddisfare questo requisito è necessario incrementare la copertura dei test automatizzati, con particolare attenzione ai componenti critici dell’interfaccia utente. Questo aspetto è già stato pianificato e verrà affrontato nelle prossime iterazioni dello sviluppo, al fine di consolidare la qualità del software e ridurre il rischio di regressioni.
 
 \subsection{Implementazione delle funzionalità chiave}
 Oltre ai miglioramenti tecnici e architetturali già discussi, il completamento della prima release del sistema richiede l’integrazione di alcune macrofunzionalità fondamentali per garantirne la piena operatività. In particolare, il sistema dovrà includere:
@@ -129,15 +131,15 @@ Oltre ai miglioramenti tecnici e architetturali già discussi, il completamento 
   \item \textbf{Gestione della protezione}: interfacce e strumenti dedicati alla configurazione delle policy di filtraggio e sicurezza, con un'efficace integrazione dei profili condivisi.
   \item \textbf{Generazione e visualizzazione avanzata dei report}: estensione del modulo di reporting per offrire un’analisi più dettagliata rispetto ai dati attualmente disponibili nella dashboard panoramica, così come la possibilità di esportare i report in formati standard.
   \item \textbf{Analisi del traffico in tempo reale}: strumenti per il monitoraggio live delle richieste DNS, utili per una gestione più dinamica della sicurezza di rete. Dovrà essere inclusa una funzione di ricerca avanzata per filtrare e analizzare i dati in tempo reale.
-  \item \textbf{Gestione degli Endpoint remoti}: integrazione del sistema con i dispositivi mobili dotati di \textit{ClientShield}, per consentirne la configurazione e il monitoraggio da remoto.
+  \item \textbf{Gestione degli Endpoint remoti}: integrazione del sistema con i dispositivi mobili dotati di \textit{ClientShield}, per consentirne la configurazione e il monitoraggio da parte dei gestori del filtro.
 \end{itemize}
-%
+
 Il nuovo sistema è destinato a sostituire integralmente il precedente, ragion per cui dovrà integrare fin dalla prima release tutte le macrofunzionalità della versione legacy, garantendo continuità nell’erogazione dei servizi e nella gestione della protezione e del traffico DNS. L’implementazione di tali moduli, dunque, non costituisce un semplice avanzamento, bensì un requisito imprescindibile per assicurare una transizione senza compromessi tra il vecchio e il nuovo sistema.
 
 \subsection{Scrittura della documentazione}
 Un aspetto fondamentale per garantire la manutenibilità e l’adozione efficace del nuovo sistema è la creazione di una documentazione completa e strutturata. Questo processo coinvolge tre aree principali: la documentazione del codice, la formalizzazione delle API e la stesura di un manuale utente.
 
-Per quanto riguarda il codice sorgente, è essenziale integrare commenti dettagliati nelle parti più rilevanti e articolate, al fine di agevolare la comprensione della codebase da parte di nuovi sviluppatori. La documentazione interna sarà redatta esclusivamente in inglese, seguendo le best practice per i progetti software con una possibile espansione internazionale.
+Per quanto riguarda il codice sorgente, è essenziale integrare commenti dettagliati nelle parti più rilevanti e articolate, al fine di agevolare la comprensione della codebase da parte di nuovi sviluppatori. La documentazione interna sarà redatta esclusivamente in inglese, seguendo le best practices per i progetti software con una possibile espansione internazionale.
 
 Parallelamente, sarà necessario predisporre una documentazione formale delle API, che descriva in modo chiaro gli endpoint disponibili, i parametri accettati e i formati di risposta previsti. Questa documentazione sarà tradotta nelle principali lingue per garantire un facile accesso agli sviluppatori esterni e ai partner tecnologici.
 
