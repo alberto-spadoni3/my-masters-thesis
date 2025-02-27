@@ -92,7 +92,11 @@ Il tipo \texttt{ErrorDetailsMapping} è stato realizzato utilizzando il concetto
 %
 Di seguito è riportata una porzione di codice relativa al tipo \texttt{ErrorDetailsMapping}:
 
-\lstinputlisting[language=typescript, caption={Porzione di \texttt{ErrorDetailsMapping}}, label={lst:errorDetailsMapping}]{listings/errorDetails.ts}
+\lstinputlisting[
+  language=typescript,
+  caption={Porzione di \texttt{ErrorDetailsMapping}},
+label={lst:errorDetailsMapping}]
+{listings/errorDetails.ts}
 %
 La mappatura degli errori è organizzata in categorie, ciascuna identificata da un prefisso che segue una convenzione precisa. Ad esempio, gli errori di validazione degli input sono contrassegnati dal prefisso ``\texttt{validation}'', mentre quelli relativi alla gestione delle entità utilizzano prefissi come ``\texttt{user}'' o ``\texttt{organization}''. Questa scelta non è casuale: i prefissi sono stati definiti in modo da rispecchiare la struttura delle cartelle nel frontend, che organizza i file di traduzione per le stringhe di testo presenti nell’applicazione. In questo modo, la corrispondenza tra i codici di errore del backend e le chiavi di traduzione nel frontend è diretta e immediata.
 
@@ -102,7 +106,11 @@ Un esempio di questa maggiore complessità si trova negli errori relativi alla c
 %
 La seguente definizione mostra come queste categorie di errore sono tipizzate:
 
-\lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{cause} per operazioni di creazione}, label={lst:createErrorCause}]{listings/errorTypes.ts}
+\lstinputlisting[
+  language=typescript,
+  caption={Definizione del tipo \texttt{cause} per operazioni di creazione},
+label={lst:createErrorCause}]
+{listings/errorTypes.ts}
 %
 Questo approccio offre un controllo statico rigoroso sugli errori generati dal backend, assicurando che ogni valore di \texttt{CreateErrorCause} sia riconducibile a una stringa predefinita che rappresenta la causa esatta dell’errore. Ciò evita l’uso di messaggi arbitrari e favorisce una comunicazione strutturata tra backend e frontend.
 %
@@ -120,7 +128,11 @@ La gestione degli errori nel backend si basa anche su una classe astratta denomi
 
 Per garantire la massima flessibilità e sicurezza dei tipi, la classe \texttt{AppError} sfrutta i \textit{Generics}\footnote{\url{https://www.typescriptlang.org/docs/handbook/2/generics.html}} di TypeScript. Questo approccio consente di vincolare ogni istanza di errore a un preciso codice identificativo, associandolo a un insieme di dettagli specifici definiti nel tipo \texttt{ErrorDetailsMapping}. Grazie a questa struttura, ogni errore è caratterizzato da tre elementi principali: un codice univoco, uno stato HTTP corrispondente e un set di dettagli contestuali che forniscono informazioni aggiuntive sull'errore.
 
-\lstinputlisting[language=TypeScript,label={lst:appError},caption={Implementazione della classe \texttt{AppError}}]{listings/appError.ts}
+\lstinputlisting[
+  language=TypeScript,
+  label={lst:appError},
+caption={Implementazione della classe \texttt{AppError}}]
+{listings/appError.ts}
 
 \paragraph{Definizione del tipo generico per \texttt{AppError}}
 Un elemento fondamentale dell'implementazione della classe \texttt{AppError} è l'uso della keyword \texttt{keyof}\footnote{\url{https://www.typescriptlang.org/docs/handbook/2/keyof-types.html}} durante la definizione del tipo generico \texttt{K}. Questo costrutto di TypeScript, visionabile a riga 2 del \Cref{lst:appError}, consente di ottenere un'unione di stringhe che rappresentano tutti i possibili codici d'errore previsti nel sistema. In altre parole, \texttt{keyof ErrorDetailsMapping} genera dinamicamente un insieme di stringhe che corrispondono esattamente ai nomi delle chiavi definite in \texttt{ErrorDetailsMapping}.
@@ -137,14 +149,23 @@ Oltre a garantire che il codice di errore appartenga a un insieme predefinito, i
 %
 Ad esempio, se si crea un'istanza di errore per rappresentare un utente non trovato, TypeScript garantirà che i dettagli contengano esclusivamente le proprietà previste per quel tipo di errore. Il codice qui sotto mostra un caso d’uso concreto:
 
-\lstinputlisting[language=typescript, caption={Esempio di utilizzo della classe \texttt{AppError}}, label={lst:appErrorUsage}]{listings/appErrorUsage.ts}
+\lstinputlisting[
+  language=typescript,
+  caption={Esempio di utilizzo della classe \texttt{AppError}},
+label={lst:appErrorUsage}]
+{listings/appErrorUsage.ts}
 %
 In questo caso, il codice dell'errore è limitato alla stringa ``\texttt{user.not\_found}'', e i dettagli sono strutturati esattamente come specificato in \texttt{ErrorDetailsMapping}. Se si tentasse di fornire un oggetto dettagli con proprietà non conformi, TypeScript genererebbe un errore a tempo di compilazione, impedendo di introdurre inconsistenze nel sistema.
 
 \paragraph{Definizione del tipo \texttt{AppErrorPayload}}
 Un altro elemento centrale di \texttt{AppError} è il metodo \texttt{toJSON()}, il quale ha il compito di serializzare l’errore in un formato compatibile con la comunicazione tra backend e frontend. Questo metodo restituisce un oggetto che segue la struttura imposta dal tipo \texttt{AppErrorPayload}, di seguito definito:
 
-\lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{AppErrorPayload}}, label={lst:appErrorPayload}]{listings/appErrorPayload.ts}
+\lstinputlisting[
+  language=typescript,
+  caption={Definizione del tipo \texttt{AppErrorPayload}},
+label={lst:appErrorPayload}]
+{listings/appErrorPayload.ts}
+%
 La sintassi utilizzata in questa definizione sfrutta alcune funzionalità avanzate di TypeScript:
 \begin{itemize}
   \item \textbf{Mapped Types}: la parte di codice a linea 2 itera su ciascuna chiave \texttt{K} presente in \texttt{ErrorDetailsMapping}. Per ogni chiave, viene creato un nuovo \textit{object} avente due proprietà:
@@ -191,7 +212,11 @@ Per garantire un efficace supporto alla traduzione dei messaggi di errore, è st
 
 Per integrare questo meccanismo nei componenti del frontend, è stato realizzato un apposito hook denominato \texttt{useTranslator}, che fornisce un'interfaccia uniforme per la traduzione dei messaggi, senza vincolare il codice a una particolare implementazione. Questo hook consente inoltre di specificare un prefisso per le chiavi di traduzione, facilitando l'organizzazione e la gestione delle stringhe localizzate.
 
-\lstinputlisting[language=typescript, caption={Definizione del tipo \texttt{Translator} e dell'hook \texttt{useTranslator}}, label={lst:translator}]{listings/useTranslator.ts}
+\lstinputlisting[
+  language=typescript,
+  caption={Definizione del tipo \texttt{Translator} e dell'hook \texttt{useTranslator}},
+label={lst:translator}]
+{listings/useTranslator.ts}
 %
 Grazie a questa astrazione, ogni componente del frontend può ottenere facilmente un’istanza della funzione di traduzione senza dipendere direttamente da una libreria specifica. Questo approccio migliora la modularità e la manutenibilità del codice, permettendo di sostituire o aggiornare il sistema di internazionalizzazione senza modificare la logica di gestione degli errori.
 
@@ -217,7 +242,11 @@ Questa suddivisione in metodi specifici per ogni entità permette di mantenere i
 \subsubsection{Gestione degli errori di validazione}
 Come descritto nella \Cref{sec:input-validation-errors}, gli errori di validazione degli input vengono strutturati in modo da fornire tutte le informazioni necessarie per costruire un messaggio dettagliato. Nel frontend, il metodo \texttt{getValidationErrorMessage()} di seguito riportato, si occupa di elaborare questi dati per generare una stringa comprensibile e localizzata da mostrare all’utente.
 %
-\lstinputlisting[language=typescript, caption={Metodo \texttt{getValidationErrorMessage()}}, label={lst:getValidationErrorMessage}]{listings/validationMessage.ts}
+\lstinputlisting[
+  language=typescript,
+  caption={Metodo \texttt{getValidationErrorMessage()}},
+label={lst:getValidationErrorMessage}]
+{listings/validationMessage.ts}
 %
 Il metodo analizza gli errori ricevuti, associando ogni campo con i problemi segnalati dal backend. Per ciascuna anomalia, viene costruito un messaggio traducendo dinamicamente il codice d’errore di Zod (ad esempio, ``\texttt{too\_small}'' o ``\texttt{invalid\_string}'') e integrando informazioni come il valore atteso, quello ricevuto e altri dettagli rilevanti. Infine, i vari messaggi vengono concatenati in un'unica stringa strutturata, così da fornire un’indicazione chiara sui problemi riscontrati e facilitare la correzione dei dati inseriti.
 
