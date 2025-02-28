@@ -32,6 +32,7 @@
 \newcommand{\acknowledgementsname}{Acknowledgements}
 
 \newcommand{\school}[1]{\def\theschool{#1}}
+\newcommand{\department}[1]{\def\thedepartment{#1}}
 \newcommand{\programme}[1]{\def\theprogramme{#1}}
 \newcommand{\subject}[1]{\def\thesubject{#1}}
 \newcommand{\cosupervisor}[1]{\def\thecosupervisor{#1}}
@@ -72,7 +73,7 @@
 }
 
 \newcommand{\frontispiece}{
-  \newgeometry{margin=0.8in}
+  \newgeometry{margin=0.7in}
   \begin{titlepage}
     \centering
     \large
@@ -80,16 +81,16 @@
     \includegraphics[width=0.4\textwidth]{figures/logo-unibo-original.pdf}
     \vspace{1cm}
 
-    \textbf{\theschool}
+    \thedepartment
     \\
     \noindent\hrulefill
-    \vspace{0.4cm}
+    \vspace{0.2cm}
 
     \Large
     \theprogramme
 
     \Huge
-    \vspace{2.5cm}
+    \vspace{2.6cm}
     \textbf{
       \thetitle
     }
@@ -100,7 +101,7 @@
     \\
     \textsc{\thesubject}
 
-    \vspace{2.5cm}
+    \vspace{2.6cm}
     %
     \begin{minipage}[t]{0.64\textwidth}
       \begin{flushleft}
