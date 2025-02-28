@@ -1,2 +1,11 @@
 # Tesi di laurea magistrale
 Questa repository contiene la mia tesi di laurea che tratta il processo di reingegnerizzazione di un sistema web-based per il filtraggio di query DNS. La tesi si basa sull'esperienza di tirocinio che ho vissuto presso l'azienda FlashStart Group srl di Cesena.
+
+## Abstract
+Negli ultimi anni, le minacce informatiche sono diventate sempre più diffuse, con la maggior parte degli attacchi che avvengono attraverso Internet. Per mitigare questi rischi, le aziende adottano diverse strategie di sicurezza, tra cui il filtraggio DNS, una pratica efficace per bloccare accessi a domini malevoli e applicare politiche di sicurezza a livello di rete. Questo approccio risulta particolarmente strategico in quanto opera a un livello intermedio tra gli endpoint e le applicazioni, bilanciando efficacia, semplicità di implementazione e limitato impatto sulle risorse di sistema.
+
+In questo contesto, la presente tesi si concentra sulla reingegnerizzazione del pannello per la configurazione e gestione del filtro DNS di [_FlashStart Group srl_](https://flashstart.com/). L'obiettivo è la progettazione e l’implementazione di una nuova infrastruttura moderna e scalabile, basata su un’architettura a microservizi. Il lavoro ha riguardato la riprogettazione del database, l’introduzione di una dashboard avanzata per MSP e la definizione di un sistema strutturato per la gestione degli errori.
+
+L’approccio adottato ha seguito una strategia di reingegnerizzazione ibrida, ossia un mix di sviluppo incrementale e sostituzione totale, evitando così la coesistenza tra vecchio e nuovo sistema. Sono state implementate le prime funzionalità chiave, mentre ulteriori sviluppi riguarderanno l’integrazione di un sofisticato sistema di controllo degli accessi, la completa documentazione del sistema e l’ottimizzazione dell’interfaccia utente.
+
+I risultati ottenuti finora evidenziano le potenzialità del nuovo sistema, che supera la versione legacy in termini di usabilità, sicurezza e manutenibilità. Questo progetto rappresenta un primo passo verso una piattaforma più efficiente, orientata alle esigenze di un mercato enterprise. L'architettura rinnovata costituisce una solida base per sviluppi futuri, consentendo all’azienda di rafforzare la propria posizione competitiva in un settore in rapida evoluzione.
