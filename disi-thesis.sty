@@ -44,7 +44,12 @@
 \newenvironment{abstract}{
 \chapter*{\centering\abstractname}\addcontentsline{toc}{chapter}{\abstractname}}{}
 \newenvironment{acknowledgements}{
-\chapter*{\acknowledgementsname}}{}
+  \cleardoublepage % Forza una nuova pagina e resetta il footer
+  \chapter*{\acknowledgementsname}
+  \markboth{\MakeUppercase{\acknowledgementsname}}{\MakeUppercase{\acknowledgementsname}} % Aggiorna header
+  \addcontentsline{toc}{chapter}{\acknowledgementsname} % Aggiunge ai TOC
+}{}
+
 \newenvironment{dedication}{
   \chapter*{}
 \begin{flushright}\itshape}{\normalfont
