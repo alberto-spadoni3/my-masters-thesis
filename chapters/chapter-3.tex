@@ -57,7 +57,7 @@ Per aumentare il grado di flessibilità del filtro, gli utenti possono creare de
   \item \textbf{Allow list}: per consentire l'accesso a domini specifici;
   \item \textbf{Block list}: per bloccare domini o indirizzi IP specifici.
 \end{itemize}
-Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Per questo motivo, esse consentono di specificare delle \emph{eccezioni} rispetto alle normali policy di sicurezza. Ad esempio, è possibile concedere l'accesso ad un contenuto di norma non consentito, oppure bloccare un dominio che risulta legittimo.
+Queste liste possiedono una priorità più elevata rispetto alle funzioni di protezione citate in precedenza. Per questo motivo, esse consentono di specificare delle \emph{eccezioni} rispetto alle normali policy di sicurezza. Ad esempio, è possibile concedere l'accesso a un contenuto di norma non consentito, oppure bloccare un dominio che risulta legittimo.
 
 \subsubsection{Gestione delle reti di protezione}
 Un'altra funzionalità fondamentale del pannello è la possibilità di specificare quali reti devono essere sottoposte al filtraggio, garantendo un controllo preciso e mirato sulle attività DNS. Questo permette di configurare reti aziendali o domestiche in modo che tutte le richieste DNS generate da tali indirizzi IP passino attraverso le policy di protezione impostate. La configurazione delle reti di protezione può essere adattata a diverse esigenze, supportando due principali modalità:
@@ -73,7 +73,7 @@ Il pannello offre una sezione dedicata alla generazione e analisi dei report rel
 \paragraph{Tipologie di report disponibili}
 Tramite un menu a cascata, è possibile selezionare diversi tipi di report, tra cui:
 \begin{itemize}
-  \item \textbf{Bloccati per categoria}: mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macro-categoria;
+  \item \textbf{Bloccati per categoria}: mostrano le richieste DNS bloccate verso siti indesiderati, raggruppandole per categoria o macrocategoria;
   \item \textbf{Consentiti per paese o categoria}: forniscono il numero di richieste consentite, organizzate per paese o per categoria di contenuti;
   \item \textbf{Malware e minacce bloccate}: presentano un’analisi delle richieste che hanno attivato il filtro, indicando malware o altre minacce bloccate;
   \item \textbf{Traffico per fasce orarie o giorni}: permettono di analizzare le richieste DNS effettuate in specifiche fasce orarie o giorni della settimana;
@@ -95,7 +95,7 @@ Un’altra funzionalità interessante è la visualizzazione del traffico DNS in 
 Per concludere la panoramica sulle funzionalità, il pannello possiede un'importante integrazione con la tecnologia Active Directory di Microsoft, che consente di ottenere informazioni dettagliate non solo sul dispositivo che ha originato una determinata richiesta DNS, ma anche sull’utente utilizzato per accedere a tale macchina.
 
 \subsection{Architettura e tecnologie utilizzate}
-Il pannello Web in esame, fino ad ora descritto solo dal punto di vista delle funzionalità, presenta un'architettura monolitica, tipica dei vecchi sistemi Web-based. Nonostante sia possibile identificare due macro-sezioni, denominate \textit{Customer area} e \textit{Pannello cloud}, non vi è una reale modularizzazione del frontend e del backend. Tutto il codice risulta scritto in modo procedurale, senza l’adozione di un paradigma orientato agli oggetti, e con una scarsa separazione delle responsabilità.
+Il pannello Web in esame, fin'ora descritto solo dal punto di vista delle funzionalità, presenta un'architettura monolitica, tipica dei vecchi sistemi Web-based. Nonostante sia possibile identificare due macrosezioni, denominate \textit{Customer area} e \textit{Pannello cloud}, non vi è una reale modularizzazione del frontend e del backend. Tutto il codice risulta scritto in modo procedurale, senza l’adozione di un paradigma orientato agli oggetti, e con una scarsa separazione delle responsabilità.
 
 \subsubsection{Tecnologie utilizzate}
 Il backend è interamente sviluppato in PHP, utilizzando un approccio ``plain'', ossia privo di framework moderni come Laravel\footnote{\url{https://laravel.com}}. Per il frontend sono stati utilizzati HTML, CSS e una versione obsoleta di jQuery\footnote{\url{https://jquery.com}} (\texttt{1.x}), che limita le possibilità di modernizzazione dell'interfaccia. In alcuni casi, il codice PHP si occupa anche di generare dinamicamente script JavaScript, i quali eseguono ulteriori chiamate a codice PHP lato server.
@@ -120,7 +120,7 @@ Il sistema legacy presenta numerose limitazioni che hanno reso necessaria una co
 \subsubsection{Mancanza del supporto alla multiutenza}
 Una delle principali limitazioni del sistema legacy, e tra quelle più sentite dai clienti dell'azienda, è l’assenza di un supporto per la multiutenza. Attualmente, infatti, il sistema permette a ciascun cliente di disporre di un unico account per accedere al pannello di configurazione, che possiede i privilegi di amministratore.
 
-Questa mancanza rappresenta un ostacolo significativo, soprattutto per i dealer o gli MSP che integrano il filtro DNS in altri prodotti o lo rivendono ad aziende terze. Questi ultimi si trovano spesso a dover gestire configurazioni e politiche di protezione per conto dei loro clienti, ma l'assenza di un sistema multiutente impedisce di delegare determinate operazioni o di offrire accesso limitato a figure specifiche all’interno delle organizzazioni servite. Allo stesso modo, chi utilizza direttamente il pannello non può creare profili con permessi ridotti, ad esempio per utenti che necessitano soltanto di monitorare le configurazioni o consultare i report senza possibilità di modificarli.
+Questa mancanza rappresenta un ostacolo significativo, soprattutto per i Dealer o gli MSP che integrano il filtro DNS in altri prodotti o lo rivendono ad aziende terze. Questi ultimi si trovano spesso a dover gestire configurazioni e politiche di protezione per conto dei loro clienti, ma l'assenza di un sistema multiutente impedisce di delegare determinate operazioni o di offrire accesso limitato a figure specifiche all’interno delle organizzazioni servite. Allo stesso modo, chi utilizza direttamente il pannello non può creare profili con permessi ridotti, ad esempio per utenti che necessitano soltanto di monitorare le configurazioni o consultare i report senza possibilità di modificarli.
 
 Implementare la funzionalità in questione nel sistema attuale richiederebbe modifiche strutturali profonde, che non sono realisticamente attuabili senza un suo completo stravolgimento.
 
@@ -130,7 +130,7 @@ Un’altra significativa limitazione del sistema legacy riguarda l’impossibili
 Inoltre, la mancanza di questa funzionalità aumenta il carico di lavoro in caso di modifiche alle regole di protezione. La situazione attuale, infatti, è tale per cui ogni variazione deve essere riportata manualmente su ciascun cliente, imponendo un processo lungo e soggetto a errori.
 
 \subsubsection{Limiti e debolezze architetturali}
-Il sistema legacy presenta numerosi limiti dovuti a scelte architetturali e tecnologiche datate, che influiscono negativamente sulla manutenibilità e sull'evoluzione del software. La mancanza di una chiara separazione tra frontend e backend complica la gestione del codice, rendendo difficoltosa l’adozione di nuove tecnologie. Oltretutto, pratiche quali l’utilizzo di PHP per generare dinamicamente codice JavaScript introducono ulteriore complessità ed opacità dei sorgenti, limitando la modularità e aumentando il rischio di commettere errori.
+Il sistema legacy presenta numerosi limiti dovuti a scelte architetturali e tecnologiche datate, che influiscono negativamente sulla manutenibilità e sull'evoluzione del software. La mancanza di una chiara separazione tra frontend e backend complica la gestione del codice, rendendo difficoltosa l’adozione di nuove tecnologie. Oltretutto, pratiche quali l’utilizzo di PHP per generare dinamicamente codice JavaScript introducono ulteriore complessità e opacità dei sorgenti, limitando la modularità e aumentando il rischio di commettere errori.
 
 L’architettura monolitica rappresenta una delle principali debolezze del sistema. Qualsiasi modifica, anche minima, comporta interventi che possono avere ripercussioni su altre parti del codice, a causa dell’assenza di un design accurato e di una netta separazione delle responsabilità. Questo approccio non solo rallenta il ciclo di sviluppo, ma aumenta significativamente il rischio di regressioni e rende difficoltoso il debugging. La mancanza di modularità aggrava ulteriormente il problema: ogni nuova funzionalità o aggiornamento richiede un lavoro complesso e rischioso, che spesso si traduce in un incremento della fragilità del sistema.
 
@@ -157,7 +157,7 @@ Il nuovo sistema nasce con l'obiettivo di posizionarsi come una soluzione modern
 
 Dal punto di vista tecnico, il sistema dovrà superare le limitazioni strutturali del legacy, modernizzando l'architettura per renderla più robusta e scalabile, in modo da poter gestire un numero crescente di utenti. Una delle priorità è quella di ridurre i tempi necessari per la manutenzione e l’aggiornamento, facilitando al contempo l’integrazione di nuove funzionalità.
 
-Un obiettivo chiave della prima release del pannello è l'introduzione di funzionalità avanzate pensate per i fornitori di servizi, con particolare attenzione ai dealer e agli MSP. Tra queste, un ruolo centrale è ricoperto dai profili condivisi, noti anche come \textit{template}, che consentono di definire e applicare regole di protezione comuni a più clienti. Grazie ad i template, gli MSP potranno gestire in modo più efficiente le configurazioni, evitando di doverle replicare manualmente per ciascun cliente e permettendo la propagazione automatica delle modifiche.
+Un obiettivo chiave della prima release del pannello è l'introduzione di funzionalità avanzate pensate per i fornitori di servizi, con particolare attenzione ai Dealer e agli MSP. Tra queste, un ruolo centrale è ricoperto dai profili condivisi, noti anche come \textit{template}, che consentono di definire e applicare regole di protezione comuni a più clienti. Grazie ai template, gli MSP potranno gestire in modo più efficiente le configurazioni, evitando di doverle replicare manualmente per ciascun cliente e permettendo la propagazione automatica delle modifiche.
 %
 Un'altra caratteristica fondamentale che differenzia questa prima versione da quella legacy è la presenza di una dashboard dedicata ai fornitori di servizi gestiti. Questo strumento consentirà loro di gestire in maniera completa ed efficace i clienti sotto la loro supervisione, offrendo una panoramica dettagliata sul traffico, sulle configurazioni applicate e sugli eventi di sicurezza rilevati. La dashboard sarà progettata per agevolare l’amministrazione su larga scala, semplificando operazioni come la modifica delle policy di protezione, l'assegnazione dei template e il monitoraggio centralizzato delle reti gestite.
 
@@ -240,7 +240,7 @@ I requisiti riportati di seguito forniscono una panoramica delle funzionalità p
   \item \textbf{Supporto per il multilingua:}
     \begin{itemize}
       \item Il sistema deve supportare la localizzazione in diverse lingue, e in particolare italiano, inglese, spagnolo, francese e portoghese.
-      \item Esso deve inoltre essere progettato per consentire l’aggiunta di nuove lingue in maniera rapida ed agevole.
+      \item Esso deve inoltre essere progettato per consentire l’aggiunta di nuove lingue in maniera rapida e agevole.
       \item La lingua di default deve essere impostata in base alla preferenza del browser dell’utente.
       \item Le traduzioni devono coinvolgere tutti gli elementi dell’interfaccia grafica, inclusi i messaggi di errore e le notifiche.
       \item Per quanto riguarda le API, l'unica lingua supportata sarà l'inglese.

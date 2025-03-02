@@ -20,14 +20,14 @@ L'intero sistema di sviluppo è stato \textit{containerizzato}\footnote{Il termi
 
 Per la gestione delle configurazioni, ogni microservizio utilizza un file \texttt{.env}, che contiene le variabili d’ambiente necessarie per la configurazione dinamica dello stesso, come le credenziali di accesso al database e gli endpoint delle API. Durante l’esecuzione della pipeline CI/CD, questo file viene iniettato nei container, permettendo di mantenere un ambiente coerente tra sviluppo, test e produzione, senza la necessità di configurazioni separate per ciascun contesto.
 
-Per migliorare l'affidabilità dei test, è stata implementata una strategia di \textit{seeding} del database, che consente di popolare l’ambiente di test con dati coerenti ad ogni esecuzione, assicurando risultati riproducibili e verifiche affidabili.
+Per migliorare l'affidabilità dei test, è stata implementata una strategia di \textit{seeding} del database, che consente di popolare l’ambiente di test con dati coerenti a ogni esecuzione, assicurando risultati riproducibili e verifiche affidabili.
 
 \subsection{Struttura della repository}
 L'intero codice del progetto è gestito tramite una \textit{monorepo} ospitata su \textit{GitLab}. La scelta di adottare una monorepo è motivata dalla necessità di mantenere in un unico repository sia il frontend che tutti i microservizi del backend, semplificando la gestione delle dipendenze, la coerenza tra i moduli e l'esecuzione delle pipeline di CI/CD.
 
 Per ottimizzare la gestione della monorepo, è stato utilizzato \texttt{Turborepo}\footnote{\url{https://turbo.build}}, un tool specificamente progettato per lo sviluppo di applicazioni in TypeScript. Questo strumento consente di affrontare in modo efficiente il problema dei lunghi processi di compilazione, tipici delle monorepo con numerosi pacchetti e molteplici task (come compilazione, testing e linting). Il tool pianifica l'esecuzione dei task in modo ottimizzato, parallelizzandoli su tutti i cores disponibili e implementando un avanzato sistema di caching. Questo permette di ridurre drasticamente i tempi di build successivi al primo, migliorando la produttività del team di sviluppo.
 
-L'organizzazione della monorepo sfrutta la funzionalità \textit{workspace} di \texttt{pnpm}, suddividendo i pacchetti in due macro-categorie:
+L'organizzazione della monorepo sfrutta la funzionalità \textit{workspace} di \texttt{pnpm}, suddividendo i pacchetti in due macrocategorie:
 \begin{itemize}
   \item \textbf{Apps}: Contiene tutti i servizi che vengono eseguiti in maniera indipendente e che costituiscono i diversi microservizi del sistema. Qui sono presenti il frontend e tutti i componenti del backend che operano come unità autonome.
   \item \textbf{Packages}: Include pacchetti di supporto utilizzati dalle \textit{apps}. Tra questi vi sono il package \texttt{commons}, che contiene definizioni e metodi condivisi tra i vari servizi, i pacchetti dedicati alla gestione dello schema di \textit{Prisma} e all'esportazione del client per il database, oltre ai pacchetti per il seeding di quest'ultimo nella fase di test.
@@ -47,7 +47,7 @@ Questa strategia consente di mantenere un flusso di sviluppo ordinato, con una c
 \subsubsection{Pipeline CI/CD}
 L'automazione del processo di sviluppo è stata realizzata attraverso una pipeline di \textit{CI/CD}, integrata direttamente in GitLab. La pipeline è suddivisa in più fasi, organizzate per garantire una validazione progressiva del codice prima del rilascio in staging.
 
-L'intero processo di build e test si basa su Docker-in-Docker\footnote{\url{https://www.docker.com/resources/docker-in-docker-containerized-ci-workflows-dockercon-2023}} (DinD), una soluzione che permette alla pipeline di eseguire e gestire container Docker all'interno di ambienti di esecuzione basati sulla stessa tecnologia. Questo approccio consente di costruire immagini Docker direttamente nei job della pipeline, riducendo la dipendenza da infrastrutture esterne e garantendo isolamento ed una maggiore coerenza tra gli ambienti di sviluppo, test e deploy.
+L'intero processo di build e test si basa su Docker-in-Docker\footnote{\url{https://www.docker.com/resources/docker-in-docker-containerized-ci-workflows-dockercon-2023}} (DinD), una soluzione che permette alla pipeline di eseguire e gestire container Docker all'interno di ambienti di esecuzione basati sulla stessa tecnologia. Questo approccio consente di costruire immagini Docker direttamente nei job della pipeline, riducendo la dipendenza da infrastrutture esterne e garantendo isolamento e una maggiore coerenza tra gli ambienti di sviluppo, test e deploy.
 %
 Il flusso di lavoro della pipeline prevede le seguenti fasi:
 \begin{enumerate}
@@ -73,7 +73,7 @@ La verifica della qualità del codice e la copertura tramite test automatizzati 
 \end{itemize}
 
 \subsection{Approccio alla reingegnerizzazione}
-Come descritto nella \Cref{sec:reingegnerizzazione-approcci-fasi}, ogni modello di reingegnerizzazione presenta vantaggi e criticità differenti. Il processo adottato per lo sviluppo del nuovo sistema si pone a metà tra l'approccio ``Big Bang'' e quello ``Evolutivo''. in quanto procede in modo incrementale, senza tuttavia una fase di coesistenza con il vecchio. Una volta completato, esso sostituirà integralmente il sistema precedente, fatta eccezione per alcune funzionalità che continueranno a essere gestite dal legacy senza necessità di retrocompatibilità.
+Come descritto nella \Cref{sec:reingegnerizzazione-approcci-fasi}, ogni modello di reingegnerizzazione presenta vantaggi e criticità differenti. Il processo adottato per lo sviluppo del nuovo sistema si pone a metà tra l'approccio ``Big Bang'' e quello ``Evolutivo'' in quanto procede in modo incrementale, senza tuttavia una fase di coesistenza con il vecchio. Una volta completato, esso sostituirà integralmente il sistema precedente, fatta eccezione per alcune funzionalità che continueranno a essere gestite dal legacy senza necessità di retrocompatibilità.
 
 La transizione avverrà in modo diretto, senza un rilascio graduale in produzione. Questo semplifica la migrazione, evitando la necessità di interfacce di compatibilità tra i due sistemi. Tuttavia, a differenza di un classico approccio ``Big Bang'', lo sviluppo non è stato affrontato come una riscrittura monolitica. Il nuovo sistema, infatti, è stato progettato fin dall'inizio con un'architettura a microservizi, organizzata sulla base delle funzionalità piuttosto che sulla replica della struttura esistente.
 
