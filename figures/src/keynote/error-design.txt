@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+
+skinparam rectangle {
+    BackgroundColor #BBDEFB
+    FontSize 18
+}
+
+skinparam package {
+    BackgroundColor #F1F8E9
+    FontSize 20
+}
+
+package "Backend" {
+    rectangle "Abstract Error Class" as AEC
+    rectangle "           Generic Errors\n(Unauthorized, Internal Error)" as GE
+    rectangle "               Domain Errors\n(UserNotFound, UserCreateError)" as DE
+    rectangle "Centralized Middleware" as CM
+
+    AEC --> GE : " Specializes"
+    AEC --> DE : " Specializes"
+    GE --> CM : " Handles"
+    DE --> CM : "  Handles"
+}
+
+package "Frontend" {
+    rectangle "Error Parser" as EI
+    rectangle "Localization\n    System" as LS
+    rectangle "  Error\nDisplay" as ED
+
+    EI -left-> LS : Constructs Message\n& Translates
+    LS -left-> ED : Notifies User
+}
+
+CM --> EI : " Returns structured error"
+
+@enduml

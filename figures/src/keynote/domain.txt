@@ -1,0 +1,84 @@
+@startuml
+left to right direction
+hide stereotype
+hide empty members
+
+skinparam class {
+  FontSize 16
+  BackgroundColor<<entity>> #FFF9C4
+  BackgroundColor<<enum>> #C8E6C9
+}
+
+entity Organization  <<entity>> {
+  +id: string
+  +name: string
+  +type: int
+}
+
+entity User <<entity>> {
+  +id: string
+  +username: string
+  +role: Role
+}
+
+entity License <<entity>> {
+  +id: string
+  +type: string
+  +expiry: datetime
+}
+
+entity Report <<entity>> {
+  +id: string
+  +generatedAt: datetime
+}
+
+entity Protection <<entity>> {
+  +id: string
+  +shared: boolean
+}
+
+entity ProtectionPolicy <<entity>> {
+  +id: string
+  +rules: List<string>
+  +type: ProtectionType
+}
+
+entity Network <<entity>> {
+  +id: string
+  +inet: string
+  +type: NetworkType
+}
+
+enum ProtectionType <<enum>> {
+  ThreatProtection
+  ContentFilter
+  ApplicationBlock
+  AllowList
+  BlockList
+}
+
+enum Role <<enum>> {
+  Admin
+  ReadOnly
+  Policy
+  Editor
+}
+
+enum NetworkType <<enum>> {
+  Static
+  Dynamic
+  Remote
+}
+
+Organization  o-u-  User
+Organization  *--  Network
+Organization  <-->  Protection
+Organization  o-- License
+Organization  o--  Report
+Network  -->  Protection
+Network  -->  NetworkType
+Protection  *--  ProtectionPolicy
+ProtectionPolicy  --> ProtectionType
+User -->  Role
+
+@enduml
